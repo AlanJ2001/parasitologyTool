@@ -1,12 +1,11 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>About</title>
-	</head>
-	<body>
+{% extends 'parasitologyTool/base.html' %}
+{% load static %}
+
+{% block title_block %}About{% endblock %}
+
+{% block body_block %}
 		<h1>Welcome to the About Page</h1>
 		<div>
 			<a href="/parasitologyTool/">Home</a><br />
 		</div>
-	</body>
-</html>
+{% endblock %}

@@ -1,13 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.template.defaultfilters import slugify
 
 # Create your models here.
 
 class Post(models.Model):
 	title = models.CharField(max_length=100)
 	content = models.TextField()
-	date_posted = models.DateTimeField(auto_now_add=True)
-	author = models.ForeignKey(User, on_delete=models.CASCADE)
+	#date_posted = models.DateTimeField(auto_now_add=True)
+	#author = models.ForeignKey(User, on_delete=models.CASCADE)
 
 	def __str__(self):
 		return self.title
@@ -23,7 +24,7 @@ class UserProfile(models.Model):
 		('Researcher', 'Researcher'),
 	]
 
-	Role = models.CharField(max_length=50, choices=ROLE_CHOICES)
+	#Role = models.CharField(max_length=50, choices=ROLE_CHOICES)
 
 	@property
 	def username(self):
@@ -31,3 +32,13 @@ class UserProfile(models.Model):
 		
 	def __str__(self):
 		return self.user.username
+
+class Parasite(models.Model):
+	name = models.CharField(max_length=128, unique=True)
+
+	def save(self, *args, **kwargs):
+		self.slug = slugify(self.name)
+		super(Parasite, self).save(*args, **kwargs)
+
+	def __str__(self):
+		return self.name
