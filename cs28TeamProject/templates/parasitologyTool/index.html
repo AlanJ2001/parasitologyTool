@@ -1,14 +1,25 @@
-<!DOCTYPE html>
-{% load staticfiles %}
-<html>
-	<head>
-		<title>Home</title>
-	</head>
-	<body>
-		<h1>Parasitology Tool</h1>
-		<div>
-			<a href="/parasitologyTool/about/">About</a><br />
-			<img src="{% static 'images/test_image.jpg' %}" alt="Parasitology book" />
-		</div>
-	</body>
-</html>
+{% extends 'parasitologyTool/base.html' %}
+{% load static %}
+
+{% block title_block %}Home{% endblock %}
+
+{% block body_block %}
+    <h1>Parasitology Tool</h1>
+    <div>
+        <a href="{% url 'parasitologyTool:about' %}">About</a><br />
+        <img src="{% static 'images/test_image.jpg' %}" alt="Parasitology book" />
+    </div>
+
+    <div>
+        {% if parasites %}
+            <ul>
+                {% for p in parasites %}
+                <li>{{ p.name }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <strong>No parasites</strong>
+        {% endif %}
+    </div>
+    <a href="{% url 'parasitologyTool:add_post' %}">Add a Post</a>
+{% endblock %}
