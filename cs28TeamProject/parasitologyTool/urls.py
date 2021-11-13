@@ -10,4 +10,6 @@ urlpatterns = [
     url(r'register/', views.register, name='register'),
     url(r'login/', views.user_login, name='login'),
     url(r'logout/', views.user_logout, name='logout'),
+    url(r'public_content/', views.public_content, name='public_content'),
+    url(r'add_article/',views.add_article, name='add_article'),
 ]
