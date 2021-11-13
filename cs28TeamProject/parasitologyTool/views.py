@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from .models import Post, UserProfile, Parasite
+from .models import Post, UserProfile, Parasite, Article
 from django.http import HttpResponse
-from .forms import PostForm, UserForm, UserProfileForm
+from .forms import PostForm, UserForm, UserProfileForm , ArticleForm
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
@@ -28,6 +28,31 @@ def add_post(request):
         print(form.errors)
 
     return render(request, 'parasitologyTool/add_post.html', {'form':form})
+
+def public_content(request):
+    context_dict = {}
+
+    parasite_list = Parasite.objects.order_by('name')
+    article_list = Article.objects.order_by('views')
+    context_dict['parasites'] = parasite_list
+    context_dict['articles'] = article_list
+
+    return render(request, 'parasitologyTool/public_content.html', context=context_dict)
+
+def add_article(request):
+    form = ArticleForm()
+
+    if request.method == 'POST':
+        form = ArticleForm(request.POST)
+
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect('/parasitologyTool/public_content')
+        else:
+            print(form.errors)
+
+    return render(request, 'parasitologyTool/add_article.html', {'form':form})
+
 
 def register(request):
     registered = False

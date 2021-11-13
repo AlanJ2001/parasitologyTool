@@ -1,0 +1,39 @@
+{% extends 'parasitologyTool/base.html' %}
+{% load static %}
+
+{% block title_block %}Public Content{% endblock %}
+
+{% block body_block %}
+    <h1>Public Content</h1>
+    <div>
+        <a href="{% url 'parasitologyTool:index' %}">Homepage</a><br />
+        <img src="{% static 'images/Trypanosoma.jpg' %}" alt="Trypanosoma" />
+    </div>
+    
+    <h2>Categories of parasites</h2>
+    <div>
+        {% if parasites %}
+            <ul>
+                {% for p in parasites %}
+                <li>{{ p.name }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <strong>No parasites</strong>
+        {% endif %}
+    </div>
+    <br>
+    <h2>Top Viewed Article</h2>
+    <div>
+        {% if articles %}
+            <ul>
+                {% for article in articles %}
+                <li>{{ article.title }} what?</li> This should a link in the future.
+                {% endfor %}
+            </ul>
+        {% else %}
+            <strong>No Articles</strong>
+        {% endif %}
+    </div>
+    <a href="{% url 'parasitologyTool:add_article' %}">Post Article</a><br />
+{% endblock %}
