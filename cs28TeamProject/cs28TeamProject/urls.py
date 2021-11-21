@@ -18,13 +18,14 @@ from django.contrib import admin
 from parasitologyTool import views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.urls import path
 
 
 
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
-    url(r'^parasitologyTool/', include('parasitologyTool.urls')),
-    url(r'^admin/', admin.site.urls),
+    path('', views.index, name='index'),
+    path('parasitologyTool/', include('parasitologyTool.urls')),
+    path('admin/', admin.site.urls),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
