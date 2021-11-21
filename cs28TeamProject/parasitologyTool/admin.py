@@ -5,3 +5,4 @@ from .models import *
 admin.site.register(Post)
 admin.site.register(UserProfile)
 admin.site.register(Parasite)
+admin.site.register(Article)
