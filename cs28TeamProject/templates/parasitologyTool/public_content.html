@@ -15,7 +15,7 @@
         {% if parasites %}
             <ul>
                 {% for p in parasites %}
-                <li>{{ p.name }}</li>
+                <li><a href="{% url 'parasitologyTool:public_parasite_page' p.id %}">{{ p.name }}</a></li>
                 {% endfor %}
             </ul>
         {% else %}
@@ -28,12 +28,12 @@
         {% if articles %}
             <ul>
                 {% for article in articles %}
-                <li>{{ article.title }}</li> This should a link in the future.
+                <li>{{ article.title }} - {{ article.parasite.name }}</li>
+                <a href="{{ article.url }}">{{ article.url }}</a>
                 {% endfor %}
             </ul>
         {% else %}
             <strong>No Articles</strong>
         {% endif %}
     </div>
-    <a href="{% url 'parasitologyTool:add_article' %}">Post Article</a><br />
 {% endblock %}
