@@ -39,19 +39,33 @@ def public_content(request):
 
     return render(request, 'parasitologyTool/public_content.html', context=context_dict)
 
-def add_article(request):
+def add_article(request, parasite_id):
+    try:
+        parasite = Parasite.objects.get(id=parasite_id)
+    except Parasite.DoesNotExist:
+        return not_found(request)
+    
     form = ArticleForm()
-
     if request.method == 'POST':
         form = ArticleForm(request.POST)
 
         if form.is_valid():
-            form.save(commit=True)
+            article = form.save(commit=False)
+            article.parasite = parasite
+            article.save()
             return redirect('/parasitologyTool/public_content')
         else:
             print(form.errors)
 
     return render(request, 'parasitologyTool/add_article.html', {'form':form})
+
+def public_parasite_page(request, parasite_id):
+    try:
+        parasite = Parasite.objects.get(id=parasite_id)
+    except Parasite.DoesNotExist:
+        return not_found(request)
+
+    return render(request, 'parasitologyTool/public_parasite_page.html', {'parasite': parasite})
 
 
 def register(request):

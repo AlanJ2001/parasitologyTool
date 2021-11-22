@@ -47,7 +47,7 @@ class Article(models.Model):
 	TITLE_MAX_LENGTH = 128
 	URL_MAX_LENGTH = 200
 	
-	#parasite = models.ForeignKey(Parasite, on_delete=models.CASCADE)
+	parasite = models.ForeignKey(Parasite, on_delete=models.CASCADE, default=None)
 	title = models.CharField(max_length=TITLE_MAX_LENGTH, unique=True)
 	url = models.URLField(max_length=URL_MAX_LENGTH)
 	views = models.IntegerField(default=0)
