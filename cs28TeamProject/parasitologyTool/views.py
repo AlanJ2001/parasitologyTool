@@ -1,3 +1,5 @@
+import os
+
 from django.shortcuts import render
 from .models import Post, UserProfile, Parasite, Article
 from django.http import HttpResponse
@@ -6,6 +8,15 @@ from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+
+try:
+    fname = os.path.join(os.path.dirname(__file__), "parasite_list.txt")
+    with open(fname, 'r') as f:
+        for p in f.readlines():
+            c = Parasite.objects.get_or_create(name=p)[0]
+            c.save()
+except:
+    raise FileExistsError("Can't find parasite_list.txt")
 
 def index(request):
     parasite_list = Parasite.objects.order_by('name')
