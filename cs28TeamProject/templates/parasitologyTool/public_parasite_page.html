@@ -4,9 +4,22 @@
 {% block title_block %}parasite page{% endblock %}
 
 {% block body_block %}
-		<h1>Welcome to the {{ parasite.name }} page</h1>
-		<div>
-			<a href="/parasitologyTool/">Home</a><br />
-			<a href="{% url 'parasitologyTool:add_article' parasite.id %}">Post Article</a><br />
-		</div>
+	<h1>Welcome to the {{ parasite.name }} page</h1>
+	<div>
+		<a href="/parasitologyTool/">Home</a><br />
+		<a href="{% url 'parasitologyTool:add_article' parasite.id %}">Post Article</a><br />
+	</div>
+	<h2>Top Viewed Article</h2>
+    <div>
+        {% if articles %}
+            <ul>
+                {% for article in articles %}
+                <li>{{ article.title }}</li>
+                <a href="{{ article.url }}">{{ article.url }}</a>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <strong>No Articles</strong>
+        {% endif %}
+    </div>
 {% endblock %}
