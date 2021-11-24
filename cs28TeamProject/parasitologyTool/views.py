@@ -64,19 +64,23 @@ def add_article(request, parasite_id):
             article = form.save(commit=False)
             article.parasite = parasite
             article.save()
-            return redirect('/parasitologyTool/public_content')
+            return redirect(reverse("parasitologyTool:public_parasite_page", args=[parasite_id]))
         else:
             print(form.errors)
 
     return render(request, 'parasitologyTool/add_article.html', {'form':form})
 
 def public_parasite_page(request, parasite_id):
+    context_dict = {}
     try:
         parasite = Parasite.objects.get(id=parasite_id)
+        article_list = parasite.article_set.all();
     except Parasite.DoesNotExist:
         return not_found(request)
 
-    return render(request, 'parasitologyTool/public_parasite_page.html', {'parasite': parasite})
+    context_dict['parasite'] = parasite
+    context_dict['articles'] = article_list
+    return render(request, 'parasitologyTool/public_parasite_page.html', context=context_dict)
 
 
 def register(request):
