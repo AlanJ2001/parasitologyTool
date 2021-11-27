@@ -44,23 +44,55 @@ def public_content(request):
     context_dict = {}
 
     parasite_list = Parasite.objects.order_by('name')
+    top_viewed_parasite = parasite_list[0]
     article_list = Article.objects.order_by('views')
     context_dict['parasites'] = parasite_list
     context_dict['articles'] = article_list
+    context_dict['top_viewed_parasite'] = top_viewed_parasite
 
     return render(request, 'parasitologyTool/public_content.html', context=context_dict)
 
+<<<<<<< Updated upstream
 def add_article(request, parasite_id):
     try:
         parasite = Parasite.objects.get(id=parasite_id)
     except Parasite.DoesNotExist:
         return not_found(request)
     
+=======
+def show_parasite(request, parasite_name_slug):
+    context_dict = {}
+
+    try:
+        parasite = Parasite.objects.get(slug=parasite_name_slug)
+
+        articles = Article.objects.filter(parasite=parasite)
+
+        context_dict['articles'] = articles
+        context_dict['parasite'] = parasite
+
+    except Parasite.DoesNotExist:
+        context_dict['articles'] = None
+        context_dict['parasite'] = None
+
+    return render(request, 'parasitologyTool/parasite.html', context=context_dict)
+"""
+def add_article(request):
+    try:
+        parasite = Parasite.objects.order_by('name')
+    except Parasite.DoesNotExist:
+        parasite = None
+    
+    if parasite is None:
+        return redirect('/parasitologyTool/')
+
+>>>>>>> Stashed changes
     form = ArticleForm()
     if request.method == 'POST':
         form = ArticleForm(request.POST)
 
         if form.is_valid():
+<<<<<<< Updated upstream
             article = form.save(commit=False)
             article.parasite = parasite
             article.save()
@@ -82,6 +114,21 @@ def public_parasite_page(request, parasite_id):
     context_dict['articles'] = article_list
     return render(request, 'parasitologyTool/public_parasite_page.html', context=context_dict)
 
+=======
+            if parasite:
+                article = form.save(commit=False)
+                article.parasite = parasite
+                article.views = 0
+                article.save()
+
+                return redirect('parasitologyTool:public_content')
+        else:
+            print(form.errors)
+    
+    context_dict = {'form': form, 'parasite': parasite}
+    return render(request, 'parasitologyTool/add_article.html', context=context_dict)
+"""
+>>>>>>> Stashed changes
 
 def register(request):
     registered = False

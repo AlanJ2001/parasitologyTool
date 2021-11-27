@@ -1,0 +1,12 @@
+{% extends 'parasitologyTool/base.html' %}
+{% load static %}
+
+{% block title_block %}Parasites{% endblock %}
+
+{% block body_block %}
+<h1>The some article related to parasite.</h1>
+
+
+    <a href="{% url 'parasitologyTool:public_content' %}">Public Content</a><br />
+    <a href="{% url 'parasitologyTool:index' %}">Homepage</a><br />
+{% endblock %}

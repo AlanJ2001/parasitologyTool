@@ -5,45 +5,53 @@ from django.template.defaultfilters import slugify
 # Create your models here.
 
 class Post(models.Model):
-	title = models.CharField(max_length=100)
-	content = models.TextField()
-	#date_posted = models.DateTimeField(auto_now_add=True)
-	#author = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100)
+    content = models.TextField()
+    #date_posted = models.DateTimeField(auto_now_add=True)
+    #author = models.ForeignKey(User, on_delete=models.CASCADE)
 
-	def __str__(self):
-		return self.title
+    def __str__(self):
+        return self.title
 
 class UserProfile(models.Model):
 
-	user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
-	profile_picture = models.ImageField(upload_to="profile_pictures", default="profile_pictures/default_pic.png")
+    profile_picture = models.ImageField(upload_to="profile_pictures", default="profile_pictures/default_pic.png")
 
-	ROLE_CHOICES = [
-		('Clinician', 'Clinician'),
-		('Researcher', 'Researcher'),
-	]
+    ROLE_CHOICES = [
+        ('Clinician', 'Clinician'),
+        ('Researcher', 'Researcher'),
+    ]
 
-	#Role = models.CharField(max_length=50, choices=ROLE_CHOICES)
+    #Role = models.CharField(max_length=50, choices=ROLE_CHOICES)
 
-	@property
-	def username(self):
-		return self.user.username
-		
-	def __str__(self):
-		return self.user.username
+    @property
+    def username(self):
+        return self.user.username
+        
+    def __str__(self):
+        return self.user.username
 
 class Parasite(models.Model):
-	name = models.CharField(max_length=128, unique=True)
+    NAME_MAX_LENGTH = 128
 
-	def save(self, *args, **kwargs):
-		self.slug = slugify(self.name)
-		super(Parasite, self).save(*args, **kwargs)
+    name = models.CharField(max_length=NAME_MAX_LENGTH, unique=True)
+    views = models.IntegerField(default=0)
+    slug = models.SlugField(unique=True)
 
-	def __str__(self):
-		return self.name
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Parasite, self).save(*args, **kwargs)
+    
+    class Meta:
+        verbose_name_plural = 'Parasites'
+
+    def __str__(self):
+        return self.name
 
 class Article(models.Model):
+<<<<<<< Updated upstream
 	TITLE_MAX_LENGTH = 128
 	URL_MAX_LENGTH = 200
 	
@@ -54,6 +62,18 @@ class Article(models.Model):
 
 	def __str__(self):
 		return self.title
+=======
+    TITLE_MAX_LENGTH = 128
+    URL_MAX_LENGTH = 200
+    
+    parasite = models.ForeignKey(Parasite, on_delete=models.CASCADE)
+    title = models.CharField(max_length=TITLE_MAX_LENGTH)
+    url = models.URLField(max_length=URL_MAX_LENGTH)
+    views = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.title
+>>>>>>> Stashed changes
 
 
 

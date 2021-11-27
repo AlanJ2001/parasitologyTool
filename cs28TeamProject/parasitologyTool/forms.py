@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Post, UserProfile , Article
+from .models import Post, UserProfile , Article, Parasite
 
 class PostForm(forms.ModelForm):
     title = forms.CharField(max_length=128, help_text="Title")
@@ -44,3 +44,19 @@ class ArticleForm(forms.ModelForm):
             cleaned_data['url'] = url
 
         return cleaned_data
+
+class ParasiteForm(forms.ModelForm):
+    name = forms.CharField(max_length=Parasite.NAME_MAX_LENGTH,
+                           help_text="Please enter the parasite name.")
+    views = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
+    slug = forms.CharField(widget=forms.HiddenInput(), required=False)
+
+    class Meta:
+        model = Parasite
+        fields = ('name',)
+
+
+
+
+
+
