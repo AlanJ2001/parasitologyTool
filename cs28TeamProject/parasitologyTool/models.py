@@ -34,7 +34,11 @@ class UserProfile(models.Model):
 		return self.user.username
 
 class Parasite(models.Model):
-	name = models.CharField(max_length=128, unique=True)
+	NAME_MAX_LENGTH = 128
+	name = models.CharField(max_length=NAME_MAX_LENGTH, unique=True)
+	views = models.IntegerField(default=0)
+	picture = models.ImageField(null=True, upload_to='parasite_pic')
+
 
 	def save(self, *args, **kwargs):
 		self.slug = slugify(self.name)

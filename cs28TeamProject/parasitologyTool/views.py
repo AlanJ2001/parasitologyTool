@@ -3,12 +3,13 @@ import os
 from django.shortcuts import render
 from .models import Post, UserProfile, Parasite, Article
 from django.http import HttpResponse
-from .forms import PostForm, UserForm, UserProfileForm , ArticleForm
+from .forms import PostForm, UserForm, UserProfileForm , ArticleForm, ParasiteForm
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
+"""
 try:
     fname = os.path.join(os.path.dirname(__file__), "parasite_list.txt")
     with open(fname, 'r') as f:
@@ -17,6 +18,7 @@ try:
             c.save()
 except:
     raise FileExistsError("Can't find parasite_list.txt")
+"""
 
 def index(request):
     parasite_list = Parasite.objects.order_by('name')
@@ -44,11 +46,27 @@ def public_content(request):
     context_dict = {}
 
     parasite_list = Parasite.objects.order_by('name')
+    top_viewed_parasite = parasite_list[0]
     article_list = Article.objects.order_by('views')
     context_dict['parasites'] = parasite_list
     context_dict['articles'] = article_list
+    context_dict['top_viewed_parasite'] = top_viewed_parasite
 
     return render(request, 'parasitologyTool/public_content.html', context=context_dict)
+
+def add_parasite(request):
+    form = ParasiteForm()
+
+    if request.method == 'POST':
+        form = ParasiteForm(request.POST)
+
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect('/parasitologyTool/public_content')
+        else:
+            print(form.errors)
+
+    return render(request, 'parasitologyTool/add_parasite.html', {'form': form})
 
 def add_article(request, parasite_id):
     try:

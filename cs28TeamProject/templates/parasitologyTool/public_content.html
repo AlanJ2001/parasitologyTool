@@ -1,39 +1,86 @@
-{% extends 'parasitologyTool/base.html' %}
+{% extends 'parasitologyTool/base_public_content.html' %}
 {% load static %}
 
 {% block title_block %}Public Content{% endblock %}
 
+{% block sidebar_block %}
+    {% if parasites %}
+        <ul>
+        {% for p in parasites %}
+            <li><a href="{% url 'parasitologyTool:public_parasite_page' p.id %}">{{ p.name }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <strong>No parasites</strong>
+    {% endif %}
+{% endblock %}
+
+
 {% block body_block %}
-    <h1>Public Content</h1>
-    <div>
-        <a href="{% url 'parasitologyTool:index' %}">Homepage</a><br />
-        <img src="{% static 'images/Trypanosoma.jpg' %}" alt="Trypanosoma" />
-    </div>
-    
-    <h2>Categories of parasites</h2>
-    <div>
-        {% if parasites %}
-            <ul>
-                {% for p in parasites %}
-                <li><a href="{% url 'parasitologyTool:public_parasite_page' p.id %}">{{ p.name }}</a></li>
-                {% endfor %}
-            </ul>
-        {% else %}
+    <head>
+        <style>
+
+            .box {
+                margin: 50px auto;
+                border: gray;
+            }
+
+            .box-bg img{
+                width: 600px;
+                height: 100%;
+                border-radius: 10px;
+            }
+            
+            .box-text {
+                padding: 10px ;
+                background: silver;
+                border-radius: 10px;
+            }
+
+            .box-text h2{
+                width: 580px;
+                height: 34px;
+                font-size: 24px;
+                text-align: left;
+            }
+
+        </style>
+
+    <body>
+        <h1>Public Content</h1> 
+        <div>
+        {% if top_viewed_parasite %}      
+            <div class="box" style="position: relative;">
+                <div class="box-bg">
+                    <a href="{% url 'parasitologyTool:public_parasite_page' top_viewed_parasite.id %}">
+                    <img src="{% static 'images/Trypanosoma.jpg' %}" alt="Trypanosoma" />
+                    </a>
+                </div>
+                    
+                <div class="box-text" style="position:absolute; z-index: 2; top: 243px">
+                    <a href="{% url 'parasitologyTool:public_parasite_page' top_viewed_parasite.id %}"><h2>{{ top_viewed_parasite.name }}</h2></a>
+                </div>
+            </div>
+            {% else %}
             <strong>No parasites</strong>
-        {% endif %}
-    </div>
-    <br>
-    <h2>Top Viewed Article</h2>
-    <div>
-        {% if articles %}
-            <ul>
-                {% for article in articles %}
-                <li>{{ article.title }} - {{ article.parasite.name }}</li>
-                <a href="{{ article.url }}">{{ article.url }}</a>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <strong>No Articles</strong>
-        {% endif %}
-    </div>
+            {% endif %}
+        </div>
+        
+        <br>
+        <h2>Top Viewed Article</h2>
+        <div>
+            {% if articles %}
+                <ul>
+                    {% for article in articles %}
+                    <li>{{ article.title }} - {{ article.parasite.name }}</li>
+                        <a href="{{ article.url }}">{{ article.url }}</a>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <strong>No Articles</strong>
+            {% endif %}
+        </div>
+    </body>
+
+
 {% endblock %}
