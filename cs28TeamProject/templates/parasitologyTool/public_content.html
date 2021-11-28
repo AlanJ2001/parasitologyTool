@@ -5,60 +5,11 @@
 
 {% block body_block %}
     <h1>Public Content</h1>
-    <head>
-        <style>
-            *{
-                margin: 0px;
-                padding: 0px;
-            }
-
-            .box {
-                width: 150;
-                margin: 50px auto;
-                border: gray;
-            }
-
-            .box-bg img{
-                margin-left: 80px;
-                width: 600px;
-                height: 100%;
-                border-radius: 10px;
-            }
-            
-            .box-text {
-                margin-left: 80px;
-                padding: 10px ;
-                background: silver;
-                border-radius: 10px;
-            }
-
-            .box-text h2{
-                width: 580px;
-                height: 34px;
-                font-size: 24px;
-                text-align: left;
-            }
-
-        </style>
-    </head>
-    <a href="{% url 'parasitologyTool:index' %}">Homepage</a><br /> 
     <div>
-        {% if top_viewed_parasite %}      
-        <div class="box" style="position: relative;">
-            <div class="box-bg">
-                <a href="{% url 'parasitologyTool:show_parasite' top_viewed_parasite.slug %}">
-                <img src="{% static 'images/Trypanosoma.jpg' %}" alt="Trypanosoma" />
-                </a>
-            </div>
-            <div class="box-text" style="position:absolute; z-index: 2; top: 243px">
-                <a href="{% url 'parasitologyTool:show_parasite' top_viewed_parasite.slug %}"><h2>Trypanosoma</h2></a>
-            </div>
-        </div>
-        {% else %}
-            <strong>No parasites</strong>
-        {% endif %}
+        <a href="{% url 'parasitologyTool:index' %}">Homepage</a><br />
+        <img src="{% static 'images/Trypanosoma.jpg' %}" alt="Trypanosoma" />
     </div>
-    <br />
+    
     <h2>Categories of parasites</h2>
     <div>
         {% if parasites %}
