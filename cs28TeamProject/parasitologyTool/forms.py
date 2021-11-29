@@ -15,12 +15,20 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password')
+        fields = ('username', 'email', 'password',)
 
 class UserProfileForm(forms.ModelForm):
+    ROLE_CHOICES = [
+        ('clinician', 'Clinician'),
+        ('researcher', 'Researcher'),
+        ('public', 'Public'),
+    ]
+
+    role = forms.CharField(label='Account Type', widget=forms.Select(choices=ROLE_CHOICES))
+
     class Meta:
         model = UserProfile
-        fields = ('profile_picture',)
+        fields = ('profile_picture', 'role',)
 
 class ArticleForm(forms.ModelForm):
     title = forms.CharField(max_length=Article.TITLE_MAX_LENGTH, 
