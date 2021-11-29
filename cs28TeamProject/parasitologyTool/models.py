@@ -20,11 +20,12 @@ class UserProfile(models.Model):
 	profile_picture = models.ImageField(upload_to="profile_pictures", default="profile_pictures/default_pic.png")
 
 	ROLE_CHOICES = [
-		('Clinician', 'Clinician'),
-		('Researcher', 'Researcher'),
+		('clinician', 'Clinician'),
+		('researcher', 'Researcher'),
+		('public', 'Public'),
 	]
 
-	#Role = models.CharField(max_length=50, choices=ROLE_CHOICES)
+	role = models.CharField(max_length=50, choices=ROLE_CHOICES, default='Public')
 
 	@property
 	def username(self):
