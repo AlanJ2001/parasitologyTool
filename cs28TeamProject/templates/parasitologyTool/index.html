@@ -3,24 +3,138 @@
 
 {% block title_block %}Home{% endblock %}
 
-{% block body_block %}
-    <h1>Parasitology Tool</h1>
-    <div>
-        <a href="{% url 'parasitologyTool:about' %}">About</a><br />
-        <a href="{% url 'parasitologyTool:public_content' %}">Public Content</a><br />
-        <img src="{% static 'images/test_image.jpg' %}" alt="Parasitology book" />
-    </div>
+{% block sidebar_block %}
+    {% if parasites %}
+        <ul>
+        {% for p in parasites %}
+            <li><a href="{% url 'parasitologyTool:public_parasite_page' p.id %}">{{ p.name }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <strong>No parasites</strong>
+    {% endif %}
+{% endblock %}
 
+{% block body_block %}
+    <style type="text/css">
+        p.orange {
+            color: darkorange;
+        }
+        
+        p.link {
+            color: black;
+            font-size: 20px;
+        }
+        
+        .part {
+
+        }
+        .box {
+            width: 113px;
+            height: 43px;
+            background: gold;
+            border-radius: 10px;
+        }
+
+        .square {
+            width: 420px;
+            height: 240px;
+            background: gainsboro;
+            border-radius: 10px;
+        }
+
+        .large-box {
+            width: 180px;
+            height: 43px;
+            background: gold;
+            border-radius: 10px;
+        }
+    </style>
+    
+<div>
     <div>
-        {% if parasites %}
-            <ul>
-                {% for p in parasites %}
-                <li>{{ p.name }}</li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <strong>No parasites</strong>
-        {% endif %}
+    <table style="font-size: 14px; margin-top: 20px; margin-bottom: 40px;">
+        <tr>
+            <div>
+                <td valign="top">
+                    <strong style="font-size: 28px; ">Hey! This website is <p class="orange">Bananasites!</p></strong>
+                    <div>
+                        This is the description of the Bananasites. 
+                    </div>
+                    <br>
+                    <div class="box" style="position: relative;">
+                        <a href="{% url 'parasitologyTool:register' %}" style="position:absolute; z-index: 2; left: 18px; top: 5px;"><p class="link">Register</p></a>
+                    </div>
+                    <br>
+                    <div class="box" style="position: relative;">
+                        <a href="{% url 'parasitologyTool:login' %}" style="position:absolute; z-index: 2; left: 18px; top: 5px;"><p class="link">Login</p></a>
+                    </div>
+                </td>
+            </div>
+            <div>
+                <td ><img style="border-radius: 25px; width: 550px; height: 370px; margin-left: 150px; float: left;" src="{% static 'images/researcher.jpeg' %}" alt="Parasitology researcher" /></td>
+            </div>
+        </tr>
+    </table>
     </div>
+    <div>
+    <table style="margin-bottom: 40px;">
+       <tr>
+            <div style="position:relative;">
+            <td>
+                <img style="border-radius: 25px; width: 620px; height: 376px; margin: 10px; float: left;" src="{% static 'images/researcher1.jpeg' %}" alt="Parasitology researcher1" />
+            </td>
+            <td class="square" style="position:absolute; left: 570px; bottom:572px">
+                <div style="margin-top: 15px; margin-left:15px; font-size: 18px;">
+                    <strong>This is the description of Clinical and Researcher</strong>
+                </div>
+                <div class="box" style="position: relative; top: 90px; left: 30px;">
+                    <a href="{% url 'parasitologyTool:login' %}" style="position:absolute; z-index: 2; left: 18px; top: 5px;"><p class="link">Clinical</p></a>
+                </div>
+                <div class="box" style="position: relative; top: 47px; left: 220px">
+                    <a href="{% url 'parasitologyTool:login' %}" style="position:absolute; z-index: 2; left: 18px; top: 5px;"><p class="link">Research</p></a>
+                </div>
+            </td>
+            </div>
+       </tr> 
+    </table>
+    </div>
+    <div>
+    <table style="margin-bottom:0px">
+       <tr>
+            <div style="position: relative;">
+            <td>
+                <img style="border-radius: 25px; width: 620px; height: 376px; margin: 10px; float: left;" src="{% static 'images/Leishmania.jpg' %}" alt="Parasitology researcher1" />
+            </td>
+            <td class="square" style="position:absolute; left: 570px; bottom:136px">
+                <div style="margin-top: 15px; margin-left:15px; font-size: 18px;">
+                    <strong>This is the description of public content.</strong>
+                </div>
+                <div class="large-box" style="position: relative; top: 120px; left: 30px;">
+                    <a href="{% url 'parasitologyTool:public_content' %}" style="position:absolute; z-index: 2; left: 18px; top: 5px;"><p class="link">Public Content</p></a>
+                </div>
+                </div>
+            </td>
+            </div>
+       </tr> 
+    </table>
+    </div>
+</div>
     <a href="{% url 'parasitologyTool:add_post' %}">Add a Post</a>
 {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
