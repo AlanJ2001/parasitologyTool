@@ -11,17 +11,9 @@
 <body>
 	<h1>Add a Parasite</h1>
 	<div>
-		<form id="parasite_form" method="post" autocomplete="off">
+		<form id="parasite_form" method="post" enctype="multipart/form-data" action="{% url 'parasitologyTool:add_parasite' %}">
 			{% csrf_token %}  
-            {% for hidden in form.hidden_fields %}
-                {{ hidden }}
-            {% endfor %}
-
-            {% for field in form.visible_fields %}
-                {{ field.errors }}
-                {{ field.help_text }}
-                {{ field }}
-            {% endfor %}
+            {{ form.as_p }}
             <input type="submit" name="submit" value="Create Parasite"/>
         </form>
 	</div>

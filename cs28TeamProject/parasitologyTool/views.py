@@ -34,7 +34,7 @@ def public_content(request):
     context_dict = {}
 
     parasite_list = Parasite.objects.order_by('name')
-    top_viewed_parasite = parasite_list[0]
+    top_viewed_parasite = Parasite.objects.order_by('-views')[0]
     article_list = Article.objects.order_by('views')
     context_dict['parasites'] = parasite_list
     context_dict['articles'] = article_list
@@ -46,10 +46,13 @@ def add_parasite(request):
     form = ParasiteForm()
 
     if request.method == 'POST':
-        form = ParasiteForm(request.POST)
+        form = ParasiteForm(request.POST, request.FILES)
 
         if form.is_valid():
-            form.save(commit=True)
+            name = form.cleaned_data['name']
+            picture = form.cleaned_data['picture']
+            parasite = Parasite(name = name, picture=picture)
+            parasite.save()
             return redirect('/parasitologyTool/public_content')
         else:
             print(form.errors)
@@ -88,6 +91,20 @@ def public_parasite_page(request, parasite_id):
     context_dict['articles'] = article_list
     return render(request, 'parasitologyTool/public_parasite_page.html', context=context_dict)
 
+def goto_parasite(request):
+    if request.method == 'GET':
+        parasite_id = request.GET.get('parasite_id')
+
+        try:
+            selected_parasite = Parasite.objects.get(id=parasite_id)
+        except Parasite.DoesNotExist:
+            return redirect(reverse('parasitologyTool:public_content'))
+
+        selected_parasite.views = selected_parasite.views + 1
+        selected_parasite.save()
+
+        return redirect(reverse('parasitologyTool:public_parasite_page', args=[parasite_id]))
+    return redirect(reverse('parasitologyTool:public_content'))
 
 def register(request):
     registered = False

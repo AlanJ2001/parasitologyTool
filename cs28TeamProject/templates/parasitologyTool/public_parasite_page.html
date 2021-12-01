@@ -4,23 +4,61 @@
 {% block title_block %}parasite page{% endblock %}
 
 {% block body_block %}
-	<h1>Welcome to the {{ parasite.name }} page</h1>
-	<div>
-		<a href="/parasitologyTool/">Home</a><br />
-        <a href="{% url 'parasitologyTool:public_content' %}">Public Content</a><br />
-		<a href="{% url 'parasitologyTool:add_article' parasite.id %}">Post Article</a><br />
-	</div>
-	<h2>Top Viewed Article</h2>
-    <div>
-        {% if articles %}
-            <ul>
-                {% for article in articles %}
-                <li>{{ article.title }}</li>
-                <a href="{{ article.url }}">{{ article.url }}</a>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <strong>No Articles</strong>
-        {% endif %}
+<style type="text/css">
+    body{
+        background: #E5E5E5
+    }
+
+    .box{
+        width: 870px;
+        background: white;
+        padding: 20px;
+        border-radius: 20px;
+    }
+
+    .box-text{
+        width: 870px auto;
+        height: 60px;
+        background: silver;
+        border-radius: 10px;
+        margin-bottom: 15px;
+
+    }
+
+    .box-text h1 {
+        padding-top: 13px;
+        font-size: 30px;
+        padding-left: 6px;
+    }
+
+</style>
+
+	<div class="box">
+        <div class="box-text">
+            <h1>{{ parasite.name }}</h1>
+        </div>
+        <div>
+		    <img style="border-radius: 10px" src="{{ MEDIA_URL }}{{ parasite.picture }}"
+                width="500"
+                height="300" 
+                alt="Picture of parasite" />
+
+        </div>
+	    
+        <div>
+	        <h2>Top Viewed Article</h2>
+            <div>
+                {% if articles %}
+                <ul>
+                    {% for article in articles %}
+                    <li>{{ article.title }}</li>
+                    <a href="{{ article.url }}">{{ article.url }}</a>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                    <strong>No Articles</strong>
+                {% endif %}
+            </div>
+        </div>
     </div>
 {% endblock %}

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load parasitologyTool_template_tags %}
 <html lang="en">
     <head>
     <meta charset="utf-8">
@@ -52,9 +53,9 @@
                         <input type="search" id="search-input" 
                                class="form-control ds-input" placeholder="Search..." />
                     </div>
-                    <div class="sidebar-sticky" id="categories-listing">
+                    <div class="sidebar-sticky" id="parasite-listing">
                     {% block sidebar_block %}
-                        
+                        {% get_parasite_list parasite %}
                     {% endblock %}
                     </div>
                 </nav>
