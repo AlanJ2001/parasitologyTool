@@ -58,7 +58,7 @@ class ParasiteForm(forms.ModelForm):
     name = forms.CharField(max_length=Parasite.NAME_MAX_LENGTH,
                            help_text="Please enter the parasite name.")
     views = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
-    picture = forms.ImageField(label='Parasite-picture')
+    picture = forms.ImageField()
 
     class Meta:
         model = Parasite

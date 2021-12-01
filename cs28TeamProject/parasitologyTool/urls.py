@@ -14,5 +14,6 @@ urlpatterns = [
     path('public_content/', views.public_content, name='public_content'),
     path('public_content/<int:parasite_id>/add_article/',views.add_article, name='add_article'),
     path('public_content/<int:parasite_id>/', views.public_parasite_page, name = 'public_parasite_page'),
-    path('public_conten/add_parasite/', views.add_parasite, name='add_parasite'),
+    path('public_content/add_parasite/', views.add_parasite, name='add_parasite'),
+    path('public_content/goto/', views.goto_parasite, name='goto'),
 ]

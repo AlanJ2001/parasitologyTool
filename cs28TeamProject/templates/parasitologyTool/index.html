@@ -3,17 +3,6 @@
 
 {% block title_block %}Home{% endblock %}
 
-{% block sidebar_block %}
-    {% if parasites %}
-        <ul>
-        {% for p in parasites %}
-            <li><a href="{% url 'parasitologyTool:public_parasite_page' p.id %}">{{ p.name }}</a></li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <strong>No parasites</strong>
-    {% endif %}
-{% endblock %}
 
 {% block body_block %}
     <style type="text/css">

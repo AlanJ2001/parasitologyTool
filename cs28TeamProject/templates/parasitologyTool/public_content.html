@@ -3,82 +3,79 @@
 
 {% block title_block %}Public Content{% endblock %}
 
-{% block sidebar_block %}
-    {% if parasites %}
-        <ul>
-        {% for p in parasites %}
-            <li><a href="{% url 'parasitologyTool:public_parasite_page' p.id %}">{{ p.name }}</a></li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <strong>No parasites</strong>
-    {% endif %}
-{% endblock %}
 
 
 {% block body_block %}
-    <head>
-        <style>
+<style type="text/css">
+    body{
+        background: #E5E5E5;
+    }
 
-            .box {
-                margin: 50px auto;
-                border: gray;
-            }
+    .box {
+        width: 870px;
+        background: white;
+        padding: 20px;
+        border-radius: 20px;
+    }
 
-            .box-bg img{
-                width: 600px;
-                height: 100%;
-                border-radius: 10px;
-            }
+    .box-bg img{
+        width: 830px;
+        height: 470px;
+        border-radius: 20px;
+        border-bottom-right-radius: 0px;
+        border-bottom-left-radius: 0px;
+    }
             
-            .box-text {
-                padding: 10px ;
-                background: silver;
-                border-radius: 10px;
-            }
+    .box-text {
+        padding: 10px ;
+        background: silver;
+        border-radius: 20px;
+        border-top-left-radius: 0px;
+        border-top-right-radius: 0px;
+    }
 
-            .box-text h2{
-                width: 580px;
-                height: 34px;
-                font-size: 24px;
-                text-align: left;
-            }
+    .box-text h2{
+        width: 580px;
+        height: 34px;
+        font-size: 24px;
+        text-align: left;
+    }
 
-        </style>
+</style>
 
     <body>
-        <h1>Public Content</h1> 
-        <div>
-        {% if top_viewed_parasite %}      
-            <div class="box" style="position: relative;">
+        <h1>Public Content</h1>
+        <div class="box"> 
+            {% if top_viewed_parasite %}      
+            <div>
                 <div class="box-bg">
                     <a href="{% url 'parasitologyTool:public_parasite_page' top_viewed_parasite.id %}">
-                    <img src="{% static 'images/Trypanosoma.jpg' %}" alt="Trypanosoma" />
+                    <img src="{{ MEDIA_URL }}{{ top_viewed_parasite.picture }}"
+                         alt="Trypanosoma" />
                     </a>
                 </div>
                     
-                <div class="box-text" style="position:absolute; z-index: 2; top: 243px">
+                <div class="box-text">
                     <a href="{% url 'parasitologyTool:public_parasite_page' top_viewed_parasite.id %}"><h2>{{ top_viewed_parasite.name }}</h2></a>
                 </div>
             </div>
             {% else %}
             <strong>No parasites</strong>
             {% endif %}
-        </div>
-        
-        <br>
-        <h2>Top Viewed Article</h2>
-        <div>
-            {% if articles %}
-                <ul>
-                    {% for article in articles %}
-                    <li>{{ article.title }} - {{ article.parasite.name }}</li>
-                        <a href="{{ article.url }}">{{ article.url }}</a>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <strong>No Articles</strong>
-            {% endif %}
+            <br>
+            <div>
+            <h2>Top Viewed Article</h2>
+                {% if articles %}
+                    <ul>
+                        {% for article in articles %}
+                        <li>{{ article.title }} - {{ article.parasite.name }}</li>
+                            <a href="{{ article.url }}">{{ article.url }}</a>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <strong>No Articles</strong>
+                {% endif %}
+            </div>
         </div>
     </body>
 
