@@ -17,19 +17,6 @@ def index(request):
 def about(request):
     return render(request, 'parasitologyTool/about.html')
 
-def add_post(request):
-    form = PostForm()
-
-    if request.method == 'POST':
-        form = PostForm(request.POST)
-        if form.is_valid():
-            form.save(commit=True)
-            return redirect('/parasitologyTool/')
-    else:
-        print(form.errors)
-
-    return render(request, 'parasitologyTool/add_post.html', {'form':form})
-
 def public_content(request):
     context_dict = {}
 
@@ -78,6 +65,26 @@ def add_article(request, parasite_id):
             print(form.errors)
 
     return render(request, 'parasitologyTool/add_article.html', {'form':form})
+
+def add_post(request, parasite_id):
+    try:
+        parasite = Parasite.objects.get(id=parasite_id)
+    except Parasite.DoesNotExist:
+        return not_found(request)
+
+    form = PostForm()
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.parasite = parasite
+            post.save()
+            return redirect('/parasitologyTool/')
+    else:
+        print(form.errors)
+
+    return render(request, 'parasitologyTool/add_post.html', {'form':form})
 
 def public_parasite_page(request, parasite_id):
     context_dict = {}
@@ -155,3 +162,19 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect(reverse('parasitologyTool:index'))
+
+def clinical_portal(request):
+    context_dict = {}
+    parasite_list = Parasite.objects.order_by('name')
+    context_dict['parasite_list'] = parasite_list
+    return render(request, 'parasitologyTool/clinical_portal.html', context = context_dict)
+
+def clinical_parasite_page(request, parasite_id):
+    context_dict = {}
+    try:
+        parasite = Parasite.objects.get(id=parasite_id)
+    except Parasite.DoesNotExist:
+        return not_found(request)
+
+    context_dict['parasite'] = parasite
+    return render(request, 'parasitologyTool/clinical_parasite_page.html', context=context_dict)
