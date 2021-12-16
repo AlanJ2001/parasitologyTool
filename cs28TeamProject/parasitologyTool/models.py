@@ -4,15 +4,6 @@ from django.template.defaultfilters import slugify
 
 # Create your models here.
 
-class Post(models.Model):
-	title = models.CharField(max_length=100)
-	content = models.TextField()
-	#date_posted = models.DateTimeField(auto_now_add=True)
-	#author = models.ForeignKey(User, on_delete=models.CASCADE)
-
-	def __str__(self):
-		return self.title
-
 class UserProfile(models.Model):
 
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -47,6 +38,16 @@ class Parasite(models.Model):
 
 	def __str__(self):
 		return self.name
+
+class Post(models.Model):
+	title = models.CharField(max_length=100)
+	content = models.TextField()
+	parasite = models.ForeignKey(Parasite, on_delete=models.CASCADE, default=None)
+	#date_posted = models.DateTimeField(auto_now_add=True)
+	#author = models.ForeignKey(User, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return self.title
 
 class Article(models.Model):
 	TITLE_MAX_LENGTH = 128

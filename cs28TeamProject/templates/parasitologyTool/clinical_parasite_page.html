@@ -1,0 +1,14 @@
+{% extends 'parasitologyTool/base.html' %}
+{% load static %}
+
+{% block title_block %}clinical parasite page{% endblock %}
+
+{% block body_block %}
+		<h1>Welcome to the Clinical Parasite Page for {{ parasite.name }}</h1>
+		<div>
+			<a href="/parasitologyTool/">Home</a><br />
+		</div>
+		<div>
+			<a href="{% url 'parasitologyTool:add_post' parasite.id %}">add post</a>
+		</div>
+{% endblock %}
