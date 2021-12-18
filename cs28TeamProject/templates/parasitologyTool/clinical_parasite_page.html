@@ -4,11 +4,17 @@
 {% block title_block %}clinical parasite page{% endblock %}
 
 {% block body_block %}
-		<h1>Welcome to the Clinical Parasite Page for {{ parasite.name }}</h1>
-		<div>
-			<a href="/parasitologyTool/">Home</a><br />
-		</div>
-		<div>
-			<a href="{% url 'parasitologyTool:add_post' parasite.id %}">add post</a>
-		</div>
+	<link rel="stylesheet" href="{% static 'css/posts.css' %}">
+	<h1>Welcome to the Clinical Parasite Page for {{ parasite.name }}</h1>
+	<div>
+		<a href="{% url 'parasitologyTool:add_post' parasite.id %}">add post</a>
+	</div>
+	<div>
+		{% for post in posts %}
+			<div id="post">
+				<h3>{{ post.title }}</h3>
+				<p>{{ post.content }}</p>
+			</div>
+		{% endfor %}
+	</div>
 {% endblock %}
