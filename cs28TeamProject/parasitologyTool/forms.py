@@ -5,10 +5,11 @@ from .models import Post, UserProfile , Article, Parasite
 class PostForm(forms.ModelForm):
     title = forms.CharField(max_length=128, help_text="Title")
     content = forms.CharField(help_text="Data")
+    image = forms.ImageField(help_text="image")
 
     class Meta:
         model = Post
-        fields = ('title', 'content',)
+        fields = ('title', 'content', 'image')
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
