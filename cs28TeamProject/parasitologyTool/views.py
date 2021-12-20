@@ -6,7 +6,9 @@ from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-
+from django.contrib.auth.models import User
+from django.views import View
+from django.utils.decorators import method_decorator
 
 def index(request):
     parasite_list = Parasite.objects.order_by('name')
@@ -112,6 +114,54 @@ def goto_parasite(request):
 
         return redirect(reverse('parasitologyTool:public_parasite_page', args=[parasite_id]))
     return redirect(reverse('parasitologyTool:public_content'))
+
+class ProfileView(View):
+    def get_user_details(self, username):
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            return None
+
+        user_profile = UserProfile.objects.get_or_create(user=user)[0]
+        form = UserProfileForm({'picture': user_profile.profile_picture,
+                                'role': user_profile.role})
+
+        return (user, user_profile, form)
+
+    @method_decorator(login_required)
+    def get(self, request, username):
+        try:
+            (user, user_profile, form) = self.get_user_details(username)
+        except TypeError:
+            return redirect(reverse('parasitologyTool:index'))
+
+        context_dict = {'user_profile': user_profile,
+                        'selected_user': user,
+                        'form': form}
+
+        return render(request, 'parasitologyTool/profile.html', context_dict)
+
+    @method_decorator(login_required)
+    def post(self, request, username):
+        try:
+            (user, user_profile, form) = self.get_user_details(username)
+        except TypeError:
+            return redirect(reverse('parasitologyTool:index'))
+
+        form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
+
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect('parasitologyTool:profile', user.username)
+        else:
+            print(form.errors)
+
+        context_dict = {'user_profile': user_profile,
+                        'selected_user': user,
+                        'form': form}
+
+        return render(request, 'parasitologyTool/profile.html', context_dict)
+
 
 def register(request):
     registered = False
