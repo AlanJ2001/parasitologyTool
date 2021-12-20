@@ -82,9 +82,9 @@ def add_post(request, parasite_id):
             post = form.save(commit=False)
             post.parasite = parasite
             post.save()
-            return redirect('/parasitologyTool/')
-    else:
-        print(form.errors)
+            return redirect(reverse("parasitologyTool:clinical_parasite_page", args=[parasite_id]))
+        else:
+            print(form.errors)
 
     return render(request, 'parasitologyTool/add_post.html', {'form':form})
 

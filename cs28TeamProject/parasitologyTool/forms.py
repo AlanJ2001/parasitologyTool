@@ -1,11 +1,13 @@
 from django import forms
 from django.contrib.auth.models import User
 from .models import Post, UserProfile , Article, Parasite
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 
 class PostForm(forms.ModelForm):
-    title = forms.CharField(max_length=128, help_text="Title")
-    content = forms.CharField(help_text="Data")
-    image = forms.ImageField(help_text="image")
+    title = forms.CharField(max_length=128, label="Title")
+    content = forms.CharField(label="Content")
+    image = forms.ImageField(label="Image", required=False,)
 
     class Meta:
         model = Post
