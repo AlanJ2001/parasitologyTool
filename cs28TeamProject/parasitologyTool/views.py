@@ -223,7 +223,7 @@ def clinical_parasite_page(request, parasite_id):
     context_dict = {}
     try:
         parasite = Parasite.objects.get(id=parasite_id)
-        posts = parasite.post_set.all();
+        posts = parasite.post_set.all()
     except Parasite.DoesNotExist:
         return not_found(request)
 
