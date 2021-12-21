@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 
 class PostForm(forms.ModelForm):
     title = forms.CharField(max_length=128, label="Title")
-    content = forms.CharField(label="Content")
+    content = forms.CharField(widget=forms.Textarea)
     image = forms.ImageField(label="Image", required=False,)
 
     class Meta:
