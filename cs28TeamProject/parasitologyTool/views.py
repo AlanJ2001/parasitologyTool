@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import Post, UserProfile, Parasite, Article
 from django.http import HttpResponse
-from .forms import PostForm, UserForm, UserProfileForm , ArticleForm, ParasiteForm
+from .forms import PostForm, UserForm, UserProfileForm , ArticleForm, ParasiteForm, ResearchPostForm
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
@@ -219,6 +219,12 @@ def clinical_portal(request):
     context_dict['parasite_list'] = parasite_list
     return render(request, 'parasitologyTool/clinical_portal.html', context = context_dict)
 
+def research_portal(request):
+    context_dict = {}
+    parasite_list = Parasite.objects.order_by('name')
+    context_dict['parasite_list'] = parasite_list
+    return render(request, 'parasitologyTool/research_portal.html', context = context_dict)
+
 def clinical_parasite_page(request, parasite_id):
     context_dict = {}
     try:
@@ -230,3 +236,35 @@ def clinical_parasite_page(request, parasite_id):
     context_dict['parasite'] = parasite
     context_dict['posts'] = posts
     return render(request, 'parasitologyTool/clinical_parasite_page.html', context=context_dict)
+
+def research_parasite_page(request, parasite_id):
+    context_dict = {}
+    try:
+        parasite = Parasite.objects.get(id=parasite_id)
+        research_posts = parasite.researchpost_set.all()
+    except Parasite.DoesNotExist:
+        return not_found(request)
+
+    context_dict['parasite'] = parasite
+    context_dict['research_posts'] = research_posts
+    return render(request, 'parasitologyTool/research_parasite_page.html', context=context_dict)
+
+def add_research_post(request, parasite_id):
+    try:
+        parasite = Parasite.objects.get(id=parasite_id)
+    except Parasite.DoesNotExist:
+        return not_found(request)
+
+    form = ResearchPostForm()
+    if request.method == 'POST':
+        form = ResearchPostForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.parasite = parasite
+            post.save()
+            return redirect(reverse("parasitologyTool:research_parasite_page", args=[parasite_id]))
+        else:
+            print(form.errors)
+
+    return render(request, 'parasitologyTool/add_research_post.html', {'form':form})

@@ -62,6 +62,16 @@ class Article(models.Model):
 	def __str__(self):
 		return self.title
 
+class ResearchPost(models.Model):
+	title = models.CharField(max_length=100)
+	content = models.TextField()
+	parasite = models.ForeignKey(Parasite, on_delete=models.CASCADE, default=None)
+	image = models.ImageField(upload_to='clinical_pictures', default=None)
+	file = models.FileField(upload_to='files', default=None)
+
+	def __str__(self):
+		return self.title
+
 
 
 
