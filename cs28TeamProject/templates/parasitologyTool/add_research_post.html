@@ -1,0 +1,16 @@
+{% extends 'parasitologyTool/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title_block %}Home{% endblock %}
+
+{% block body_block %}
+    <h1>Add a Post</h1>
+    <div>
+        <form id="category_form" method="post" autocomplete="off" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button class="btn btn-outline-info" type="submit">Create Post</button>
+        </form>
+    </div>
+{% endblock %}

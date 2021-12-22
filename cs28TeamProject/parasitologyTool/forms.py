@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Post, UserProfile , Article, Parasite
+from .models import Post, UserProfile , Article, Parasite, ResearchPost
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
@@ -12,6 +12,16 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ('title', 'content', 'image')
+
+class ResearchPostForm(forms.ModelForm):
+    title = forms.CharField(max_length=128, label="Title")
+    content = forms.CharField(widget=forms.Textarea)
+    image = forms.ImageField(label="Image", required=False,)
+    file = forms.FileField(label="File", required=False)
+
+    class Meta:
+        model = ResearchPost
+        fields = ('title', 'content', 'image', 'file')
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
