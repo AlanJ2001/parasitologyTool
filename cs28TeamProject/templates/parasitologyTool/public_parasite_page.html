@@ -10,14 +10,14 @@
     }
 
     .box{
-        width: 870px;
+        width: 970px;
         background: white;
         padding: 20px;
         border-radius: 20px;
     }
 
     .box-text{
-        width: 870px auto;
+        width: 970px auto;
         height: 60px;
         background: silver;
         border-radius: 10px;
@@ -28,7 +28,24 @@
     .box-text h1 {
         padding-top: 13px;
         font-size: 30px;
-        padding-left: 6px;
+        padding-left: 7px;
+    }
+
+    .p-box {
+        width:970px auto;
+        border-bottom:solid 1px gray;
+        font-size: 20px;
+    }
+
+    .p-box img {
+        width: 500px;
+        height: 300px;
+        border-radius: 10px;
+        margin-right: 10px;
+    }
+
+    .a-box {
+        padding-top: 10px;
     }
 
 </style>
@@ -37,16 +54,25 @@
         <div class="box-text">
             <h1>{{ parasite.name }}</h1>
         </div>
-        <div>
-		    <img style="border-radius: 10px" src="{{ MEDIA_URL }}{{ parasite.picture }}"
-                width="500"
-                height="300" 
-                alt="Picture of parasite" />
+        <div class="p-box">
+            <div>
+		        <img src="{{ MEDIA_URL }}{{ parasite.picture }}"  
+                    align="left" 
+                    alt="Picture of parasite" />
+            </div>
 
+            <p><strong>Trypanosomesare</strong> responsible for causing 
+                 Human African Trypanosomiasis (HAT), also 
+                 known as sleeping sickness. Trypanosomes are 
+                 transmitted to humans through infected tsetse
+                 flies, which breed in warm and humid areas 
+                 across sub-Saharan Africa.  Tsetse flies also 
+                 come into contact with cattle and wild animals 
+                 which all act as reservoirs for the Trypanosoma 
+                 parasites. The WHO estimates that 60 million people are at risk in 36 Sub-Saharan countries.The infection attacks the central nervous system causing severe neurological disorders, and is fatal without treatment. More than 95 percent of reported cases are caused by the parasite Trypanosoma brucei gambiense, which is found in western and central Africa.  Animal African Trypanosomiasis (AAT) affects livestock in this region and is a huge impediment to economic development.</p>
         </div>
 	    
-        <div>
-            <a href="{% url 'parasitologyTool:add_article' parasite.id %}">add article</a>
+        <div class="a-box">
 	        <h2>Top Viewed Article</h2>
             <div>
                 {% if articles %}
@@ -61,5 +87,7 @@
                 {% endif %}
             </div>
         </div>
+
+        <a href="{% url 'parasitologyTool:add_article' parasite.id %}">add article</a>
     </div>
 {% endblock %}
