@@ -58,6 +58,7 @@ class Article(models.Model):
 	title = models.CharField(max_length=TITLE_MAX_LENGTH, unique=True)
 	url = models.URLField(max_length=URL_MAX_LENGTH)
 	views = models.IntegerField(default=0)
+	picture = models.ImageField(upload_to='article_pic')
 
 	def __str__(self):
 		return self.title

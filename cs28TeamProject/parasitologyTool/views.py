@@ -56,17 +56,19 @@ def add_article(request, parasite_id):
     
     form = ArticleForm()
     if request.method == 'POST':
-        form = ArticleForm(request.POST)
+        form = ArticleForm(request.POST, request.FILES)
 
         if form.is_valid():
             article = form.save(commit=False)
             article.parasite = parasite
             article.save()
-            return redirect(reverse("parasitologyTool:public_parasite_page", args=[parasite_id]))
+            return redirect(reverse("parasitologyTool:public_parasite_page", kwargs={'parasite_id':
+                                                                                     parasite_id}))
         else:
             print(form.errors)
-
-    return render(request, 'parasitologyTool/add_article.html', {'form':form})
+    
+    context_dict = {'form':form, 'parasite':parasite}
+    return render(request, 'parasitologyTool/add_article.html', context=context_dict)
 
 def add_post(request, parasite_id):
     try:
