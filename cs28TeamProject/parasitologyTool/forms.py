@@ -49,6 +49,7 @@ class ArticleForm(forms.ModelForm):
     url = forms.URLField(max_length=Article.URL_MAX_LENGTH,
                          help_text="Please enter the URL of the Article.")
     views = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
+    picture = forms.ImageField()
 
     class Meta:
         model = Article
@@ -60,8 +61,8 @@ class ArticleForm(forms.ModelForm):
 
         # If url is not empty and doesn't start with 'http://',
         # then prepend 'http://'.
-        if url and not url.startswith('http://'):
-            url = f'http://{url}'
+        if url and not url.startswith('https://'):
+            url = f'https://{url}'
             cleaned_data['url'] = url
 
         return cleaned_data
