@@ -6,7 +6,7 @@ django.setup()
 from parasitologyTool.models import Parasite
 
 def populate():
-    parasites = ['parasite1', 'parasite2', 'parasite3']
+    parasites = ['Trypanosoma', 'Plasmodium', 'Leishmania', 'Toxoplasma', 'Helminths']
     for p in parasites:
         c = add_parasite(p)
 

@@ -30,6 +30,7 @@ class Parasite(models.Model):
 	name = models.CharField(max_length=NAME_MAX_LENGTH, unique=True)
 	views = models.IntegerField(default=0)
 	picture = models.ImageField(upload_to='parasite_pic')
+	intro = models.CharField(max_length=3000)
 
 
 	def save(self, *args, **kwargs):
