@@ -100,6 +100,7 @@ def public_parasite_page(request, parasite_id):
 
     context_dict['parasite'] = parasite
     context_dict['articles'] = article_list
+    context_dict['intro'] = parasite.intro
     return render(request, 'parasitologyTool/public_parasite_page.html', context=context_dict)
 
 def goto_parasite(request):

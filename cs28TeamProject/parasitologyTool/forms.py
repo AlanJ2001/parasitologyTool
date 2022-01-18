@@ -73,7 +73,8 @@ class ParasiteForm(forms.ModelForm):
                            help_text="Please enter the parasite name.")
     views = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
     picture = forms.ImageField()
+    intro = forms.CharField()
 
     class Meta:
         model = Parasite
-        fields = ('name', 'picture','views')
+        fields = ('name', 'picture','views','intro')
