@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Post, UserProfile, Parasite, Article
+from .models import *
 from django.http import HttpResponse
 from .forms import PostForm, UserForm, UserProfileForm , ArticleForm, ParasiteForm, ResearchPostForm
 from django.shortcuts import redirect
@@ -260,12 +260,17 @@ def add_research_post(request, parasite_id):
 
     form = ResearchPostForm()
     if request.method == 'POST':
-        form = ResearchPostForm(request.POST, request.FILES)
-
+        form = ResearchPostForm(request.POST)
+        images = request.FILES.getlist('images')
+        files = request.FILES.getlist('files')
         if form.is_valid():
             post = form.save(commit=False)
             post.parasite = parasite
             post.save()
+            for image in images:
+                ResearchImage.objects.create(research_post=post, image=image,)
+            for file in files:
+                ResearchFile.objects.create(research_post=post, file=file,)
             return redirect(reverse("parasitologyTool:research_parasite_page", args=[parasite_id]))
         else:
             print(form.errors)

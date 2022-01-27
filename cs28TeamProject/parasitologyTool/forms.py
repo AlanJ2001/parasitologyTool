@@ -16,12 +16,12 @@ class PostForm(forms.ModelForm):
 class ResearchPostForm(forms.ModelForm):
     title = forms.CharField(max_length=128, label="Title")
     content = forms.CharField(widget=forms.Textarea)
-    image = forms.ImageField(label="Image", required=False,)
-    file = forms.FileField(label="File", required=False)
+    images = forms.ImageField(label="Images", required=False,widget=forms.ClearableFileInput(attrs={'multiple': True}))
+    files = forms.FileField(label="Files", required=False, widget=forms.ClearableFileInput(attrs={'multiple': True}))
 
     class Meta:
         model = ResearchPost
-        fields = ('title', 'content', 'image', 'file')
+        fields = ('title', 'content', 'images', 'files')
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
