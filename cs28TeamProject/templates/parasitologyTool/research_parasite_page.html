@@ -14,12 +14,16 @@
 			<div id="post">
 				<h3>{{ post.title }}</h3>
 				<p>{{ post.content|linebreaks|urlize }}</p>
-				{% if post.image %}
-					<a href="{{ MEDIA_URL }}{{ post.image }}"><img src="{{ MEDIA_URL }}{{ post.image }}" width="300px"></a>
+				{% if post.images %}
+					{% for image in post.images %}
+						<a href="{{ MEDIA_URL }}{{ image.image }}"><img src="{{ MEDIA_URL }}{{ image.image }}" width="300px"></a>
+					{% endfor %}
 				{% endif %}
 				<br>
-				{% if post.file %}
-					<a href="{{ MEDIA_URL }}{{ post.file.name }}">{{post.file.name}}</a>
+				{% if post.files %}
+					{% for file in post.files %}
+						<a href="{{ MEDIA_URL }}{{ file.file }}">{{ file.file.name }}</a>
+					{% endfor %}
 				{% endif %}
 			</div>
 			&nbsp;

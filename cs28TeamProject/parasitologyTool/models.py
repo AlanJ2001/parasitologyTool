@@ -68,13 +68,28 @@ class ResearchPost(models.Model):
 	title = models.CharField(max_length=100)
 	content = models.TextField()
 	parasite = models.ForeignKey(Parasite, on_delete=models.CASCADE, default=None)
-	image = models.ImageField(upload_to='clinical_pictures', default=None)
-	file = models.FileField(upload_to='files', default=None)
+	#image = models.ImageField(upload_to='clinical_pictures', default=None)
+	#file = models.FileField(upload_to='files', default=None)
+
+	#returns a list of images associated with this post
+	@property
+	def images(self):
+		return self.researchimage_set.all()
+
+	#returns a list of files associated with this post
+	def files(self):
+		return self.researchfile_set.all()
 
 	def __str__(self):
 		return self.title
 
+class ResearchImage(models.Model):
+	research_post = models.ForeignKey(ResearchPost, on_delete=models.CASCADE, default=None)
+	image = models.ImageField(upload_to='clinical_pictures', default=None)
 
+class ResearchFile(models.Model):
+	research_post = models.ForeignKey(ResearchPost, on_delete=models.CASCADE, default=None)
+	file = models.FileField(upload_to='files', default=None)
 
 
 
