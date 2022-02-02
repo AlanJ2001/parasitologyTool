@@ -91,6 +91,13 @@ class ResearchFile(models.Model):
 	research_post = models.ForeignKey(ResearchPost, on_delete=models.CASCADE, default=None)
 	file = models.FileField(upload_to='files', default=None)
 
+class Comment(models.Model):
+	comment_text = models.TextField()
+	post = models.ForeignKey(ResearchPost, on_delete = models.CASCADE)
+
+	def __str__(self):
+		return self.comment_text
+
 
 
 
