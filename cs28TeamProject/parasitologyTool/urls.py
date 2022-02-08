@@ -23,4 +23,5 @@ urlpatterns = [
     path('research_portal/<int:parasite_id>/', views.research_parasite_page, name = 'research_parasite_page'),
     path('profile/<username>/', views.ProfileView.as_view(), name='profile'),
     path('research_portal/<int:parasite_id>/add_post/',views.add_research_post, name='add_research_post'),
+    path('research_portal/<int:parasite_id>/<int:post_id>',views.research_post_page, name='research_post_page'),
 ]

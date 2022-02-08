@@ -1,0 +1,34 @@
+{% extends 'parasitologyTool/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title_block %}Research Post Page{% endblock %}
+
+{% block body_block %}
+	<div id="post">
+		<h3>{{ post.title }}</h3>
+		<p>{{ post.content|linebreaks|urlize }}</p>
+		{% if post.images %}
+			{% for image in post.images %}
+				<a href="{{ MEDIA_URL }}{{ image.image }}"><img src="{{ MEDIA_URL }}{{ image.image }}" width="300px"></a>
+			{% endfor %}
+		{% endif %}
+		<br>
+		{% if post.files %}
+			{% for file in post.files %}
+				<a href="{{ MEDIA_URL }}{{ file.file }}">{{ file.file.name }}</a>
+			{% endfor %}
+		{% endif %}
+		</div>
+		&nbsp;
+		<h3>Comments ...</h3>
+		<form id="comment_form" method="post" autocomplete="off" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ comment_form | crispy }}
+            <button class="btn btn-outline-info" type="submit">add comment</button>
+        </form>
+        &nbsp;
+        {% for comment in post.comments %}
+        	<p>{{ comment }}</p>
+        {% endfor %}
+{% endblock %}

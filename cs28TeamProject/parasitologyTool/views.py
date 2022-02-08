@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import *
 from django.http import HttpResponse
-from .forms import PostForm, UserForm, UserProfileForm , ArticleForm, ParasiteForm, ResearchPostForm
+from .forms import *
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
@@ -276,3 +276,26 @@ def add_research_post(request, parasite_id):
             print(form.errors)
 
     return render(request, 'parasitologyTool/add_research_post.html', {'form':form})
+
+def research_post_page(request, parasite_id, post_id):
+    try:
+        post = ResearchPost.objects.get(id=post_id)
+    except ResearchPost.DoesNotExist:
+        return not_found(request)
+        
+    context_dict = {}
+    context_dict['post'] = post
+
+    comment_form = CommentForm()
+    if request.method == 'POST':
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.post = ResearchPost.objects.get(id=post_id)
+            comment.save()
+            return redirect(reverse("parasitologyTool:research_post_page", args=[parasite_id, post_id]))
+        else:
+            print(comment_form.errors)
+
+    context_dict['comment_form'] = comment_form
+    return render(request, 'parasitologyTool/research_post_page.html', context=context_dict)
