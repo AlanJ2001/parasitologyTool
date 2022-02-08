@@ -80,6 +80,9 @@ class ResearchPost(models.Model):
 	def files(self):
 		return self.researchfile_set.all()
 
+	def comments(self):
+		return reversed(self.comment_set.all())
+
 	def __str__(self):
 		return self.title
 

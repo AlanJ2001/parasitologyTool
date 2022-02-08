@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Post, UserProfile , Article, Parasite, ResearchPost
+from .models import *
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
@@ -78,3 +78,10 @@ class ParasiteForm(forms.ModelForm):
     class Meta:
         model = Parasite
         fields = ('name', 'picture','views','intro')
+
+class CommentForm(forms.ModelForm):
+    comment_text = forms.CharField(required = False, label='add comment here')
+
+    class Meta:
+        model = Comment
+        fields = ('comment_text', )
