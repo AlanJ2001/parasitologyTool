@@ -1,0 +1,30 @@
+/* css for index */
+p.orange {
+    color: darkorange;
+}
+                
+p.link {
+    color: black;
+    font-size: 20px;
+}
+                
+.box {
+    width: 113px;
+    height: 43px;
+    background-color: #fcda5e;
+    border-radius: 10px;
+}
+
+.square {
+    width: 420px;
+    height: 240px;
+    background: silver;
+    border-radius: 10px;
+}
+
+.large-box {
+    width: 180px;
+    height: 43px;
+    background-color: #fcda5e;
+    border-radius: 10px;
+}
