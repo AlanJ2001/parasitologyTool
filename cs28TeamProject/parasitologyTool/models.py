@@ -48,6 +48,10 @@ class Post(models.Model):
 	#date_posted = models.DateTimeField(auto_now_add=True)
 	#author = models.ForeignKey(User, on_delete=models.CASCADE)
 
+	@property
+	def comments(self):
+		return self.comment_set.all()
+
 	def __str__(self):
 		return self.title
 
@@ -76,12 +80,14 @@ class ResearchPost(models.Model):
 	def images(self):
 		return self.researchimage_set.all()
 
+	@property
 	#returns a list of files associated with this post
 	def files(self):
 		return self.researchfile_set.all()
 
+	@property
 	def comments(self):
-		return reversed(self.comment_set.all())
+		return self.comment_set.all()
 
 	def __str__(self):
 		return self.title
@@ -96,7 +102,8 @@ class ResearchFile(models.Model):
 
 class Comment(models.Model):
 	comment_text = models.TextField()
-	post = models.ForeignKey(ResearchPost, on_delete = models.CASCADE)
+	research_post = models.ForeignKey(ResearchPost, on_delete = models.CASCADE, default=None, blank=True, null=True)
+	clinical_post = models.ForeignKey(Post, on_delete=models.CASCADE, default=None, blank=True, null=True)
 
 	def __str__(self):
 		return self.comment_text

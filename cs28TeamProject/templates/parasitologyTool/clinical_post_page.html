@@ -1,0 +1,26 @@
+{% extends 'parasitologyTool/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title_block %}Clinical Post Page{% endblock %}
+
+{% block body_block %}
+		<div id="post">
+			<h3>{{ post.title }}</h3>
+			<p>{{ post.content|linebreaks|urlize }}</p>
+			{% if post.image %}
+				<a href="{{ MEDIA_URL }}{{ post.image }}"><img src="{{ MEDIA_URL }}{{ post.image }}" width="300px"></a>
+			{% endif %}
+		</div>
+		&nbsp;
+		<h3>Comments ...</h3>
+		<form id="comment_form" method="post" autocomplete="off" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ comment_form | crispy }}
+            <button class="btn btn-outline-info" type="submit">add comment</button>
+        </form>
+        &nbsp;
+        {% for comment in post.comments %}
+        	<p>{{ comment }}</p>
+        {% endfor %}
+{% endblock %}
