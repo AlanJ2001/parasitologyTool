@@ -4,30 +4,70 @@
 {% block title_block %}clinical parasite page{% endblock %}
 
 {% block body_block %}
-	<link rel="stylesheet" href="{% static 'css/posts.css' %}">
-	<h1>Welcome to the Research Parasite Page for {{ parasite.name }}</h1>
-	<div>
-		<a href="{% url 'parasitologyTool:add_research_post' parasite.id %}">add post</a>
+	<!--<link rel="stylesheet" href="{% static 'css/posts.css' %}"> -->
+<style type="text/css">
+	body {
+		background: #E5E5E5;
+	}
+
+	.top-text {
+        background: white; border-radius: 5px; padding: 15px; margin-bottom: 10px; font-size: 20px; width: 810px;
+	}
+    
+    .a-box {
+        background: white; padding: 20px;  border-bottom: solid 0.5px gray;   border-radius: 5px;  width: 810px; margin-bottom: -10px;
+    }
+
+    .a-s-box-author img {
+        float: initial; width: 50px; height: 50px; border-radius: 50%;
+    }
+
+    .a-s-box-author {
+        font-size: 13px;  padding-bottom: 10px; border-bottom: solid 0.5px gray;
+    }
+
+    .a-s-box-context {
+        padding-left: 50px;
+    }
+
+    .a-s-box-context img {
+        border-radius: 15px; width: 180px; height: 180px; margin-right: 10px;
+    }
+
+</style>
+    <div class="top-text">
+	    <Strong>Welcome to the Research Parasite Page for {{ parasite.name }}</Strong>
 	</div>
 	<div>
 		{% for post in research_posts %}
-			<div id="post">
-				<h3>{{ post.title }}</h3>
-				<p>{{ post.content|linebreaks|urlize }}</p>
-				{% if post.images %}
-					{% for image in post.images %}
-						<a href="{{ MEDIA_URL }}{{ image.image }}"><img src="{{ MEDIA_URL }}{{ image.image }}" width="300px"></a>
-					{% endfor %}
-				{% endif %}
-				<br>
-				{% if post.files %}
-					{% for file in post.files %}
-						<a href="{{ MEDIA_URL }}{{ file.file }}">{{ file.file.name }}</a>
-					{% endfor %}
-				{% endif %}
-				<a href="{% url 'parasitologyTool:research_post_page' parasite.id post.id %}">comments</a>
+			<div class="a-box">
+				<div class="a-s-box-author">
+                    <img src="{% static 'images/researcher.jpeg' %}"
+                                alt="picture of article" />Author name
+                </div>
+
+                <div class="a-s-box-context">
+				    <p>{{ post.content|linebreaks|urlize }}</p>
+					{% if post.images %}
+						{% for image in post.images %}
+							<img src="{{ MEDIA_URL }}{{ image.image }}" width="300px"></a>
+						{% endfor %}
+					{% endif %}
+					<br>
+				    Reference Files List:
+				    <br>
+					{% if post.files %}
+						{% for file in post.files %}
+							<a href="{{ MEDIA_URL }}{{ file.file }}">{{ file.file.name }}</a>
+						{% endfor %}
+					{% endif %}
+					<a href="{% url 'parasitologyTool:research_post_page' parasite.id post.id %}">comments</a>
+			    </div>
 			</div>
 			&nbsp;
 		{% endfor %}
+	</div>
+	<div>
+		<a href="{% url 'parasitologyTool:add_research_post' parasite.id %}">add post</a>
 	</div>
 {% endblock %}
