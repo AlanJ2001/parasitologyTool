@@ -34,7 +34,9 @@
                         <li class="nav-item "><a class="nav-link" href="{% url 'parasitologyTool:about' %}">About</a></li>
                         <li class="nav-item "><a class="nav-link" href="{% url 'parasitologyTool:public_content' %}">Public Content</a></li>
                         {% if user.is_authenticated %}
-                         <li class="nav-item"><a class="nav-link" href="{% url 'parasitologyTool:profile' user.username %}">Profile</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'parasitologyTool:clinical_portal' %}">Clinical</a> 
+                        <li class="nav-item"><a class="nav-link" href="{% url 'parasitologyTool:research_portal' %}">Research</a>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'parasitologyTool:profile' user.username %}">Profile</a></li>
                         <!--
                         <li class="nav-item"><a class="nav-link" href="{% url 'parasitologyTool:add_parasite' %}">Add Parasite</a></li>
                          -->
