@@ -45,6 +45,7 @@ class Post(models.Model):
 	content = models.TextField()
 	parasite = models.ForeignKey(Parasite, on_delete=models.CASCADE, default=None)
 	image = models.ImageField(upload_to='clinical_pictures', default=None)
+	likes = models.IntegerField(default=0)
 	#date_posted = models.DateTimeField(auto_now_add=True)
 	#author = models.ForeignKey(User, on_delete=models.CASCADE)
 

@@ -2,6 +2,7 @@ from django.conf.urls import url
 from parasitologyTool import views
 from django.urls import path
 
+
 app_name = 'parasitologyTool'
 
 urlpatterns = [
