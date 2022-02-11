@@ -8,6 +8,7 @@ class PostForm(forms.ModelForm):
     title = forms.CharField(max_length=128, label="Title")
     content = forms.CharField(widget=forms.Textarea)
     image = forms.ImageField(label="Image", required=False,)
+    likes = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
 
     class Meta:
         model = Post
