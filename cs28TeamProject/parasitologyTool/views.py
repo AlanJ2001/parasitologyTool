@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import *
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from .forms import *
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login, logout
@@ -288,10 +288,12 @@ def research_post_page(request, parasite_id, post_id):
 
     comment_form = CommentForm()
     if request.method == 'POST':
+        if request.POST['comment_text'].strip() == "":
+            return HttpResponseRedirect(request.path_info)
         comment_form = CommentForm(request.POST)
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
-            comment.post = ResearchPost.objects.get(id=post_id)
+            comment.research_post = post
             comment.save()
             return redirect(reverse("parasitologyTool:research_post_page", args=[parasite_id, post_id]))
         else:
@@ -299,3 +301,28 @@ def research_post_page(request, parasite_id, post_id):
 
     context_dict['comment_form'] = comment_form
     return render(request, 'parasitologyTool/research_post_page.html', context=context_dict)
+
+def clinical_post_page(request, parasite_id, post_id):
+    try:
+        post = Post.objects.get(id=post_id)
+    except ResearchPost.DoesNotExist:
+        return not_found(request)
+        
+    context_dict = {}
+    context_dict['post'] = post
+
+    comment_form = CommentForm()
+    if request.method == 'POST':
+        if request.POST['comment_text'].strip() == "":
+            return HttpResponseRedirect(request.path_info)
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.clinical_post = post
+            comment.save()
+            return redirect(reverse("parasitologyTool:clinical_post_page", args=[parasite_id, post_id]))
+        else:
+            print(comment_form.errors)
+
+    context_dict['comment_form'] = comment_form
+    return render(request, 'parasitologyTool/clinical_post_page.html', context=context_dict)

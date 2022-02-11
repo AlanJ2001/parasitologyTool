@@ -24,4 +24,6 @@ urlpatterns = [
     path('profile/<username>/', views.ProfileView.as_view(), name='profile'),
     path('research_portal/<int:parasite_id>/add_post/',views.add_research_post, name='add_research_post'),
     path('research_portal/<int:parasite_id>/<int:post_id>',views.research_post_page, name='research_post_page'),
+    path('clinical_portal/<int:parasite_id>/<int:post_id>',views.clinical_post_page, name='clinical_post_page'),
+
 ]
