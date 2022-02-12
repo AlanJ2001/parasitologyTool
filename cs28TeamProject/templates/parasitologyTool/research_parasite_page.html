@@ -5,7 +5,6 @@
 
 {% block body_block %}
 	<!--<link rel="stylesheet" href="{% static 'css/posts.css' %}"> -->
-	<script src="{% static 'js/post.js' %}" crossrigin="anonymous"></script>
 <style type="text/css">
 	body {
 		background: #E5E5E5;
@@ -72,7 +71,7 @@
 				    <p>{{ post.content|linebreaks|urlize }}</p>
 					{% if post.images %}
 						{% for image in post.images %}
-							<img src="{{ MEDIA_URL }}{{ image.image }}" width="300px"></a>
+							<img src="{{ MEDIA_URL }}{{ image.image }}">
 						{% endfor %}
 					{% endif %}
 					<br>
@@ -92,8 +91,31 @@
 			    	<a href="{% url 'parasitologyTool:research_post_page' parasite.id post.id %}">Comments</a>
 			    </div>
 			    <div class="a-s-box-bottom">
-			    	likes
+                	{% if user.is_authenticated %}
+					<button class="like_btn"
+					            data-categoryid="{{ post.id }}"
+					            type="button">
+					<span data-feather="thumbs-up"></span>
+				    </button>
+					{% endif %}
+					<strong class="like_count">{{ post.likes }}</strong> likes 
 			    </div>
+			    <script type="text/javascript">
+			    	$(document).ready(function() { 
+			    		$('.like_btn').click(function() {
+							var postIdVar;
+							postIdVar = $(this).attr('data-categoryid');
+
+							$.get('/parasitologyTool/like_post/', 
+								{'post_id': postIdVar}, 
+								function(data) {
+									$('.like_count').html(data);
+							    	$('.like_btn').hide();
+							    })
+						});
+			    	});
+			    </script>
+
                 <br>
 			</div>
 			&nbsp;
