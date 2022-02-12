@@ -19,10 +19,10 @@ class ResearchPostForm(forms.ModelForm):
     content = forms.CharField(widget=forms.Textarea)
     images = forms.ImageField(label="Images", required=False,widget=forms.ClearableFileInput(attrs={'multiple': True}))
     files = forms.FileField(label="Files", required=False, widget=forms.ClearableFileInput(attrs={'multiple': True}))
-
+    likes = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
     class Meta:
         model = ResearchPost
-        fields = ('title', 'content', 'images', 'files')
+        fields = ('title', 'content', 'images', 'files', 'likes')
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())

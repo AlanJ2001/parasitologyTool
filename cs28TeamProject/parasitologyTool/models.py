@@ -75,6 +75,7 @@ class ResearchPost(models.Model):
 	parasite = models.ForeignKey(Parasite, on_delete=models.CASCADE, default=None)
 	#image = models.ImageField(upload_to='clinical_pictures', default=None)
 	#file = models.FileField(upload_to='files', default=None)
+	likes = models.IntegerField(default=0)
 
 	#returns a list of images associated with this post
 	@property

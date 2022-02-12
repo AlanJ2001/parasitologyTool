@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import *
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from .forms import *
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login, logout
@@ -301,6 +301,25 @@ def research_post_page(request, parasite_id, post_id):
 
     context_dict['comment_form'] = comment_form
     return render(request, 'parasitologyTool/research_post_page.html', context=context_dict)
+
+class LikePostView(View): 
+    @method_decorator(login_required) 
+    def get(self, request):
+        post_id = request.GET['post_id'] 
+
+        try:
+            post = Post.objects.get(id=int(post_id)) 
+        except Post.DoesNotExist:
+            return HttpResponse(-1) 
+        except ValueError:
+            return HttpResponse(-1) 
+
+        post.likes = post.likes + 1
+        post.save()
+        
+        return HttpResponse(post.likes)
+
+
 
 def clinical_post_page(request, parasite_id, post_id):
     try:
