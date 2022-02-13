@@ -1,0 +1,22 @@
+{% extends 'parasitologyTool/base.html' %}
+{% load static %}
+
+{% block title_block %}Search Results{% endblock %}
+
+{% block body_block %}
+    <h1>Search Results</h1>
+
+    {% if results %}
+    <table>
+        {% for user in results %}
+        <tr>
+            <th>{{ user.username }}</th>
+            <th>{{ user.role }}</th>
+            <th><a href="{% url 'parasitologyTool:admin_manage' user.username %}">Edit this user</a></th>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <h3>No results found</h3>
+    {% endif %}
+{% endblock %}

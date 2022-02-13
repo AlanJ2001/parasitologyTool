@@ -14,6 +14,7 @@ class UserProfile(models.Model):
 		('clinician', 'Clinician'),
 		('researcher', 'Researcher'),
 		('public', 'Public'),
+		('admin', 'Admin'),
 	]
 
 	role = models.CharField(max_length=50, choices=ROLE_CHOICES, default='Public')
