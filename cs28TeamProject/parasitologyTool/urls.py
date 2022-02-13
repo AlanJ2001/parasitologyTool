@@ -28,4 +28,5 @@ urlpatterns = [
     path('clinical_portal/<int:parasite_id>/<int:post_id>',views.clinical_post_page, name='clinical_post_page'),
     path('like_post/',views.LikePostView.as_view(), name='like_post'),
     path('search/', views.SearchResults, name='search_results'),
+    path('manage_user/<username>/', views.AdminManage, name='admin_manage')
 ]

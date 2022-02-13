@@ -1,0 +1,20 @@
+{% extends 'parasitologyTool/base.html' %}
+{% load static %}
+
+{% block title_block %}Manage User{% endblock %}
+
+{% block body_block %}
+    <h1>Manage User</h1>
+    <div>
+        <form id="manage_form" method="post" autocomplete="off" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form }}
+            <button class="btn btn-outline-info" type="submit">Save Changes</button>
+        </form>
+        {% if changed %}
+        <h6>Changes made successfully</h6>
+        {% endif %}
+
+        <h4><a href="{% url 'parasitologyTool:index' %}">Return to home</a></h4>
+    </div>
+{% endblock %}

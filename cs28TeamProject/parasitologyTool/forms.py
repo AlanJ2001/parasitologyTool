@@ -87,3 +87,17 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ('comment_text', )
+
+class AdminManageForm(forms.ModelForm):
+    ROLE_CHOICES = [
+        ('clinician', 'Clinician'),
+        ('researcher', 'Researcher'),
+        ('public', 'Public'),
+        ('admin', 'Admin'),
+    ]
+
+    role = forms.CharField(label='Account Type', widget=forms.Select(choices=ROLE_CHOICES))
+
+    class Meta:
+        model = UserProfile
+        fields = ('role',)

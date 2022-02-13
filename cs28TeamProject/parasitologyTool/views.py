@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.views import View, generic
 from django.utils.decorators import method_decorator
+from django.forms import formset_factory
 
 
 def index(request):
@@ -348,8 +349,6 @@ def clinical_post_page(request, parasite_id, post_id):
     return render(request, 'parasitologyTool/clinical_post_page.html', context=context_dict)
 
 def SearchResults(request):
-    template_name = 'search_results.html'
-
     query = request.GET.get('q')
     object_list = User.objects.filter(username__icontains=query)
     user_list = []
@@ -360,3 +359,28 @@ def SearchResults(request):
     context_dict = {"results" : user_list}
 
     return render(request, 'parasitologyTool/search_results.html', context=context_dict)
+
+def AdminManage(request, username):
+    try:
+        user_s = User.objects.get(username=username)
+        user = UserProfile.objects.get(user=user_s)
+    except UserProfile.DoesNotExist:
+        return not_found(request)
+
+    context_dict = {}
+    context_dict['user'] = user
+    context_dict['changed'] = False
+
+
+    if request.method == 'POST':
+        prev_form = AdminManageForm(request.POST)
+        if prev_form.is_valid():
+            user.role = request.POST["role"]
+            user.save()
+            context_dict['changed'] = True
+        else:
+            print(prev_form.errors)
+
+    manage_form = AdminManageForm(initial={'role':user.role})
+    context_dict['form'] = manage_form
+    return render(request, 'parasitologyTool/admin_manage.html', context=context_dict)
