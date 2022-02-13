@@ -348,6 +348,9 @@ def clinical_post_page(request, parasite_id, post_id):
     context_dict['comment_form'] = comment_form
     return render(request, 'parasitologyTool/clinical_post_page.html', context=context_dict)
 
+def SearchPage(request):
+    return render(request, 'parasitologyTool/search_page.html')
+
 def SearchResults(request):
     query = request.GET.get('q')
     object_list = User.objects.filter(username__icontains=query)

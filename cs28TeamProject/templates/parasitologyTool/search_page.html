@@ -1,0 +1,13 @@
+{% extends 'parasitologyTool/base.html' %}
+{% load static %}
+
+{% block title_block %}Search for users{% endblock %}
+
+{% block body_block %}
+    <h1>Search for users</h1>
+    <div>
+        <form action="{% url 'parasitologyTool:search_results' %}" method="get">
+          <input name="q" type="text" placeholder="Search:">
+        </form>
+    </div>
+{% endblock %}
