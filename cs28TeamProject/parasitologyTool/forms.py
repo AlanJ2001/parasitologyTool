@@ -36,6 +36,7 @@ class UserProfileForm(forms.ModelForm):
         ('clinician', 'Clinician'),
         ('researcher', 'Researcher'),
         ('public', 'Public'),
+        ('admin', 'Admin'),
     ]
 
     role = forms.CharField(label='Account Type', widget=forms.Select(choices=ROLE_CHOICES))

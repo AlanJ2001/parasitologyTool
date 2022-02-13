@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RESULT</title>
+</head>
+<body>
+    <h1>Search Results</h1>
+
+    {% if results %}
+    <ul>
+        {% for user in results %}
+        <li>
+            {{ user.username }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <h3>No results found</h3>
+    {% endif %}
+</body>
+</html>

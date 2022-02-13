@@ -14,7 +14,10 @@
                 <td valign="top">
                     <strong style="font-size: 28px; ">Hey! This website is <p class="orange">Bananasites!</p></strong>
                     <div>
-                        This is the description of the Bananasites. 
+                        This is the description of the Bananasites.
+                        <form action="{% url 'parasitologyTool:search_results' %}" method="get">
+                            <input name="q" type="text" placeholder="Search:">
+                        </form>
                     </div>
                     <br>
                     <div class="box" style="position: relative;">
