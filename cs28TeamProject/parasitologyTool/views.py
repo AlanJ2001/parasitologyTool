@@ -72,6 +72,7 @@ def add_article(request, parasite_id):
     context_dict = {'form':form, 'parasite':parasite}
     return render(request, 'parasitologyTool/add_article.html', context=context_dict)
 
+@login_required
 def add_post(request, parasite_id):
     try:
         parasite = Parasite.objects.get(id=parasite_id)
@@ -85,6 +86,7 @@ def add_post(request, parasite_id):
         if form.is_valid():
             post = form.save(commit=False)
             post.parasite = parasite
+            post.user = UserProfile.objects.get(user = request.user)
             post.save()
             return redirect(reverse("parasitologyTool:clinical_parasite_page", args=[parasite_id]))
         else:
@@ -218,23 +220,28 @@ def user_logout(request):
     logout(request)
     return redirect(reverse('parasitologyTool:index'))
 
+@login_required
 def clinical_portal(request):
+    if UserProfile.objects.get(user=request.user).role != 'clinician':
+        return HttpResponse("you are not authorised to view this page")
     context_dict = {}
     parasite_list = Parasite.objects.order_by('name')
     context_dict['parasite_list'] = parasite_list
     return render(request, 'parasitologyTool/clinical_portal.html', context = context_dict)
 
+@login_required
 def research_portal(request):
     context_dict = {}
     parasite_list = Parasite.objects.order_by('name')
     context_dict['parasite_list'] = parasite_list
     return render(request, 'parasitologyTool/research_portal.html', context = context_dict)
 
+@login_required
 def clinical_parasite_page(request, parasite_id):
     context_dict = {}
     try:
         parasite = Parasite.objects.get(id=parasite_id)
-        posts = reversed(parasite.post_set.all())
+        posts = parasite.post_set.all()
     except Parasite.DoesNotExist:
         return not_found(request)
 
@@ -242,11 +249,12 @@ def clinical_parasite_page(request, parasite_id):
     context_dict['posts'] = posts
     return render(request, 'parasitologyTool/clinical_parasite_page.html', context=context_dict)
 
+@login_required
 def research_parasite_page(request, parasite_id):
     context_dict = {}
     try:
         parasite = Parasite.objects.get(id=parasite_id)
-        research_posts = reversed(parasite.researchpost_set.all())
+        research_posts = parasite.researchpost_set.all()
     except Parasite.DoesNotExist:
         return not_found(request)
 
@@ -254,6 +262,7 @@ def research_parasite_page(request, parasite_id):
     context_dict['research_posts'] = research_posts
     return render(request, 'parasitologyTool/research_parasite_page.html', context=context_dict)
 
+@login_required
 def add_research_post(request, parasite_id):
     try:
         parasite = Parasite.objects.get(id=parasite_id)
@@ -268,6 +277,7 @@ def add_research_post(request, parasite_id):
         if form.is_valid():
             post = form.save(commit=False)
             post.parasite = parasite
+            post.user = UserProfile.objects.get(user = request.user)
             post.save()
             for image in images:
                 ResearchImage.objects.create(research_post=post, image=image,)
@@ -279,6 +289,7 @@ def add_research_post(request, parasite_id):
 
     return render(request, 'parasitologyTool/add_research_post.html', {'form':form})
 
+@login_required
 def research_post_page(request, parasite_id, post_id):
     try:
         post = ResearchPost.objects.get(id=post_id)
@@ -296,6 +307,7 @@ def research_post_page(request, parasite_id, post_id):
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
             comment.research_post = post
+            comment.user = UserProfile.objects.get(user = request.user)
             comment.save()
             return redirect(reverse("parasitologyTool:research_post_page", args=[parasite_id, post_id]))
         else:
@@ -322,7 +334,7 @@ class LikePostView(View):
         return HttpResponse(post.likes)
 
 
-
+@login_required
 def clinical_post_page(request, parasite_id, post_id):
     try:
         post = Post.objects.get(id=post_id)
@@ -340,6 +352,7 @@ def clinical_post_page(request, parasite_id, post_id):
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
             comment.clinical_post = post
+            comment.user = UserProfile.objects.get(user = request.user)
             comment.save()
             return redirect(reverse("parasitologyTool:clinical_post_page", args=[parasite_id, post_id]))
         else:
