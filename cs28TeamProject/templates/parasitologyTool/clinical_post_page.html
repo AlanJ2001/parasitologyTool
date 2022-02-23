@@ -21,6 +21,6 @@
         </form>
         &nbsp;
         {% for comment in post.comments %}
-        	<p>{{ comment }}</p>
+        	<p>{{ comment }} - {{ comment.user.username }}</p>
         {% endfor %}
 {% endblock %}

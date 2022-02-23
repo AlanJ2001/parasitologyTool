@@ -64,14 +64,14 @@
 			<div class="a-box">
 				<div class="a-s-box-author">
                     <img src="{% static 'images/researcher.jpeg' %}"
-                                alt="picture of article" />  <stong>Author name</stong>
+                                alt="picture of article" />  <stong>{{post.user.username}}</stong>
                 </div>
 
                 <div class="a-s-box-context">
 				    <p>{{ post.content|linebreaks|urlize }}</p>
 					{% if post.images %}
 						{% for image in post.images %}
-							<img src="{{ MEDIA_URL }}{{ image.image }}">
+							<a href="{{ MEDIA_URL }}{{ image.image }}"><img src="{{ MEDIA_URL }}{{ image.image }}"></a>
 						{% endfor %}
 					{% endif %}
 					<br>

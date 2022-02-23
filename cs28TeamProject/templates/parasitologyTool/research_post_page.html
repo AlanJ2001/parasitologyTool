@@ -49,7 +49,7 @@
 	<div class="a-box">
 		<div class="a-s-box-author">
                     <img src="{% static 'images/researcher.jpeg' %}"
-                                alt="picture of article" />  <stong>Author name</stong>
+                                alt="picture of article" />  <stong>{{post.user.username}}</stong>
         </div>
         
         <div class="a-s-box-context">
@@ -90,7 +90,7 @@
         </form>
         &nbsp;
         {% for comment in post.comments %}
-        	<p>{{ comment }}</p>
+        	<p>{{ comment }} - {{ comment.user.username }}</p>
         {% endfor %}
         </div>
 		  

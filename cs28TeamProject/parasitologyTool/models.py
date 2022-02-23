@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
+from django.utils import timezone
 
 # Create your models here.
 
@@ -47,8 +48,8 @@ class Post(models.Model):
 	parasite = models.ForeignKey(Parasite, on_delete=models.CASCADE, default=None)
 	image = models.ImageField(upload_to='clinical_pictures', default=None)
 	likes = models.IntegerField(default=0)
-	#date_posted = models.DateTimeField(auto_now_add=True)
-	#author = models.ForeignKey(User, on_delete=models.CASCADE)
+	user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
+	date_posted = models.DateTimeField(default=timezone.now)
 
 	@property
 	def comments(self):
@@ -56,6 +57,9 @@ class Post(models.Model):
 
 	def __str__(self):
 		return self.title
+
+	class Meta:
+		ordering = ['-date_posted',]
 
 class Article(models.Model):
 	TITLE_MAX_LENGTH = 128
@@ -77,6 +81,8 @@ class ResearchPost(models.Model):
 	#image = models.ImageField(upload_to='clinical_pictures', default=None)
 	#file = models.FileField(upload_to='files', default=None)
 	likes = models.IntegerField(default=0)
+	user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
+	date_posted = models.DateTimeField(default=timezone.now)
 
 	#returns a list of images associated with this post
 	@property
@@ -95,6 +101,9 @@ class ResearchPost(models.Model):
 	def __str__(self):
 		return self.title
 
+	class Meta:
+		ordering = ['-date_posted',]
+
 class ResearchImage(models.Model):
 	research_post = models.ForeignKey(ResearchPost, on_delete=models.CASCADE, default=None)
 	image = models.ImageField(upload_to='clinical_pictures', default=None)
@@ -107,6 +116,8 @@ class Comment(models.Model):
 	comment_text = models.TextField()
 	research_post = models.ForeignKey(ResearchPost, on_delete = models.CASCADE, default=None, blank=True, null=True)
 	clinical_post = models.ForeignKey(Post, on_delete=models.CASCADE, default=None, blank=True, null=True)
+	user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
+	date_posted = models.DateTimeField(default=timezone.now)
 
 	def __str__(self):
 		return self.comment_text
