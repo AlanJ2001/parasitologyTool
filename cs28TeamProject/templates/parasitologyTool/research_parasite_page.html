@@ -4,18 +4,18 @@
 {% block title_block %}clinical parasite page{% endblock %}
 
 {% block body_block %}
-	<!--<link rel="stylesheet" href="{% static 'css/posts.css' %}"> -->
+    <!--<link rel="stylesheet" href="{% static 'css/posts.css' %}"> -->
 <style type="text/css">
-	body {
-		background: #E5E5E5;
-	}
+    body {
+        background: #E5E5E5;
+    }
 
-	.top-text {
+    .top-text {
         background: white; border-radius: 5px; padding: 15px; margin-bottom: 10px; font-size: 20px; width: 810px;
-	}
+    }
     
     .box {
-    	float: left;
+        float: left;
     }
 
     .a-box {
@@ -35,11 +35,11 @@
     }
 
     .a-s-box-context img {
-         width: 180px; height: 180px; margin-right: 3px; margin-bottom: 3px; border-radius: 5px;
+         width: 180px; height: 180px; margin-right: 3px; margin-bottom: 3px; border-radius: 5px; object-fit: cover;
     }
 
     .a-s-box-bottom {
-    	width: 255px;  text-align: center; float: left; padding-top: 7px;
+        width: 255px;  text-align: center; float: left; padding-top: 7px;
     }
 
     .rside {
@@ -51,76 +51,117 @@
     }
 
     .rside p {
-    	font-size: 20px; padding: 7px; border-bottom: solid 0.5px silver;
+        font-size: 20px; padding: 7px; border-bottom: solid 0.5px silver;
     }
+
+    
+
 </style>
+
+<script type="text/javascript"> 
+    function show()
+    { 
+        var box = document.getElementById("context"); 
+        var text = box.innerHTML; 
+        var newBox = document.createElement("div"); 
+        var btn = document.createElement("a"); 
+        newBox.innerHTML = text.substring(0,200); 
+        btn.innerHTML = text.length > 200 ? "Show All" : ""; 
+        btn.href = "###"; 
+        btn.onclick = function(){ 
+        if(btn.innerHTML == "Show All")
+        { 
+            btn.innerHTML = "Show Less"; 
+            newBox.innerHTML = text; 
+        }
+        else
+        { 
+            btn.innerHTML = "Show All"; 
+            newBox.innerHTML = text.substring(0,200); 
+        } 
+        } 
+        box.innerHTML = ""; 
+        box.appendChild(newBox); 
+        box.appendChild(btn); 
+    } 
+    window.onload=function()
+    {
+        show(); 
+    }
+</script>
 
 <div class="box">
     <div class="top-text">
-	    <Strong>Welcome to the Research Parasite Page for {{ parasite.name }}</Strong>
-	</div>
-	<div>
-		{% for post in research_posts %}
-			<div class="a-box">
-				<div class="a-s-box-author">
+        <Strong>Welcome to the Research Parasite Page for {{ parasite.name }}</Strong>
+    </div>
+    <div>
+        {% for post in research_posts %}
+            <div class="a-box">
+                <div class="a-s-box-author">
                     <img src="{% static 'images/researcher.jpeg' %}"
                                 alt="picture of article" />  <stong>{{post.user.username}}</stong>
                 </div>
 
                 <div class="a-s-box-context">
-				    <p>{{ post.content|linebreaks|urlize }}</p>
-					{% if post.images %}
-						{% for image in post.images %}
-							<a href="{{ MEDIA_URL }}{{ image.image }}"><img src="{{ MEDIA_URL }}{{ image.image }}"></a>
-						{% endfor %}
-					{% endif %}
-					<br>
-				    Reference Files List:
-				    <br>
-					{% if post.files %}
-						{% for file in post.files %}
-							<a href="{{ MEDIA_URL }}{{ file.file }}">{{ file.file.name }}</a>
-						{% endfor %}
-					{% endif %}
-			    </div>
-			    
-                <div class="a-s-box-bottom">
-			    	Share
-			    </div>
-			    <div class="a-s-box-bottom">
-			    	<a href="{% url 'parasitologyTool:research_post_page' parasite.id post.id %}">Comments</a>
-			    </div>
-			    <div class="a-s-box-bottom">
-                	{% if user.is_authenticated %}
-					<button class="like_btn"
-					            data-categoryid="{{ post.id }}"
-					            type="button">
-					<span data-feather="thumbs-up"></span>
-				    </button>
-					{% endif %}
-					<strong class="like_count">{{ post.likes }}</strong> likes 
-			    </div>
-			    <script type="text/javascript">
-			    	$(document).ready(function() { 
-			    		$('.like_btn').click(function() {
-							var postIdVar;
-							postIdVar = $(this).attr('data-categoryid');
+                    <div id="context">
+                        {{ post.content|linebreaks|urlize }}
+                    </div>
 
-							$.get('/parasitologyTool/like_post/', 
-								{'post_id': postIdVar}, 
-								function(data) {
-									$('.like_count').html(data);
-							    	$('.like_btn').hide();
-							    })
-						});
-			    	});
-			    </script>
+                    {% if post.images %}
+                        {% for image in post.images %}
+                            <a href="{{ MEDIA_URL }}{{ image.image }}"><img src="{{ MEDIA_URL }}{{ image.image }}"></a>
+                        {% endfor %}
+                    {% endif %}
+                    <br>
+                    Reference Files List:
+                    <br>
+                    {% if post.files %}
+                        {% for file in post.files %}
+                            <a href="{{ MEDIA_URL }}{{ file.file }}">{{ file.file.name }}</a>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                
+                
+            
+
+                <div class="a-s-box-bottom">
+                    Share
+                </div>
+                <div class="a-s-box-bottom">
+                    <a href="{% url 'parasitologyTool:research_post_page' parasite.id post.id %}">Comments</a>
+                </div>
+                <div class="a-s-box-bottom">
+                    {% if user.is_authenticated %}
+                    <button class="like_btn"
+                                data-categoryid="{{ post.id }}"
+                                type="button">
+                    <span data-feather="thumbs-up"></span>
+                    </button>
+                    {% endif %}
+                    <strong class="like_count">{{ post.likes }}</strong> likes 
+                </div>
+                <script type="text/javascript">
+                    $(document).ready(function() { 
+                        $('.like_btn').click(function() {
+                            var postIdVar;
+                            postIdVar = $(this).attr('data-categoryid');
+
+                            $.get('/parasitologyTool/like_post/', 
+                                {'post_id': postIdVar}, 
+                                function(data) {
+                                    $('.like_count').html(data);
+                                    $('.like_btn').hide();
+                                })
+                        });
+                    });
+                </script>
 
                 <br>
-			</div>
-			&nbsp;
-		{% endfor %}
-	</div>
+            </div>
+            &nbsp;
+        {% endfor %}
+    </div>
 </div>
 
 <div class="rside">
@@ -131,7 +172,9 @@
       </div>
      
 </div>
-	<div>
-		<a href="{% url 'parasitologyTool:add_research_post' parasite.id %}">add post</a>
-	</div>
+    <div>
+        <a href="{% url 'parasitologyTool:add_research_post' parasite.id %}">add post</a>
+    </div>
+
+
 {% endblock %}
