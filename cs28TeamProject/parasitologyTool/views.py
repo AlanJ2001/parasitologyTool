@@ -25,7 +25,7 @@ def public_content(request):
     context_dict = {}
 
     parasite_list = Parasite.objects.order_by('name')
-    top_viewed_parasite = Parasite.objects.order_by('-views')[0]
+    top_viewed_parasite = Parasite.objects.order_by('-views')[:5]
     article_list = Article.objects.order_by('views')
     context_dict['parasites'] = parasite_list
     context_dict['articles'] = article_list
