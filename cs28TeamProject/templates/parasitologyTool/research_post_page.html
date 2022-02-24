@@ -27,7 +27,7 @@
     }
 
     .a-s-box-context img {
-         width: 180px; height: 180px; margin-right: 3px; margin-bottom: 3px; border-radius: 5px;
+         width: 180px; height: 180px; margin-right: 3px; margin-bottom: 3px; border-radius: 5px; object-fit: cover;
     }
 
     .a-s-box-bottom {
@@ -53,7 +53,9 @@
         </div>
         
         <div class="a-s-box-context">
-		<p>{{ post.content|linebreaks|urlize }}</p>
+            <div id="context">
+		  <p>{{ post.content|linebreaks|urlize }}</p>
+            </div>
 		{% if post.images %}
 			{% for image in post.images %}
 				<img src="{{ MEDIA_URL }}{{ image.image }}">
@@ -103,4 +105,36 @@
     </div>
      
 </div>
+
+<script type="text/javascript"> 
+    function show()
+    { 
+        var box = document.getElementById("context"); 
+        var text = box.innerHTML; 
+        var newBox = document.createElement("div"); 
+        var btn = document.createElement("a"); 
+        newBox.innerHTML = text.substring(0,200); 
+        btn.innerHTML = text.length > 200 ? "Show All" : ""; 
+        btn.href = "###"; 
+        btn.onclick = function(){ 
+            if(btn.innerHTML == "Show All")
+            { 
+                btn.innerHTML = "Show Less"; 
+                newBox.innerHTML = text; 
+            }
+            else
+            { 
+               btn.innerHTML = "Show All"; 
+               newBox.innerHTML = text.substring(0,200); 
+            } 
+        } 
+        box.innerHTML = ""; 
+        box.appendChild(newBox); 
+        box.appendChild(btn); 
+    } 
+    window.onload=function()
+    {
+        show(); 
+    }
+    </script>
 {% endblock %}
