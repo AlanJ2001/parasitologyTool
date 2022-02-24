@@ -54,41 +54,38 @@
         font-size: 20px; padding: 7px; border-bottom: solid 0.5px silver;
     }
 
-    
+    .context{
+        white-space: pre-line;
+    }
 
 </style>
 
-<script type="text/javascript"> 
-    function show()
-    { 
-        var box = document.getElementById("context"); 
-        var text = box.innerHTML; 
-        var newBox = document.createElement("div"); 
-        var btn = document.createElement("a"); 
-        newBox.innerHTML = text.substring(0,200); 
-        btn.innerHTML = text.length > 200 ? "Show All" : ""; 
-        btn.href = "###"; 
-        btn.onclick = function(){ 
-        if(btn.innerHTML == "Show All")
-        { 
-            btn.innerHTML = "Show Less"; 
-            newBox.innerHTML = text; 
-        }
-        else
-        { 
-            btn.innerHTML = "Show All"; 
-            newBox.innerHTML = text.substring(0,200); 
-        } 
-        } 
-        box.innerHTML = ""; 
-        box.appendChild(newBox); 
-        box.appendChild(btn); 
-    } 
-    window.onload=function()
-    {
-        show(); 
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+ <script type="text/javascript">
+  $(document).ready(function(){
+   var onoff = false;
+   $('.item').each(function() {
+    var article = $(this).find('.context');
+    var str = article.html().replace(/<br>/g, "\n").replace(/<p>/g, "").replace(/<\/p>/g, "");
+    var see = $(this).find('.see');
+    if (str.length > 200) {
+     article.text(str.substr(0, 200) + '......');
+     see.text('Show All');  
     }
-</script>
+    see.click(function() {
+     if (onoff) {
+      article.text(str.substr(0, 200) + '......');
+      see.text('Show All');
+     } else {
+      article.text(str);
+      see.text('Show Less');
+     }
+     onoff = !onoff
+    });
+   });
+  });
+ </script>
+
 
 <div class="box">
     <div class="top-text">
@@ -103,10 +100,13 @@
                 </div>
 
                 <div class="a-s-box-context">
-                    <div id="context">
-                        {{ post.content|linebreaks|urlize }}
+                    <div class="item">
+                        <div class="context">
+                            {{ post.content|linebreaks|urlize }}
+                        </div>
+                        <span class="see" style="color: #409EFF;"></span>
                     </div>
-
+  
                     {% if post.images %}
                         {% for image in post.images %}
                             <a href="{{ MEDIA_URL }}{{ image.image }}"><img src="{{ MEDIA_URL }}{{ image.image }}"></a>
