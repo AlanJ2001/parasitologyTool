@@ -12,23 +12,25 @@
     <body>
         <h1>Public Content</h1>
         <div class="box"> 
-            {% if top_viewed_parasite %}      
-            <div>
-                <div class="box-bg">
-                    <a href="{% url 'parasitologyTool:public_parasite_page' top_viewed_parasite.id %}">
-                    <img src="{{ MEDIA_URL }}{{ top_viewed_parasite.picture }}"
-                         alt="Trypanosoma" />
-                    </a>
+            {% for p in top_viewed_parasite %}
+                {% if p %}      
+                <div>
+                    <div class="box-bg">
+                        <a href="{% url 'parasitologyTool:public_parasite_page' p.id %}">
+                        <img src="{{ MEDIA_URL }}{{ p.picture }}"
+                             alt="Trypanosoma" />
+                        </a>
+                    </div>
+                        
+                    <div class="box-text">
+                        <a href="{% url 'parasitologyTool:public_parasite_page' p.id %}"><h2>{{ p.name }}</h2></a>
+                    </div>
                 </div>
-                    
-                <div class="box-text">
-                    <a href="{% url 'parasitologyTool:public_parasite_page' top_viewed_parasite.id %}"><h2>{{ top_viewed_parasite.name }}</h2></a>
-                </div>
-            </div>
-            {% else %}
-            <strong>No parasites</strong>
-            {% endif %}
-            <br>
+                {% else %}
+                <strong>No parasites</strong>
+                {% endif %}
+                <br>
+            {% endfor %}
             
             <div class="a-box">
             <h2>Top Viewed Article</h2>
