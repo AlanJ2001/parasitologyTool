@@ -81,13 +81,15 @@ def add_post(request, parasite_id):
 
     form = PostForm()
     if request.method == 'POST':
-        form = PostForm(request.POST, request.FILES)
-
+        form = PostForm(request.POST)
+        images = request.FILES.getlist('images')
         if form.is_valid():
             post = form.save(commit=False)
             post.parasite = parasite
             post.user = UserProfile.objects.get(user = request.user)
             post.save()
+            for image in images:
+                ClinicalImage.objects.create(clinical_post=post, image=image,)
             return redirect(reverse("parasitologyTool:clinical_parasite_page", args=[parasite_id]))
         else:
             print(form.errors)

@@ -7,12 +7,12 @@ from django.utils.translation import gettext_lazy as _
 class PostForm(forms.ModelForm):
     title = forms.CharField(max_length=128, label="Title")
     content = forms.CharField(widget=forms.Textarea)
-    image = forms.ImageField(label="Image", required=False,)
+    images = forms.ImageField(label="Images", required=False,widget=forms.ClearableFileInput(attrs={'multiple': True}))
     likes = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
 
     class Meta:
         model = Post
-        fields = ('title', 'content', 'image')
+        fields = ('title', 'content', 'images')
 
 class ResearchPostForm(forms.ModelForm):
     title = forms.CharField(max_length=128, label="Title")
