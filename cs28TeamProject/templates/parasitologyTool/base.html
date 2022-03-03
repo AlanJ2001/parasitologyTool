@@ -36,12 +36,21 @@
                         {% if user.is_authenticated %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'parasitologyTool:clinical_portal' %}">Clinical</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'parasitologyTool:research_portal' %}">Research</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'parasitologyTool:profile' user.username %}">Profile</a></li>
+                        <li class="nav-item">
+                            <div class="dropdown">
+                              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Profile
+                              </button>
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="{% url 'parasitologyTool:profile' user.username %}">{{ user.username }}</a>
+                                <a class="dropdown-item" href="{% url 'parasitologyTool:logout' %}?next=/parasitologyTool/">Logout</a>
+                                <a class="dropdown-item" href="{% url 'parasitologyTool:user_posts' user.username %}">Your Post</a>
+                              </div>
+                            </div>
+                        </li>
                         <!--
                         <li class="nav-item"><a class="nav-link" href="{% url 'parasitologyTool:add_parasite' %}">Add Parasite</a></li>
                          -->
-                        <li class="nav-item"><a class="nav-link" href="{% url 'parasitologyTool:logout' %}?next=/parasitologyTool/">
-                        Logout</a></li>
                         {% else %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'parasitologyTool:register' %}">Register Here</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'parasitologyTool:login' %}">Login</a></li>
@@ -81,6 +90,7 @@
         <!-- Bootstrap core JavaScript -->
         <!-- Placed at the end of the document so the pages load faster -->
         <script src="{% static 'js/jquery-3.3.1.min.js' %}" crossorigin="anonymous"></script>
+
         <script>window.jQuery || document.write('<script src="https://getbootstrap.com/docs/4.2/assets/js/vendor/jquery-slim.min.js"><\/script>')</script><script src="https://getbootstrap.com/docs/4.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-zDnhMsjVZfS3hiP7oCBRmfjkQC4fzxVxFhBx8Hkz2aZX8gEvA/jsP3eXRCvzTofP" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
         <script src="https://getbootstrap.com/docs/4.2/examples/dashboard/dashboard.js"></script>

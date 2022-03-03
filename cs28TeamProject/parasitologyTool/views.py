@@ -400,3 +400,26 @@ def AdminManage(request, username):
     manage_form = AdminManageForm(initial={'role':user.role})
     context_dict['form'] = manage_form
     return render(request, 'parasitologyTool/admin_manage.html', context=context_dict)
+
+def UserPost(request, username):
+    try:
+        user_s = User.objects.get(username=username)
+        user = UserProfile.objects.get(user=user_s)
+        user_posts = user.researchpost_set.all()
+    except User.DoesNotExist:
+        return not_found(request)
+
+    context_dict = {}
+    context_dict['user_posts'] = user_posts
+
+    return render(request, 'parasitologyTool/user_posts.html', context=context_dict)
+
+
+def DeletePost (request, post_id, username):
+    user_s = User.objects.get(username=username)
+    user = UserProfile.objects.get(user=user_s)
+    post = user.researchpost_set.get(id=post_id)
+
+    post.delete()
+
+    return redirect(reverse('parasitologyTool:user_posts', args=[username]))
