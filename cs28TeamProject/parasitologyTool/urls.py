@@ -30,4 +30,6 @@ urlpatterns = [
     path('search_results/', views.SearchResults, name='search_results'),
     path('manage_user/<username>/', views.AdminManage, name='admin_manage'),
     path('search/', views.SearchPage, name='search_page'),
+    path('user_posts/<username>/',views.UserPost, name='user_posts'),
+    path('delete_post/<int:post_id>/<username>/',views.DeletePost, name='delete_post'),
 ]
