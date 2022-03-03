@@ -8,9 +8,11 @@
 		<div id="post">
 			<h3>{{ post.title }}</h3>
 			<p>{{ post.content|linebreaks|urlize }}</p>
-			{% if post.image %}
-				<a href="{{ MEDIA_URL }}{{ post.image }}"><img src="{{ MEDIA_URL }}{{ post.image }}" width="300px"></a>
-			{% endif %}
+			{% if post.images %}
+                {% for image in post.images %}
+                    <a href="{{ MEDIA_URL }}{{ image.image }}"><img src="{{ MEDIA_URL }}{{ image.image }}" width="300px" height="300px"></a>
+                {% endfor %}
+            {% endif %}
 		</div>
 		&nbsp;
 		<h3>Comments ...</h3>
