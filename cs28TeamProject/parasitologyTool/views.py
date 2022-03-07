@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from django.views import View, generic
 from django.utils.decorators import method_decorator
 from django.forms import formset_factory
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 def index(request):
@@ -425,3 +426,54 @@ def DeletePost (request, post_id, username):
     post.delete()
 
     return redirect(reverse('parasitologyTool:user_posts', args=[username]))
+
+class AddLike(LoginRequiredMixin, View):
+    def post(self, request, post_model, post_id, *args, **kwargs):
+        if post_model == 'ResearchPost':
+            post = ResearchPost.objects.get(id=post_id)
+        else:
+            post = Post.objects.get(id=post_id)
+        print(post_model)
+        is_like = False
+
+        for like in post.likes.all():
+            if like == request.user:
+                is_like = True
+                break
+        
+        if not is_like:
+            post.likes.add(request.user)
+        
+        if is_like:
+            post.likes.remove(request.user)
+        
+        data = {'message': "Successfully liked post.",
+                'likes': post.likes.all().count(),
+                'dislikes': post.dislikes.all().count()}
+        return JsonResponse(data)
+
+class AddDislike(LoginRequiredMixin, View):
+    def post(self, request, post_model, post_id, *args, **kwargs):
+        print("HELLO!!!!!!!!!!!!!!")
+        if post_model == 'ResearchPost':
+            post = ResearchPost.objects.get(id=post_id)
+        else:
+            post = Post.objects.get(id=post_id)
+
+        is_dislike = False
+
+        for dislike in post.dislikes.all():
+            if dislike == request.user:
+                is_dislike =  True
+                break
+        
+        if not is_dislike:
+            post.dislikes.add(request.user)
+        
+        if is_dislike:
+            post.dislikes.remove(request.user)
+
+        data = {'message': "Successfully disliked post.",
+                'dislikes': post.dislikes.all().count(),
+                'likes': post.likes.all().count()}
+        return JsonResponse(data)

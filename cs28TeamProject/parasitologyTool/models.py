@@ -46,7 +46,8 @@ class Post(models.Model):
 	title = models.CharField(max_length=100)
 	content = models.TextField()
 	parasite = models.ForeignKey(Parasite, on_delete=models.CASCADE, default=None)
-	likes = models.IntegerField(default=0)
+	likes = models.ManyToManyField(User, blank=True, related_name="clinical_likes")
+	dislikes = models.ManyToManyField(User, blank=True, related_name="clinical_dislikes")
 	user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
 	date_posted = models.DateTimeField(default=timezone.now)
 
@@ -57,6 +58,10 @@ class Post(models.Model):
 	@property
 	def images(self):
 		return self.clinicalimage_set.all()
+	
+	@property
+	def model(self):
+		return self.__class__.__name__
 
 	def __str__(self):
 		return self.title
@@ -83,7 +88,8 @@ class ResearchPost(models.Model):
 	parasite = models.ForeignKey(Parasite, on_delete=models.CASCADE, default=None)
 	#image = models.ImageField(upload_to='clinical_pictures', default=None)
 	#file = models.FileField(upload_to='files', default=None)
-	likes = models.IntegerField(default=0)
+	likes = models.ManyToManyField(User, blank=True, related_name="likes")
+	dislikes = models.ManyToManyField(User, blank=True, related_name="dislikes")
 	user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
 	date_posted = models.DateTimeField(default=timezone.now)
 
@@ -100,6 +106,10 @@ class ResearchPost(models.Model):
 	@property
 	def comments(self):
 		return self.comment_set.all()
+	
+	@property
+	def model(self):
+		return self.__class__.__name__
 
 	def __str__(self):
 		return self.title
