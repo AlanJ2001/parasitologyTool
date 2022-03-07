@@ -32,4 +32,6 @@ urlpatterns = [
     path('search/', views.SearchPage, name='search_page'),
     path('user_posts/<username>/',views.UserPost, name='user_posts'),
     path('delete_post/<int:post_id>/<username>/',views.DeletePost, name='delete_post'),
+    path('research_portal/<str:post_model>/<int:post_id>/like',views.AddLike.as_view(), name='like'),
+    path('research_portal/<str:post_model>/<int:post_id>/dislike',views.AddDislike.as_view(), name='dislike'),
 ]

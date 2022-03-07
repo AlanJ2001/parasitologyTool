@@ -156,8 +156,17 @@
                         });
                     });
                 </script>
-
                 <br>
+                <!-- forms for like and dislike buttons -->
+                <form class="ajax-form-like" id="like" method="POST" data-url="{% url 'parasitologyTool:like' post.model post.id %}">
+                    {% csrf_token %}
+                    <button type="submit"><span data-feather="thumbs-up"></span><span class="like-count">{{post.likes.all.count}}</span></button>
+                </form>
+                <form class="ajax-form-dislike" id='dislike' method="POST" data-url="{% url 'parasitologyTool:dislike' post.model post.id %}">
+                    {% csrf_token %}
+                    <button type="submit"><span data-feather="thumbs-down"></span><span class="dislike-count"> {{post.dislikes.all.count}} </span></button>
+                </form>
+                <h3>{{post.model}}</h3>
             </div>
             &nbsp;
         {% endfor %}
@@ -175,6 +184,6 @@
     <div>
         <a href="{% url 'parasitologyTool:add_research_post' parasite.id %}">add post</a>
     </div>
-
+<script src="{% static 'js/like_dislike_ajax.js' %}"></script>
 
 {% endblock %}

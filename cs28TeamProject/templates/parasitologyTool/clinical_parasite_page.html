@@ -4,6 +4,7 @@
 {% block title_block %}clinical parasite page{% endblock %}
 
 {% block body_block %}
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
 	<link rel="stylesheet" href="{% static 'css/posts.css' %}">
 	<h1>Welcome to the Clinical Parasite Page for {{ parasite.name }}</h1>
 	<div>
@@ -21,8 +22,18 @@
                 {% endif %}
 				<br>
 				<a href="{% url 'parasitologyTool:clinical_post_page' parasite.id post.id %}">comments</a>
+				<!-- forms for like and dislike buttons -->
+				<form class="ajax-form-like" id="like" method="POST" data-url="{% url 'parasitologyTool:like' post.model post.id %}">
+                    {% csrf_token %}
+                    <button type="submit"><span data-feather="thumbs-up"></span><span class="like-count">{{post.likes.all.count}}</span></button>
+                </form>
+                <form class="ajax-form-dislike" id='dislike' method="POST" data-url="{% url 'parasitologyTool:dislike' post.model post.id %}">
+                    {% csrf_token %}
+                    <button type="submit"><span data-feather="thumbs-down"></span><span class="dislike-count"> {{post.dislikes.all.count}} </span></button>
+                </form>
 			</div>
 			&nbsp;
 		{% endfor %}
 	</div>
+<script src="{% static 'js/like_dislike_ajax.js' %}"></script>
 {% endblock %}
