@@ -126,47 +126,29 @@
             
 
                 <div class="a-s-box-bottom">
-                    Share
+                    <span data-feather="share-2"></span>
                 </div>
                 <div class="a-s-box-bottom">
-                    <a href="{% url 'parasitologyTool:research_post_page' parasite.id post.id %}">Comments</a>
+                    <a href="{% url 'parasitologyTool:research_post_page' parasite.id post.id %}"><span data-feather="message-square"></span></a>
                 </div>
-                <div class="a-s-box-bottom">
+                <div class="a-s-box-bottom" style="width: 170px;">
                     {% if user.is_authenticated %}
-                    <button class="like_btn"
-                                data-categoryid="{{ post.id }}"
-                                type="button">
-                    <span data-feather="thumbs-up"></span>
-                    </button>
-                    {% endif %}
-                    <strong class="like_count">{{ post.likes }}</strong> likes 
+                        <div style="float: right;">
+                        <form class="ajax-form-like" id="like" method="POST" data-url="{% url 'parasitologyTool:like' post.model post.id %}">
+                        {% csrf_token %}
+                        <button type="submit"><span data-feather="thumbs-up"></span><span class="like-count">{{post.likes.all.count}}</span></button>
+                        </form>
+                        </div>
+                        <div style="float:right;">
+                        <form class="ajax-form-dislike" id='dislike' method="POST" data-url="{% url 'parasitologyTool:dislike' post.model post.id %}">
+                        {% csrf_token %}
+                        <button type="submit"><span data-feather="thumbs-down"></span><span class="dislike-count"> {{post.dislikes.all.count}} </span></button>
+                        </form>
+                        </div>
+                    {% endif %}  
                 </div>
-                <script type="text/javascript">
-                    $(document).ready(function() { 
-                        $('.like_btn').click(function() {
-                            var postIdVar;
-                            postIdVar = $(this).attr('data-categoryid');
-
-                            $.get('/parasitologyTool/like_post/', 
-                                {'post_id': postIdVar}, 
-                                function(data) {
-                                    $('.like_count').html(data);
-                                    $('.like_btn').hide();
-                                })
-                        });
-                    });
-                </script>
                 <br>
-                <!-- forms for like and dislike buttons -->
-                <form class="ajax-form-like" id="like" method="POST" data-url="{% url 'parasitologyTool:like' post.model post.id %}">
-                    {% csrf_token %}
-                    <button type="submit"><span data-feather="thumbs-up"></span><span class="like-count">{{post.likes.all.count}}</span></button>
-                </form>
-                <form class="ajax-form-dislike" id='dislike' method="POST" data-url="{% url 'parasitologyTool:dislike' post.model post.id %}">
-                    {% csrf_token %}
-                    <button type="submit"><span data-feather="thumbs-down"></span><span class="dislike-count"> {{post.dislikes.all.count}} </span></button>
-                </form>
-                <h3>{{post.model}}</h3>
+            
             </div>
             &nbsp;
         {% endfor %}
