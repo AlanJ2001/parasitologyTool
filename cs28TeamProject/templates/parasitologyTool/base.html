@@ -63,18 +63,17 @@
         
         <div class="container-fluid">
             <div class="row">
+                {% block sidebar_block %}
                 <nav class="col-md-2 d-none d-md-block bg-light sidebar">
                     <div class="w-75 ml-3">
                         <input type="search" id="search-input" 
                                class="form-control ds-input" placeholder="Search..." />
                     </div>
                     <div class="sidebar-sticky" id="parasite-listing">
-                    {% block sidebar_block %}
                         {% get_parasite_list parasite %}
-                    {% endblock %}
                     </div>
                 </nav>
-                
+                {% endblock %}
                 <main role="main" class="col-md-9  ml-sm-auto col-lg-10 px-4">		
                     {% block body_block %}{% endblock %}
                     
