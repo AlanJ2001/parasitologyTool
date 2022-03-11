@@ -6,18 +6,29 @@
 {% endblock %}
 
 {% block body_block %}
-    <h1>Register</h1>
+<link rel="stylesheet" type="text/css" href="{% static 'css/register.css' %}">
+<script src="{% static 'js/register.js' %}"></script>
+
     {% if registered %}
         <strong>Thanks</strong>
         <a href="{% url 'parasitologyTool:index' %}">Return to the homepage.</a><br/>
     {% else %}
-        <strong>register here!</strong><br/>
-        <form id="user_form" method="post" action="{% url 'parasitologyTool:register' %}"
-              enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ user_form.as_p }}
-        {{ profile_form.as_p }}
-            <input type="submit" name="submit" value="Register"/>
-        </form>
-    {% endif %}
+        <div id="login">
+            <h1>Register</h1>
+            <form id="user_form" method="post" action="{% url 'parasitologyTool:register' %}">
+            {% csrf_token %}
+            <div class="part">
+            <input id="username" type="text" name="username" value="" size="50" placeholder="Username"/>
+            <input id="email" type="email" name="email" value="" size="50" placeholder="Email address"/>
+            <input id="password" type="password" name="password" value="" size="50" placeholder="Password"/>
+            <input id="confirm-password" type="password" name="confrim-password" value="" size="50" placeholder="Confirm Password" onkeyup="validate()" />
+            </div>
+            <span id="rel" style="margin-left: 20px;"></span>
+            <div class="profile">
+            {{ profile_form.as_p }}
+            </div>
+                <input class="but" id="submit" type="submit"  value="Register"/>
+            </form>
+        </div>
+    {% endif %} 
 {% endblock %}
