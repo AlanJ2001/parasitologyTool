@@ -48,7 +48,7 @@
 </style>
 	<div class="a-box">
 		<div class="a-s-box-author">
-                    <img src="{% static 'images/researcher.jpeg' %}"
+                    <img src="{{ MEDIA_URL }}{{ post.user.profile_picture }}"
                                 alt="picture of article" />  <stong>{{post.user.username}}</stong>
         </div>
         
