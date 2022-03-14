@@ -303,6 +303,7 @@ def research_post_page(request, parasite_id, post_id):
     context_dict['post'] = post
 
     comment_form = CommentForm()
+    reply_form = ReplyForm()
     if request.method == 'POST':
         if request.POST['comment_text'].strip() == "":
             return HttpResponseRedirect(request.path_info)
@@ -317,6 +318,7 @@ def research_post_page(request, parasite_id, post_id):
             print(comment_form.errors)
 
     context_dict['comment_form'] = comment_form
+    context_dict['reply_form'] = reply_form
     return render(request, 'parasitologyTool/research_post_page.html', context=context_dict)
 
 class LikePostView(View): 
@@ -348,6 +350,7 @@ def clinical_post_page(request, parasite_id, post_id):
     context_dict['post'] = post
 
     comment_form = CommentForm()
+    reply_form = ReplyForm()
     if request.method == 'POST':
         if request.POST['comment_text'].strip() == "":
             return HttpResponseRedirect(request.path_info)
@@ -362,6 +365,7 @@ def clinical_post_page(request, parasite_id, post_id):
             print(comment_form.errors)
 
     context_dict['comment_form'] = comment_form
+    context_dict['reply_form'] = reply_form
     return render(request, 'parasitologyTool/clinical_post_page.html', context=context_dict)
 
 def SearchPage(request):
@@ -477,3 +481,19 @@ class AddDislike(LoginRequiredMixin, View):
                 'dislikes': post.dislikes.all().count(),
                 'likes': post.likes.all().count()}
         return JsonResponse(data)
+
+class CommentReplyView(View):
+    def post(self, request, post_id, comment_id, *args, **kwargs):
+        #post = ResearchPost.objects.get(id=post_id)
+        parent_comment = Comment.objects.get(id=comment_id)
+        form = ReplyForm(request.POST)
+        if request.POST['reply_text'].strip() == "":
+            return JsonResponse({'message':'empty string'})
+        if form.is_valid():
+            new_comment = form.save(commit=False)
+            new_comment.parent_comment = parent_comment
+            new_comment.save()
+            data = {'reply_text': request.POST['reply_text'], 'comment_id':comment_id}
+            return JsonResponse(data)
+        else:
+            return JsonResponse({'message':'failed'})

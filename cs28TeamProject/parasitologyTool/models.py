@@ -136,8 +136,19 @@ class Comment(models.Model):
 	user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
 	date_posted = models.DateTimeField(default=timezone.now)
 
+	@property
+	def replies(self):
+		return self.reply_set.all()
+
 	def __str__(self):
 		return self.comment_text
+
+class Reply(models.Model):
+	reply_text = models.TextField()
+	parent_comment = models.ForeignKey(Comment, on_delete = models.CASCADE)
+
+	def __str__(self):
+		return self.reply_text
 
 
 
