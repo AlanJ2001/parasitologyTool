@@ -75,12 +75,18 @@ class Article(models.Model):
 	
 	parasite = models.ForeignKey(Parasite, on_delete=models.CASCADE, default=None)
 	title = models.CharField(max_length=TITLE_MAX_LENGTH, unique=True)
+	content = models.TextField(default=None)
+	user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
 	url = models.URLField(max_length=URL_MAX_LENGTH)
 	views = models.IntegerField(default=0)
 	picture = models.ImageField(upload_to='article_pic')
+	date_posted = models.DateTimeField(default=timezone.now)
 
 	def __str__(self):
 		return self.title
+	
+	class Meta:
+		ordering = ['-date_posted',]
 
 class ResearchPost(models.Model):
 	title = models.CharField(max_length=100)

@@ -36,13 +36,13 @@
                         <div>
                             <a href="{{ article.url }}"><strong>{{ article.title }}</strong></a>
                             <br>
-                            This is the description of this article, this description should be accepted when you adding the article.
+                            <p>{{article.content}}</p>
                         </div>
                         
                         <div class="a-s-box-author">
-                            <img src="{{ MEDIA_URL }}{{ article.picture }}"
+                            <img src="{{ MEDIA_URL }}{{article.user.profile_picture}}"
                                 alt="picture of article" />
-                            Author name
+                            {{article.user.username}}
                         </div>
                         
                     </div>
@@ -53,7 +53,9 @@
             </div>
         </div>
         
+        {% if user.is_authenticated %}
         <a href="{% url 'parasitologyTool:add_article' parasite.id %}">add article</a>
+        {% endif %}
     </div>
 
     <div class="rside">
