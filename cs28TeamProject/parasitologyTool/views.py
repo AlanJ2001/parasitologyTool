@@ -51,6 +51,7 @@ def add_parasite(request):
 
     return render(request, 'parasitologyTool/add_parasite.html', {'form': form})
 
+@login_required
 def add_article(request, parasite_id):
     try:
         parasite = Parasite.objects.get(id=parasite_id)
@@ -64,6 +65,7 @@ def add_article(request, parasite_id):
         if form.is_valid():
             article = form.save(commit=False)
             article.parasite = parasite
+            article.user = UserProfile.objects.get(user = request.user)
             article.save()
             return redirect(reverse("parasitologyTool:public_parasite_page", kwargs={'parasite_id':
                                                                                      parasite_id}))
@@ -458,7 +460,6 @@ class AddLike(LoginRequiredMixin, View):
 
 class AddDislike(LoginRequiredMixin, View):
     def post(self, request, post_model, post_id, *args, **kwargs):
-        print("HELLO!!!!!!!!!!!!!!")
         if post_model == 'ResearchPost':
             post = ResearchPost.objects.get(id=post_id)
         else:

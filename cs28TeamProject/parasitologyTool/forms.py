@@ -48,14 +48,15 @@ class UserProfileForm(forms.ModelForm):
 class ArticleForm(forms.ModelForm):
     title = forms.CharField(max_length=Article.TITLE_MAX_LENGTH, 
                             help_text="Please enter the title of the Article")
+    content = forms.CharField(widget=forms.Textarea)
     url = forms.URLField(max_length=Article.URL_MAX_LENGTH,
                          help_text="Please enter the URL of the Article.")
-    views = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
     picture = forms.ImageField()
+    views = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
 
     class Meta:
         model = Article
-        exclude = ('parasite',)
+        fields = ('title','content','url','picture')
 
     def clean(self):
         cleaned_data = self.cleaned_data
