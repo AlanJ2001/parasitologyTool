@@ -34,4 +34,5 @@ urlpatterns = [
     path('delete_post/<int:post_id>/<username>/',views.DeletePost, name='delete_post'),
     path('research_portal/<str:post_model>/<int:post_id>/like',views.AddLike.as_view(), name='like'),
     path('research_portal/<str:post_model>/<int:post_id>/dislike',views.AddDislike.as_view(), name='dislike'),
+    path('post/<int:post_id>/comment/<int:comment_id>/reply', views.CommentReplyView.as_view(), name="comment-reply"),
 ]

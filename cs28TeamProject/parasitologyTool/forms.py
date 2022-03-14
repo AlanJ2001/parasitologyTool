@@ -88,6 +88,13 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ('comment_text', )
 
+class ReplyForm(forms.ModelForm):
+    reply_text = forms.CharField(required=False, label="",widget=forms.TextInput(attrs={'placeholder': 'reply ...'}))
+
+    class Meta:
+        model = Reply
+        fields = ('reply_text', )
+
 class AdminManageForm(forms.ModelForm):
     ROLE_CHOICES = [
         ('clinician', 'Clinician'),
