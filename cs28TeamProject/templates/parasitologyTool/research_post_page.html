@@ -10,9 +10,15 @@
 <script src="{% static 'js/post.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/reply.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/reply-ajax.js' %}"></script>
+<script src="{% static 'js/like_dislike_ajax.js' %}"></script>
 
-
+<body>
+<div class="box">
 	<div class="a-box">
+        <div>
+            <a href="{% url 'parasitologyTool:research_parasite_page' post.parasite.id %}"><span data-feather="arrow-left"></span> Back</a>
+        </div>
+        <br>
 		<div class="a-s-box-author">
                 <img src="{{ MEDIA_URL }}{{ post.user.profile_picture }}"
                                 alt="picture of article" /> 
@@ -21,9 +27,13 @@
         </div>
         
         <div class="a-s-box-context">
-            <div id="context">
-		  <p>{{ post.content|linebreaks|urlize }}</p>
+            <div class="item">
+                <div class="context">
+                    {{ post.content|linebreaks|urlize }}
+                </div>
+                <span class="see" style="color: #409EFF;"></span>
             </div>
+            
 		{% if post.images %}
 			{% for image in post.images %}
 				<img src="{{ MEDIA_URL }}{{ image.image }}">
@@ -98,15 +108,15 @@
             </div>
         {% endfor %}
         </div>
-		  
     </div>
-    <div class="rside">
-      <p><strong>Most Pupular Post</strong></p>
-
-      <div class="rside-box">
-      Example test
-    </div>
-     
 </div>
-<script src="{% static 'js/like_dislike_ajax.js' %}"></script>
+</body>
+
+    <div class="rside">
+        <p><strong>Most Pupular Post</strong></p>
+
+        <div class="rside-box">
+             Example test
+        </div>
+
 {% endblock %}
