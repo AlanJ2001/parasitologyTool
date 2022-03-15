@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from parasitologyTool.decorators import clinicians_only
+from parasitologyTool.decorators import clinicians_only, clinicians_researchers_only
 from .models import *
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from .forms import *
@@ -182,6 +182,8 @@ class ProfileView(View):
 
 
 def register(request):
+    if request.user.is_authenticated:
+        return HttpResponse("cannot register while logged in")
     registered = False
     if request.method == 'POST':
         user_form = UserForm(request.POST)
@@ -208,6 +210,8 @@ def register(request):
     return render(request, 'parasitologyTool/register.html', context = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
 
 def user_login(request):
+    if request.user.is_authenticated:
+        return HttpResponse("you are already logged in")
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -242,6 +246,7 @@ def clinical_portal(request):
     return render(request, 'parasitologyTool/clinical_portal.html', context = context_dict)
 
 @login_required
+@clinicians_researchers_only
 def research_portal(request):
     context_dict = {}
     parasite_list = Parasite.objects.order_by('name')
@@ -263,6 +268,7 @@ def clinical_parasite_page(request, parasite_id):
     return render(request, 'parasitologyTool/clinical_parasite_page.html', context=context_dict)
 
 @login_required
+@clinicians_researchers_only
 def research_parasite_page(request, parasite_id):
     context_dict = {}
     try:
@@ -276,6 +282,7 @@ def research_parasite_page(request, parasite_id):
     return render(request, 'parasitologyTool/research_parasite_page.html', context=context_dict)
 
 @login_required
+@clinicians_researchers_only
 def add_research_post(request, parasite_id):
     try:
         parasite = Parasite.objects.get(id=parasite_id)
@@ -303,6 +310,7 @@ def add_research_post(request, parasite_id):
     return render(request, 'parasitologyTool/add_research_post.html', {'form':form})
 
 @login_required
+@clinicians_researchers_only
 def research_post_page(request, parasite_id, post_id):
     try:
         post = ResearchPost.objects.get(id=post_id)
