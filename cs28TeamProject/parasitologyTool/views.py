@@ -1,4 +1,6 @@
 from django.shortcuts import render
+
+from parasitologyTool.decorators import clinicians_only
 from .models import *
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from .forms import *
@@ -16,6 +18,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 def index(request):
     parasite_list = Parasite.objects.order_by('name')
     context_dict = {'parasites': parasite_list}
+    if (request.user.is_authenticated):
+        context_dict['user_profile'] = UserProfile.objects.get(user=request.user)
 
     return render(request, 'parasitologyTool/index.html', context=context_dict)
 
@@ -76,6 +80,7 @@ def add_article(request, parasite_id):
     return render(request, 'parasitologyTool/add_article.html', context=context_dict)
 
 @login_required
+@clinicians_only
 def add_post(request, parasite_id):
     try:
         parasite = Parasite.objects.get(id=parasite_id)
@@ -226,6 +231,7 @@ def user_logout(request):
     return redirect(reverse('parasitologyTool:index'))
 
 @login_required
+@clinicians_only
 def clinical_portal(request):
     if UserProfile.objects.get(user=request.user).role != 'clinician':
         return HttpResponse("you are not authorised to view this page")
@@ -242,6 +248,7 @@ def research_portal(request):
     return render(request, 'parasitologyTool/research_portal.html', context = context_dict)
 
 @login_required
+@clinicians_only
 def clinical_parasite_page(request, parasite_id):
     context_dict = {}
     try:
@@ -342,6 +349,7 @@ class LikePostView(View):
 
 
 @login_required
+@clinicians_only
 def clinical_post_page(request, parasite_id, post_id):
     try:
         post = Post.objects.get(id=post_id)
