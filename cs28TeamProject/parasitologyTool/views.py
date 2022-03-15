@@ -13,6 +13,7 @@ from django.views import View, generic
 from django.utils.decorators import method_decorator
 from django.forms import formset_factory
 from django.contrib.auth.mixins import LoginRequiredMixin
+from itertools import chain
 
 
 def index(request):
@@ -422,7 +423,8 @@ def UserPost(request, username):
     try:
         user_s = User.objects.get(username=username)
         user = UserProfile.objects.get(user=user_s)
-        user_posts = user.researchpost_set.all()
+        userpost1 = user.post_set.all()
+        user_posts = chain(userpost1, user.researchpost_set.all())
     except User.DoesNotExist:
         return not_found(request)
 
@@ -435,7 +437,12 @@ def UserPost(request, username):
 def DeletePost (request, post_id, username):
     user_s = User.objects.get(username=username)
     user = UserProfile.objects.get(user=user_s)
-    post = user.researchpost_set.get(id=post_id)
+    
+    try:
+        post = user.researchpost_set.get(id=post_id)
+    except: 
+        post = user.post_set.get(id=post_id)
+
 
     post.delete()
 
