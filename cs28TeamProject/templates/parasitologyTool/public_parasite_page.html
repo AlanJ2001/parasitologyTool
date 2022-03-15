@@ -54,7 +54,7 @@
         </div>
         
         {% if user.is_authenticated %}
-        <a href="{% url 'parasitologyTool:add_article' parasite.id %}">add article</a>
+        <a style="text-decoration: none" href="{% url 'parasitologyTool:add_article' parasite.id %}"><icon style="height: 25px; width: 25px;" data-feather="plus-square"></icon><span>add post</span></a>
         {% endif %}
     </div>
 

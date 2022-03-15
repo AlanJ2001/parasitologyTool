@@ -55,16 +55,16 @@
             </div>
             <div class="a-s-box-bottom" style="width: 170px;">
                     {% if user.is_authenticated %}
-                        <div style="float: right;">
-                        <form class="ajax-form-like" id="like" method="POST" data-url="{% url 'parasitologyTool:like' post.model post.id %}">
-                        {% csrf_token %}
-                        <button type="submit"><span data-feather="thumbs-up"></span><span class="like-count">{{post.likes.all.count}}</span></button>
-                        </form>
-                        </div>
                         <div style="float:right;">
                         <form class="ajax-form-dislike" id='dislike' method="POST" data-url="{% url 'parasitologyTool:dislike' post.model post.id %}">
                         {% csrf_token %}
-                        <button type="submit"><span data-feather="thumbs-down"></span><span class="dislike-count"> {{post.dislikes.all.count}} </span></button>
+                        <a href="#" style="text-decoration: none;"><span data-feather="thumbs-down"></span><span class="dislike-count"> {{post.dislikes.all.count}} </span></a>
+                        </form>
+                        </div>
+                        <div style="float: right;">
+                        <form class="ajax-form-like" id="like" method="POST" data-url="{% url 'parasitologyTool:like' post.model post.id %}">
+                        {% csrf_token %}
+                        <a href="#" style="text-decoration: none; margin-right: 10px;"><span data-feather="thumbs-up"></span><span class="like-count">{{post.likes.all.count}}</span></a>
                         </form>
                         </div>
                     {% endif %}  

@@ -148,6 +148,9 @@ class Comment(models.Model):
 
 	def __str__(self):
 		return self.comment_text
+	
+	class Meta:
+		ordering = ['-date_posted',]
 
 class Reply(models.Model):
 	reply_text = models.TextField()
