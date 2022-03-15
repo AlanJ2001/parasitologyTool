@@ -37,8 +37,8 @@
                         <li class="nav-item "><a class="nav-link" href="{% url 'parasitologyTool:about' %}">About</a></li>
                         <li class="nav-item "><a class="nav-link" href="{% url 'parasitologyTool:public_content' %}">Public Content</a></li>
                         {% if user.is_authenticated %}
-                        <li class="nav-item"><a class="nav-link" href="{% url 'parasitologyTool:clinical_portal' %}">Clinical</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'parasitologyTool:research_portal' %}">Research</a></li>
+                        <li class="nav-item"><a class="nav-link clinical_portal_link" href="{% url 'parasitologyTool:clinical_portal' %}">Clinical</a></li>
+                        <li class="nav-item"><a class="nav-link research_portal_link" href="{% url 'parasitologyTool:research_portal' %}">Research</a></li>
                         <li class="nav-item">
                             <div class="dropdown">
                               <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
