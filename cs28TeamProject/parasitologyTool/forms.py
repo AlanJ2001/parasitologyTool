@@ -83,7 +83,7 @@ class ParasiteForm(forms.ModelForm):
         fields = ('name', 'picture','views','intro')
 
 class CommentForm(forms.ModelForm):
-    comment_text = forms.CharField(required = False, label='add comment here')
+    comment_text = forms.CharField(required = False, label="Add comment here")
 
     class Meta:
         model = Comment
