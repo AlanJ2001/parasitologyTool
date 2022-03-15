@@ -14,7 +14,9 @@
             <div class="a-box">
                 <div class="a-s-box-author">
                     <img src="{{ MEDIA_URL }}{{ post.user.profile_picture }}"
-                                alt="picture of article" />  <stong>{{post.user.username}}</stong>
+                                alt="picture of article" />  
+                        <a class="a-s-box-author-name" href="{% url 'parasitologyTool:profile' post.user.username %}">{{post.user.username}}</a>
+                        <div class="a-s-box-author-time">{{post.date_posted}}</div>
                 </div>
 
                 <div class="a-s-box-context">

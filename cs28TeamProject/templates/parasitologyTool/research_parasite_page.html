@@ -4,12 +4,12 @@
 {% block title_block %}clinical parasite page{% endblock %}
 
 {% block body_block %}
-<link rel="stylesheet" href="{% static 'css/userpost.css' %}"> 
+<link rel="stylesheet" type="text/css" href="{% static 'css/userpost.css' %}">
 <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
 <script src="{% static 'js/post.js' %}"></script>
+<script src="{% static 'js/like_dislike_ajax.js' %}"></script>
 
-
-
+<body>
 <div class="box">
     <div class="top-text">
         <Strong>Welcome to the Research Parasite Page for {{ parasite.name }}</Strong>
@@ -19,7 +19,9 @@
             <div class="a-box">
                 <div class="a-s-box-author">
                     <img src="{{ MEDIA_URL }}{{ post.user.profile_picture }}"
-                                alt="picture of article" />  <stong>{{post.user.username}}</stong>
+                                alt="picture of article" />  
+                    <a class="a-s-box-author-name" href="{% url 'parasitologyTool:profile' post.user.username %}">{{post.user.username}}</a>
+                    <div class="a-s-box-author-time">{{post.date_posted}}</div>
                 </div>
 
                 <div class="a-s-box-context">
@@ -89,6 +91,5 @@
     <div>
         <a href="{% url 'parasitologyTool:add_research_post' parasite.id %}">add post</a>
     </div>
-<script src="{% static 'js/like_dislike_ajax.js' %}"></script>
-
+</body>
 {% endblock %}
