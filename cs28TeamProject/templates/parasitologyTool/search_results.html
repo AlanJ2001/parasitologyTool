@@ -12,7 +12,9 @@
         <tr>
             <th>{{ user.username }}</th>
             <th>{{ user.role }}</th>
-            <th><a href="{% url 'parasitologyTool:admin_manage' user.username %}">Edit this user</a></th>
+            {% if is_admin %}
+                <th><a href="{% url 'parasitologyTool:admin_manage' user.username %}">Edit this user</a></th>
+            {% endif %}
         </tr>
         {% endfor %}
     </table>

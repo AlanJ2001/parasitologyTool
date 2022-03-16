@@ -4,7 +4,7 @@
 {% block title_block %}Manage User{% endblock %}
 
 {% block body_block %}
-    <h1>Manage User</h1>
+    <h1>Manage User: {{ username }}</h1>
     <div>
         <form id="manage_form" method="post" autocomplete="off" enctype="multipart/form-data">
             {% csrf_token %}
