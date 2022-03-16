@@ -17,6 +17,7 @@
                         This is the description of the Bananasites.
                     </div>
                     <br>
+                    {% if not user.is_authenticated %}
                     <div class="box" style="position: relative;">
                         <a href="{% url 'parasitologyTool:register' %}" style="position:absolute; z-index: 2; left: 18px; top: 5px;"><p class="link">Register</p></a>
                     </div>
@@ -24,6 +25,7 @@
                     <div class="box" style="position: relative;">
                         <a href="{% url 'parasitologyTool:login' %}" style="position:absolute; z-index: 2; left: 18px; top: 5px;"><p class="link">Login</p></a>
                     </div>
+                    {% endif %}
                 </td>
             </div>
             <div>
@@ -44,10 +46,10 @@
                     <strong>This is the description of Clinical and Researcher</strong>
                 </div>
                 <div class="box" style="position: relative; top: 90px; left: 30px;">
-                    <a href="{% url 'parasitologyTool:clinical_portal' %}" style="position:absolute; z-index: 2; left: 18px; top: 5px;"><p class="link">Clinical</p></a>
+                    <a href="{% url 'parasitologyTool:clinical_portal' %}" style="position:absolute; z-index: 2; left: 18px; top: 5px;"><p class="link clinical_portal_link">Clinical</p></a>
                 </div>
                 <div class="box" style="position: relative; top: 47px; left: 220px">
-                    <a href="{% url 'parasitologyTool:research_portal' %}" style="position:absolute; z-index: 2; left: 18px; top: 5px;"><p class="link">Research</p></a>
+                    <a href="{% url 'parasitologyTool:research_portal' %}" style="position:absolute; z-index: 2; left: 18px; top: 5px;"><p class="link research_portal_link">Research</p></a>
                 </div>
             </td>
             </div>
@@ -75,6 +77,32 @@
     </table>
     </div>
 </div>
+<script>
+    $(document).ready(function(){
+        var b = '{{request.user.is_authenticated}}'
+        $('.clinical_portal_link').on('click', function(event){
+            if (b=='True'){
+                var a = '{{user_profile.role}}'
+                if (a !='clinician'){
+                    event.preventDefault();
+                    alert('must be a clinician to access this page');
+                }
+            }
+            
+        })
+        $('.research_portal_link').on('click', function(event){
+            if (b=='True'){
+                var a = '{{user_profile.role}}'
+                if (a !='clinician' && a != 'researcher'){
+                    event.preventDefault();
+                    alert('must be a clinician or researcher to access this page');
+                }
+            }
+            
+        })
+    })
+</script>
+
 {% endblock %}
 
 

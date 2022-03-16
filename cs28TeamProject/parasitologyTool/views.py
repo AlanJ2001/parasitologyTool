@@ -1,4 +1,6 @@
 from django.shortcuts import render
+
+from parasitologyTool.decorators import clinicians_only, clinicians_researchers_only
 from .models import *
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from .forms import *
@@ -11,13 +13,14 @@ from django.views import View, generic
 from django.utils.decorators import method_decorator
 from django.forms import formset_factory
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.mail import send_mail
-from django.conf import settings
+from itertools import chain
 
 
 def index(request):
     parasite_list = Parasite.objects.order_by('name')
     context_dict = {'parasites': parasite_list}
+    if (request.user.is_authenticated):
+        context_dict['user_profile'] = UserProfile.objects.get(user=request.user)
 
     return render(request, 'parasitologyTool/index.html', context=context_dict)
 
@@ -56,7 +59,7 @@ def add_parasite(request):
 
     return render(request, 'parasitologyTool/add_parasite.html', {'form': form})
 
-
+@login_required
 def add_article(request, parasite_id):
     try:
         parasite = Parasite.objects.get(id=parasite_id)
@@ -70,6 +73,7 @@ def add_article(request, parasite_id):
         if form.is_valid():
             article = form.save(commit=False)
             article.parasite = parasite
+            article.user = UserProfile.objects.get(user = request.user)
             article.save()
             return redirect(reverse("parasitologyTool:public_parasite_page", kwargs={'parasite_id':
                                                                                          parasite_id}))
@@ -81,6 +85,7 @@ def add_article(request, parasite_id):
 
 
 @login_required
+@clinicians_only
 def add_post(request, parasite_id):
     try:
         parasite = Parasite.objects.get(id=parasite_id)
@@ -184,6 +189,8 @@ class ProfileView(View):
 
 
 def register(request):
+    if request.user.is_authenticated:
+        return HttpResponse("cannot register while logged in")
     registered = False
     if request.method == 'POST':
         user_form = UserForm(request.POST)
@@ -212,6 +219,8 @@ def register(request):
 
 
 def user_login(request):
+    if request.user.is_authenticated:
+        return HttpResponse("you are already logged in")
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -238,6 +247,7 @@ def user_logout(request):
 
 
 @login_required
+@clinicians_only
 def clinical_portal(request):
     if UserProfile.objects.get(user=request.user).role != 'clinician':
         return HttpResponse("you are not authorised to view this page")
@@ -248,6 +258,7 @@ def clinical_portal(request):
 
 
 @login_required
+@clinicians_researchers_only
 def research_portal(request):
     context_dict = {}
     parasite_list = Parasite.objects.order_by('name')
@@ -256,6 +267,7 @@ def research_portal(request):
 
 
 @login_required
+@clinicians_only
 def clinical_parasite_page(request, parasite_id):
     context_dict = {}
     try:
@@ -270,6 +282,7 @@ def clinical_parasite_page(request, parasite_id):
 
 
 @login_required
+@clinicians_researchers_only
 def research_parasite_page(request, parasite_id):
     context_dict = {}
     try:
@@ -284,6 +297,7 @@ def research_parasite_page(request, parasite_id):
 
 
 @login_required
+@clinicians_researchers_only
 def add_research_post(request, parasite_id):
     try:
         parasite = Parasite.objects.get(id=parasite_id)
@@ -312,6 +326,7 @@ def add_research_post(request, parasite_id):
 
 
 @login_required
+@clinicians_researchers_only
 def research_post_page(request, parasite_id, post_id):
     try:
         post = ResearchPost.objects.get(id=post_id)
@@ -322,6 +337,7 @@ def research_post_page(request, parasite_id, post_id):
     context_dict['post'] = post
 
     comment_form = CommentForm()
+    reply_form = ReplyForm()
     if request.method == 'POST':
         if request.POST['comment_text'].strip() == "":
             return HttpResponseRedirect(request.path_info)
@@ -336,6 +352,7 @@ def research_post_page(request, parasite_id, post_id):
             print(comment_form.errors)
 
     context_dict['comment_form'] = comment_form
+    context_dict['reply_form'] = reply_form
     return render(request, 'parasitologyTool/research_post_page.html', context=context_dict)
 
 
@@ -358,6 +375,7 @@ class LikePostView(View):
 
 
 @login_required
+@clinicians_only
 def clinical_post_page(request, parasite_id, post_id):
     try:
         post = Post.objects.get(id=post_id)
@@ -368,6 +386,7 @@ def clinical_post_page(request, parasite_id, post_id):
     context_dict['post'] = post
 
     comment_form = CommentForm()
+    reply_form = ReplyForm()
     if request.method == 'POST':
         if request.POST['comment_text'].strip() == "":
             return HttpResponseRedirect(request.path_info)
@@ -382,6 +401,7 @@ def clinical_post_page(request, parasite_id, post_id):
             print(comment_form.errors)
 
     context_dict['comment_form'] = comment_form
+    context_dict['reply_form'] = reply_form
     return render(request, 'parasitologyTool/clinical_post_page.html', context=context_dict)
 
 
@@ -445,7 +465,8 @@ def UserPost(request, username):
     try:
         user_s = User.objects.get(username=username)
         user = UserProfile.objects.get(user=user_s)
-        user_posts = user.researchpost_set.all()
+        userpost1 = user.post_set.all()
+        user_posts = chain(userpost1, user.researchpost_set.all())
     except User.DoesNotExist:
         return not_found(request)
 
@@ -458,7 +479,12 @@ def UserPost(request, username):
 def DeletePost(request, post_id, username):
     user_s = User.objects.get(username=username)
     user = UserProfile.objects.get(user=user_s)
-    post = user.researchpost_set.get(id=post_id)
+    
+    try:
+        post = user.researchpost_set.get(id=post_id)
+    except: 
+        post = user.post_set.get(id=post_id)
+
 
     post.delete()
 
@@ -493,7 +519,6 @@ class AddLike(LoginRequiredMixin, View):
 
 class AddDislike(LoginRequiredMixin, View):
     def post(self, request, post_model, post_id, *args, **kwargs):
-        print("HELLO!!!!!!!!!!!!!!")
         if post_model == 'ResearchPost':
             post = ResearchPost.objects.get(id=post_id)
         else:
@@ -516,3 +541,19 @@ class AddDislike(LoginRequiredMixin, View):
                 'dislikes': post.dislikes.all().count(),
                 'likes': post.likes.all().count()}
         return JsonResponse(data)
+
+class CommentReplyView(View):
+    def post(self, request, post_id, comment_id, *args, **kwargs):
+        #post = ResearchPost.objects.get(id=post_id)
+        parent_comment = Comment.objects.get(id=comment_id)
+        form = ReplyForm(request.POST)
+        if request.POST['reply_text'].strip() == "":
+            return JsonResponse({'message':'empty string'})
+        if form.is_valid():
+            new_comment = form.save(commit=False)
+            new_comment.parent_comment = parent_comment
+            new_comment.save()
+            data = {'reply_text': request.POST['reply_text'], 'comment_id':comment_id}
+            return JsonResponse(data)
+        else:
+            return JsonResponse({'message':'failed'})

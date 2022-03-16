@@ -4,36 +4,86 @@
 {% block title_block %}clinical parasite page{% endblock %}
 
 {% block body_block %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/userpost.css' %}">
 <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-	<link rel="stylesheet" href="{% static 'css/posts.css' %}">
-	<h1>Welcome to the Clinical Parasite Page for {{ parasite.name }}</h1>
-	<div>
-		<a href="{% url 'parasitologyTool:add_post' parasite.id %}">add post</a>
-	</div>
-	<div>
-		{% for post in posts %}
-			<div id="post">
-				<h3>{{ post.title }}</h3>
-				<p>{{ post.content|linebreaks|urlize }}</p>
-				{% if post.images %}
-                    {% for image in post.images %}
-                        <a href="{{ MEDIA_URL }}{{ image.image }}"><img src="{{ MEDIA_URL }}{{ image.image }}" width="300px" height="300px"></a>
-                    {% endfor %}
-                {% endif %}
-				<br>
-				<a href="{% url 'parasitologyTool:clinical_post_page' parasite.id post.id %}">comments</a>
-				<!-- forms for like and dislike buttons -->
-				<form class="ajax-form-like" id="like" method="POST" data-url="{% url 'parasitologyTool:like' post.model post.id %}">
-                    {% csrf_token %}
-                    <button type="submit"><span data-feather="thumbs-up"></span><span class="like-count">{{post.likes.all.count}}</span></button>
-                </form>
-                <form class="ajax-form-dislike" id='dislike' method="POST" data-url="{% url 'parasitologyTool:dislike' post.model post.id %}">
-                    {% csrf_token %}
-                    <button type="submit"><span data-feather="thumbs-down"></span><span class="dislike-count"> {{post.dislikes.all.count}} </span></button>
-                </form>
-			</div>
-			&nbsp;
-		{% endfor %}
-	</div>
+<script src="{% static 'js/post.js' %}"></script>
 <script src="{% static 'js/like_dislike_ajax.js' %}"></script>
+
+<body>
+<div class="box">
+    <div class="top-text">
+        <Strong>Clinical Content - {{parasite.name}}</Strong>
+    </div>
+    <div>
+        {% for post in posts %}
+            <div class="a-box">
+                <div class="a-s-box-author">
+                    <img src="{{ MEDIA_URL }}{{ post.user.profile_picture }}"
+                                alt="picture of article" />  
+                    <a class="a-s-box-author-name" href="{% url 'parasitologyTool:profile' post.user.username %}">{{post.user.username}}</a>
+                    <div class="a-s-box-author-time">{{post.date_posted}}</div>
+                </div>
+
+                <div class="a-s-box-context">
+                    <div class="item">
+                        <div class="context">
+                            {{ post.content|linebreaks|urlize }}
+                        </div>
+                        <span class="see" style="color: #409EFF;"></span>
+                    </div>
+  
+                    {% if post.images %}
+                        {% for image in post.images %}
+                            <a href="{{ MEDIA_URL }}{{ image.image }}"><img src="{{ MEDIA_URL }}{{ image.image }}"></a>
+                        {% endfor %}
+                    {% endif %}
+                    <br>
+                </div>
+                
+                
+            
+
+                <div class="a-s-box-bottom">
+                    <span data-feather="share-2"></span>
+                </div>
+                <div class="a-s-box-bottom">
+                    <a href="{% url 'parasitologyTool:clinical_post_page' parasite.id post.id %}"><span data-feather="message-square"></span></a>
+                </div>
+                <div class="a-s-box-bottom" style="width: 170px;">
+                    {% if user.is_authenticated %}
+                        <div style="float:right;">
+                        <form class="ajax-form-dislike" id='dislike' method="POST" data-url="{% url 'parasitologyTool:dislike' post.model post.id %}">
+                        {% csrf_token %}
+                        <a href="#" style="text-decoration: none;"><span data-feather="thumbs-down"></span><span class="dislike-count"> {{post.dislikes.all.count}} </span></a>
+                        </form>
+                        </div>
+                        <div style="float: right;">
+                        <form class="ajax-form-like" id="like" method="POST" data-url="{% url 'parasitologyTool:like' post.model post.id %}">
+                        {% csrf_token %}
+                        <a href="#" style="text-decoration: none; margin-right: 10px;"><span data-feather="thumbs-up"></span><span class="like-count">{{post.likes.all.count}}</span></a>
+                        </form>
+                        </div>
+                    {% endif %}  
+                </div>
+                <br>
+            
+            </div>
+            &nbsp;
+        {% endfor %}
+    </div>
+</div>
+</body>
+
+<div class="rside">
+      <p><strong>Most Pupular Post</strong></p>
+
+      <div class="rside-box">
+      Example test
+      </div>     
+</div>
+
+<div>
+    <a href="{% url 'parasitologyTool:add_post' parasite.id %}">add post</a>
+</div>
+
 {% endblock %}
