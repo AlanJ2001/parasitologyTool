@@ -11,6 +11,8 @@ from django.views import View, generic
 from django.utils.decorators import method_decorator
 from django.forms import formset_factory
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 def index(request):
@@ -19,8 +21,10 @@ def index(request):
 
     return render(request, 'parasitologyTool/index.html', context=context_dict)
 
+
 def about(request):
     return render(request, 'parasitologyTool/about.html')
+
 
 def public_content(request):
     context_dict = {}
@@ -34,6 +38,7 @@ def public_content(request):
 
     return render(request, 'parasitologyTool/public_content.html', context=context_dict)
 
+
 def add_parasite(request):
     form = ParasiteForm()
 
@@ -43,7 +48,7 @@ def add_parasite(request):
         if form.is_valid():
             name = form.cleaned_data['name']
             picture = form.cleaned_data['picture']
-            parasite = Parasite(name = name, picture=picture)
+            parasite = Parasite(name=name, picture=picture)
             parasite.save()
             return redirect('/parasitologyTool/public_content')
         else:
@@ -51,12 +56,13 @@ def add_parasite(request):
 
     return render(request, 'parasitologyTool/add_parasite.html', {'form': form})
 
+
 def add_article(request, parasite_id):
     try:
         parasite = Parasite.objects.get(id=parasite_id)
     except Parasite.DoesNotExist:
         return not_found(request)
-    
+
     form = ArticleForm()
     if request.method == 'POST':
         form = ArticleForm(request.POST, request.FILES)
@@ -66,12 +72,13 @@ def add_article(request, parasite_id):
             article.parasite = parasite
             article.save()
             return redirect(reverse("parasitologyTool:public_parasite_page", kwargs={'parasite_id':
-                                                                                     parasite_id}))
+                                                                                         parasite_id}))
         else:
             print(form.errors)
-    
-    context_dict = {'form':form, 'parasite':parasite}
+
+    context_dict = {'form': form, 'parasite': parasite}
     return render(request, 'parasitologyTool/add_article.html', context=context_dict)
+
 
 @login_required
 def add_post(request, parasite_id):
@@ -87,15 +94,16 @@ def add_post(request, parasite_id):
         if form.is_valid():
             post = form.save(commit=False)
             post.parasite = parasite
-            post.user = UserProfile.objects.get(user = request.user)
+            post.user = UserProfile.objects.get(user=request.user)
             post.save()
             for image in images:
-                ClinicalImage.objects.create(clinical_post=post, image=image,)
+                ClinicalImage.objects.create(clinical_post=post, image=image, )
             return redirect(reverse("parasitologyTool:clinical_parasite_page", args=[parasite_id]))
         else:
             print(form.errors)
 
-    return render(request, 'parasitologyTool/add_post.html', {'form':form})
+    return render(request, 'parasitologyTool/add_post.html', {'form': form})
+
 
 def public_parasite_page(request, parasite_id):
     context_dict = {}
@@ -109,6 +117,7 @@ def public_parasite_page(request, parasite_id):
     context_dict['articles'] = article_list
     context_dict['intro'] = parasite.intro
     return render(request, 'parasitologyTool/public_parasite_page.html', context=context_dict)
+
 
 def goto_parasite(request):
     if request.method == 'GET':
@@ -124,6 +133,7 @@ def goto_parasite(request):
 
         return redirect(reverse('parasitologyTool:public_parasite_page', args=[parasite_id]))
     return redirect(reverse('parasitologyTool:public_content'))
+
 
 class ProfileView(View):
     def get_user_details(self, username):
@@ -197,7 +207,9 @@ def register(request):
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
-    return render(request, 'parasitologyTool/register.html', context = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
+    return render(request, 'parasitologyTool/register.html',
+                  context={'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
+
 
 def user_login(request):
     if request.method == 'POST':
@@ -218,10 +230,12 @@ def user_login(request):
     else:
         return render(request, 'parasitologyTool/login.html')
 
+
 @login_required
 def user_logout(request):
     logout(request)
     return redirect(reverse('parasitologyTool:index'))
+
 
 @login_required
 def clinical_portal(request):
@@ -230,14 +244,16 @@ def clinical_portal(request):
     context_dict = {}
     parasite_list = Parasite.objects.order_by('name')
     context_dict['parasite_list'] = parasite_list
-    return render(request, 'parasitologyTool/clinical_portal.html', context = context_dict)
+    return render(request, 'parasitologyTool/clinical_portal.html', context=context_dict)
+
 
 @login_required
 def research_portal(request):
     context_dict = {}
     parasite_list = Parasite.objects.order_by('name')
     context_dict['parasite_list'] = parasite_list
-    return render(request, 'parasitologyTool/research_portal.html', context = context_dict)
+    return render(request, 'parasitologyTool/research_portal.html', context=context_dict)
+
 
 @login_required
 def clinical_parasite_page(request, parasite_id):
@@ -252,6 +268,7 @@ def clinical_parasite_page(request, parasite_id):
     context_dict['posts'] = posts
     return render(request, 'parasitologyTool/clinical_parasite_page.html', context=context_dict)
 
+
 @login_required
 def research_parasite_page(request, parasite_id):
     context_dict = {}
@@ -264,6 +281,7 @@ def research_parasite_page(request, parasite_id):
     context_dict['parasite'] = parasite
     context_dict['research_posts'] = research_posts
     return render(request, 'parasitologyTool/research_parasite_page.html', context=context_dict)
+
 
 @login_required
 def add_research_post(request, parasite_id):
@@ -280,17 +298,18 @@ def add_research_post(request, parasite_id):
         if form.is_valid():
             post = form.save(commit=False)
             post.parasite = parasite
-            post.user = UserProfile.objects.get(user = request.user)
+            post.user = UserProfile.objects.get(user=request.user)
             post.save()
             for image in images:
-                ResearchImage.objects.create(research_post=post, image=image,)
+                ResearchImage.objects.create(research_post=post, image=image, )
             for file in files:
-                ResearchFile.objects.create(research_post=post, file=file,)
+                ResearchFile.objects.create(research_post=post, file=file, )
             return redirect(reverse("parasitologyTool:research_parasite_page", args=[parasite_id]))
         else:
             print(form.errors)
 
-    return render(request, 'parasitologyTool/add_research_post.html', {'form':form})
+    return render(request, 'parasitologyTool/add_research_post.html', {'form': form})
+
 
 @login_required
 def research_post_page(request, parasite_id, post_id):
@@ -298,7 +317,7 @@ def research_post_page(request, parasite_id, post_id):
         post = ResearchPost.objects.get(id=post_id)
     except ResearchPost.DoesNotExist:
         return not_found(request)
-        
+
     context_dict = {}
     context_dict['post'] = post
 
@@ -310,7 +329,7 @@ def research_post_page(request, parasite_id, post_id):
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
             comment.research_post = post
-            comment.user = UserProfile.objects.get(user = request.user)
+            comment.user = UserProfile.objects.get(user=request.user)
             comment.save()
             return redirect(reverse("parasitologyTool:research_post_page", args=[parasite_id, post_id]))
         else:
@@ -319,21 +338,22 @@ def research_post_page(request, parasite_id, post_id):
     context_dict['comment_form'] = comment_form
     return render(request, 'parasitologyTool/research_post_page.html', context=context_dict)
 
-class LikePostView(View): 
-    @method_decorator(login_required) 
+
+class LikePostView(View):
+    @method_decorator(login_required)
     def get(self, request):
-        post_id = request.GET['post_id'] 
+        post_id = request.GET['post_id']
 
         try:
-            post = Post.objects.get(id=int(post_id)) 
+            post = Post.objects.get(id=int(post_id))
         except Post.DoesNotExist:
-            return HttpResponse(-1) 
+            return HttpResponse(-1)
         except ValueError:
-            return HttpResponse(-1) 
+            return HttpResponse(-1)
 
         post.likes = post.likes + 1
         post.save()
-        
+
         return HttpResponse(post.likes)
 
 
@@ -343,7 +363,7 @@ def clinical_post_page(request, parasite_id, post_id):
         post = Post.objects.get(id=post_id)
     except ResearchPost.DoesNotExist:
         return not_found(request)
-        
+
     context_dict = {}
     context_dict['post'] = post
 
@@ -355,7 +375,7 @@ def clinical_post_page(request, parasite_id, post_id):
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
             comment.clinical_post = post
-            comment.user = UserProfile.objects.get(user = request.user)
+            comment.user = UserProfile.objects.get(user=request.user)
             comment.save()
             return redirect(reverse("parasitologyTool:clinical_post_page", args=[parasite_id, post_id]))
         else:
@@ -364,9 +384,11 @@ def clinical_post_page(request, parasite_id, post_id):
     context_dict['comment_form'] = comment_form
     return render(request, 'parasitologyTool/clinical_post_page.html', context=context_dict)
 
+
 def SearchPage(request):
     return render(request, 'parasitologyTool/search_page.html')
 
+@login_required
 def SearchResults(request):
     query = request.GET.get('q')
     object_list = User.objects.filter(username__icontains=query)
@@ -375,12 +397,26 @@ def SearchResults(request):
     for user in object_list:
         user_list.append(UserProfile.objects.get(user=user))
 
-    context_dict = {"results" : user_list}
+    try:
+        cur_user = UserProfile.objects.get(user=request.user)
+        if cur_user.role == 'admin':
+            is_admin = True
+        else:
+            is_admin = False
+    except:
+        return index(request)
+
+    context_dict = {"results": user_list, "is_admin": is_admin}
 
     return render(request, 'parasitologyTool/search_results.html', context=context_dict)
 
+
+@login_required
 def AdminManage(request, username):
     try:
+        cur_user = UserProfile.objects.get(user=request.user)
+        if cur_user.role != 'admin':
+            return index(request)
         user_s = User.objects.get(username=username)
         user = UserProfile.objects.get(user=user_s)
     except UserProfile.DoesNotExist:
@@ -389,7 +425,6 @@ def AdminManage(request, username):
     context_dict = {}
     context_dict['user'] = user
     context_dict['changed'] = False
-
 
     if request.method == 'POST':
         prev_form = AdminManageForm(request.POST)
@@ -400,9 +435,11 @@ def AdminManage(request, username):
         else:
             print(prev_form.errors)
 
-    manage_form = AdminManageForm(initial={'role':user.role})
+    manage_form = AdminManageForm(initial={'role': user.role})
     context_dict['form'] = manage_form
+    context_dict['username'] = username
     return render(request, 'parasitologyTool/admin_manage.html', context=context_dict)
+
 
 def UserPost(request, username):
     try:
@@ -418,7 +455,7 @@ def UserPost(request, username):
     return render(request, 'parasitologyTool/user_posts.html', context=context_dict)
 
 
-def DeletePost (request, post_id, username):
+def DeletePost(request, post_id, username):
     user_s = User.objects.get(username=username)
     user = UserProfile.objects.get(user=user_s)
     post = user.researchpost_set.get(id=post_id)
@@ -426,6 +463,7 @@ def DeletePost (request, post_id, username):
     post.delete()
 
     return redirect(reverse('parasitologyTool:user_posts', args=[username]))
+
 
 class AddLike(LoginRequiredMixin, View):
     def post(self, request, post_model, post_id, *args, **kwargs):
@@ -440,17 +478,18 @@ class AddLike(LoginRequiredMixin, View):
             if like == request.user:
                 is_like = True
                 break
-        
+
         if not is_like:
             post.likes.add(request.user)
-        
+
         if is_like:
             post.likes.remove(request.user)
-        
+
         data = {'message': "Successfully liked post.",
                 'likes': post.likes.all().count(),
                 'dislikes': post.dislikes.all().count()}
         return JsonResponse(data)
+
 
 class AddDislike(LoginRequiredMixin, View):
     def post(self, request, post_model, post_id, *args, **kwargs):
@@ -464,12 +503,12 @@ class AddDislike(LoginRequiredMixin, View):
 
         for dislike in post.dislikes.all():
             if dislike == request.user:
-                is_dislike =  True
+                is_dislike = True
                 break
-        
+
         if not is_dislike:
             post.dislikes.add(request.user)
-        
+
         if is_dislike:
             post.dislikes.remove(request.user)
 
