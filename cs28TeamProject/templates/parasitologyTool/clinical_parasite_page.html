@@ -75,12 +75,15 @@
 </body>
 
 <div class="rside">
-      <p><strong>Most Pupular Post</strong></p>
+        <p><strong>Most Popular Post</strong></p>
 
-      <div class="rside-box">
-      Example test
-      </div>     
-</div>
+        <div class="rside-box">
+            {% for post in pop_posts %}
+            <a href="{% url 'parasitologyTool:clinical_post_page' post.parasite.id post.id %}">{{ post.title }}</a><br>
+            {% endfor %}
+        </div>
+
+    </div>
 
 <div>
     <a href="{% url 'parasitologyTool:add_post' parasite.id %}">add post</a>
