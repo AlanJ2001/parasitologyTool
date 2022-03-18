@@ -7,18 +7,18 @@
     <h1>Search Results</h1>
 
     {% if results %}
-    <table>
-        {% for user in results %}
-        <tr>
-            <th>{{ user.username }}</th>
-            <th>{{ user.role }}</th>
-            {% if is_admin %}
-                <th><a href="{% url 'parasitologyTool:admin_manage' user.username %}">Edit this user</a></th>
-            {% endif %}
-        </tr>
-        {% endfor %}
-    </table>
+        <table>
+            {% for user in results %}
+                <tr>
+                    <th>{{ user.username }}</th>
+                    <th>{{ user.role }}</th>
+                    {% if is_admin %}
+                        <th><a href="{% url 'parasitologyTool:admin_manage' user.username %}">Edit this user</a></th>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
     {% else %}
-    <h3>No results found</h3>
+        <h3>No results found</h3>
     {% endif %}
 {% endblock %}

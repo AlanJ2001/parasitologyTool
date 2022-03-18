@@ -4,74 +4,76 @@
 {% block title_block %}clinical parasite page{% endblock %}
 
 {% block body_block %}
-<link rel="stylesheet" href="{% static 'css/userpost.css' %}">
-<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-<script src="{% static 'js/post.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/userpost.css' %}">
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="{% static 'js/post.js' %}"></script>
 
-<div class="box">
-    <div>
-        {% for post in user_posts %}
-            <div class="a-box">
-                <div class="a-s-box-author">
-                    <img src="{{ MEDIA_URL }}{{ post.user.profile_picture }}"
-                                alt="picture of article" />  
-                        <a class="a-s-box-author-name" href="{% url 'parasitologyTool:profile' post.user.username %}">{{post.user.username}}</a>
-                        <div class="a-s-box-author-time">{{post.date_posted}}</div>
-                </div>
-
-                <div class="a-s-box-context">
-                    <div class="item">
-                        <div class="context">
-                            {{ post.content|linebreaks|urlize }}
-                        </div>
-                        <span class="see" style="color: #409EFF;"></span>
+    <div class="box">
+        <div>
+            {% for post in user_posts %}
+                <div class="a-box">
+                    <div class="a-s-box-author">
+                        <img src="{{ MEDIA_URL }}{{ post.user.profile_picture }}"
+                             alt="picture of article"/>
+                        <a class="a-s-box-author-name"
+                           href="{% url 'parasitologyTool:profile' post.user.username %}">{{ post.user.username }}</a>
+                        <div class="a-s-box-author-time">{{ post.date_posted }}</div>
                     </div>
-  
-                    {% if post.images %}
-                        {% for image in post.images %}
-                            <a href="{{ MEDIA_URL }}{{ image.image }}"><img src="{{ MEDIA_URL }}{{ image.image }}"></a>
-                        {% endfor %}
-                    {% endif %}
-                    <br>
-                    Reference Files List:
-                    <br>
-                    {% if post.files %}
-                        {% for file in post.files %}
-                            <a href="{{ MEDIA_URL }}{{ file.file }}">{{ file.file.name }}</a>
-                        {% endfor %}
-                    {% endif %}
-                </div>
-                
-                <div>
-                    <a href="{% url 'parasitologyTool:delete_post' post.id post.user.username %}" onclick="return confirm_delete();">Delete Post
-                    </a>
-                </div>
 
-                <script type="text/javascript" language="javascript">
-                    function confirm_delete(){
-                        if (confirm("Are you sure to delete this post?")){
-                            return true;
-                        }else{
-                            return false;
+                    <div class="a-s-box-context">
+                        <div class="item">
+                            <div class="context">
+                                {{ post.content|linebreaks|urlize }}
+                            </div>
+                            <span class="see" style="color: #409EFF;"></span>
+                        </div>
+
+                        {% if post.images %}
+                            {% for image in post.images %}
+                                <a href="{{ MEDIA_URL }}{{ image.image }}"><img src="{{ MEDIA_URL }}{{ image.image }}"></a>
+                            {% endfor %}
+                        {% endif %}
+                        <br>
+                        Reference Files List:
+                        <br>
+                        {% if post.files %}
+                            {% for file in post.files %}
+                                <a href="{{ MEDIA_URL }}{{ file.file }}">{{ file.file.name }}</a>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        <a href="{% url 'parasitologyTool:delete_post' post.id post.user.username %}"
+                           onclick="return confirm_delete();">Delete Post
+                        </a>
+                    </div>
+
+                    <script type="text/javascript" language="javascript">
+                        function confirm_delete() {
+                            if (confirm("Are you sure to delete this post?")) {
+                                return true;
+                            } else {
+                                return false;
+                            }
                         }
-                    }
-                </script>
+                    </script>
 
-            </div>
-            &nbsp;
-        {% endfor %}
+                </div>
+                &nbsp;
+            {% endfor %}
+        </div>
     </div>
-</div>
 
-<div class="rside">
-      <p><strong>Most Pupular Post</strong></p>
+    <div class="rside">
+        <p><strong>Most Pupular Post</strong></p>
 
-      <div class="rside-box">
-      Example test
-      </div>
-     
-</div>
-    
+        <div class="rside-box">
+            Example test
+        </div>
+
+    </div>
+
 
 
 {% endblock %}

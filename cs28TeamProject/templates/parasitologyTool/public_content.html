@@ -6,74 +6,74 @@
 
 
 {% block body_block %}
-<link rel="stylesheet" href="{% static 'css/pub-cont.css' %}">
+    <link rel="stylesheet" href="{% static 'css/pub-cont.css' %}">
 
 
     <body>
-        <h1>Public Content</h1>
-        <div class="box"> 
-            {% for p in top_viewed_parasite %}
-                {% if p %}      
+    <h1>Public Content</h1>
+    <div class="box">
+        {% for p in top_viewed_parasite %}
+            {% if p %}
                 <div>
                     <div class="box-bg">
                         <a href="{% url 'parasitologyTool:public_parasite_page' p.id %}">
-                        <img src="{{ MEDIA_URL }}{{ p.picture }}"
-                             alt="Trypanosoma" />
+                            <img src="{{ MEDIA_URL }}{{ p.picture }}"
+                                 alt="Trypanosoma"/>
                         </a>
                     </div>
-                        
+
                     <div class="box-text">
                         <a href="{% url 'parasitologyTool:public_parasite_page' p.id %}"><h2>{{ p.name }}</h2></a>
                     </div>
                 </div>
-                {% else %}
+            {% else %}
                 <strong>No parasites</strong>
-                {% endif %}
-                <br>
-            {% endfor %}
-            
-            <div class="a-box">
+            {% endif %}
+            <br>
+        {% endfor %}
+
+        <div class="a-box">
             <h2>Articles</h2>
             <div>
                 {% if articles %}
                     {% for article in articles %}
-                    <div class="a-s-box">
-                        <div>
-                            <a href="{{ article.url }}">
-                            <img src="{{ MEDIA_URL }}{{ article.picture }}"
-                              alt="picture of article" />
-                            </a>
+                        <div class="a-s-box">
+                            <div>
+                                <a href="{{ article.url }}">
+                                    <img src="{{ MEDIA_URL }}{{ article.picture }}"
+                                         alt="picture of article"/>
+                                </a>
+                            </div>
+
+                            <div>
+                                <a href="{{ article.url }}"><strong>{{ article.title }}</strong></a>
+                                <br>
+                                {{ article.content }}
+                            </div>
+
+                            <div class="a-s-box-author">
+                                <img src="{{ MEDIA_URL }}{{ article.user.profile_picture }}"
+                                     alt="picture of article"/>
+                                {{ article.user.username }}
+                            </div>
+
                         </div>
-                        
-                        <div>
-                            <a href="{{ article.url }}"><strong>{{ article.title }}</strong></a>
-                            <br>
-                            {{ article.content }}
-                        </div>
-                        
-                        <div class="a-s-box-author">
-                            <img src="{{ MEDIA_URL }}{{ article.user.profile_picture }}"
-                                alt="picture of article" />
-                            {{ article.user.username }}
-                        </div>
-                        
-                    </div>
                     {% endfor %}
                 {% else %}
                     <strong>No Articles</strong>
                 {% endif %}
             </div>
-            </div>
         </div>
+    </div>
     </body>
 
     <div class="rside">
         {% if articles %}
             {% for article in articles %}
-            <div class="rside-box">
-                <a href="{{ article.url }}"><strong>{{ article.title }}</strong></a></li>
-                <br>2020/01/01
-            </div>
+                <div class="rside-box">
+                    <a href="{{ article.url }}"><strong>{{ article.title }}</strong></a></li>
+                    <br>2020/01/01
+                </div>
             {% endfor %}
         {% else %}
             <strong>No Articles</strong>

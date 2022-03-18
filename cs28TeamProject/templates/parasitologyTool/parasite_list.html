@@ -1,12 +1,13 @@
 {% if parasites %}
     <ul>
-    {% for p in parasites %}
-        {% if p == current_category %}
-            <li><strong><a href="{% url 'parasitologyTool:goto' %}?parasite_id={{ p.id }}">{{ p.name }}</a></strong></li>
-        {% else %}
-            <li><a href="{% url 'parasitologyTool:goto' %}?parasite_id={{ p.id }}">{{ p.name }}</a></li>
-        {% endif %}
-    {% endfor %}
+        {% for p in parasites %}
+            {% if p == current_category %}
+                <li><strong><a href="{% url 'parasitologyTool:goto' %}?parasite_id={{ p.id }}">{{ p.name }}</a></strong>
+                </li>
+            {% else %}
+                <li><a href="{% url 'parasitologyTool:goto' %}?parasite_id={{ p.id }}">{{ p.name }}</a></li>
+            {% endif %}
+        {% endfor %}
     </ul>
 {% else %}
     <strong>No parasites</strong>

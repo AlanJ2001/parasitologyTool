@@ -5,20 +5,21 @@
 {% block title_block %}Public Content{% endblock %}
 
 {% block body_block %}
-<head>
-	<title>Add Parasite</title>
-</head>
+    <head>
+        <title>Add Parasite</title>
+    </head>
 
-<body>
-	<h1>Add a Parasite</h1>
-	<div>
-		<form id="parasite_form" method="post" enctype="multipart/form-data" action="{% url 'parasitologyTool:add_parasite' %}">
-			{% csrf_token %}  
+    <body>
+    <h1>Add a Parasite</h1>
+    <div>
+        <form id="parasite_form" method="post" enctype="multipart/form-data"
+              action="{% url 'parasitologyTool:add_parasite' %}">
+            {% csrf_token %}
             {{ form | crispy }}
             <input type="submit" name="submit" value="Create Parasite"/>
         </form>
-	</div>
-</body>
-<a href="{% url 'parasitologyTool:public_content' %}">Public Content</a><br />
-<a href="{% url 'parasitologyTool:index' %}">Homepage</a><br />
+    </div>
+    </body>
+    <a href="{% url 'parasitologyTool:public_content' %}">Public Content</a><br/>
+    <a href="{% url 'parasitologyTool:index' %}">Homepage</a><br/>
 {% endblock %}
