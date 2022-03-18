@@ -552,8 +552,9 @@ class CommentReplyView(View):
         if form.is_valid():
             new_comment = form.save(commit=False)
             new_comment.parent_comment = parent_comment
+            new_comment.user = UserProfile.objects.get(user=request.user)
             new_comment.save()
-            data = {'reply_text': request.POST['reply_text'], 'comment_id':comment_id}
+            data = {'reply_text': request.POST['reply_text'], 'comment_id':comment_id, 'username': new_comment.user.username}
             return JsonResponse(data)
         else:
             return JsonResponse({'message':'failed'})
