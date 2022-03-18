@@ -1,27 +1,24 @@
 variables:
     DJANGO_CONFIG: "test"
 
-
-default:
-  image: python:3.8
-  cache:
-    paths:
-      - ~/.cache/pip/
-  before_script:
-    - pip3 install -r requirements.txt
-  tags:
-    - docker
-
+stages:
+  - build
+  - test
 
 migrations-tests:
-  stage: build
-  script:
+    image: python:3.8
+    before_script:
+    - pip3 install -r requirements.txt
+    when: on_success
+    stage: build
+
+    script:
     - python3 manage.py makemigrations
     - python3 manage.py makemigrations parasitologyTool
     - python3 manage.py migrate
     - python3 manage.py collectstatic --noinput
     - python3 manage.py check
-  when: on_success
+
 
 
 django-tests:
