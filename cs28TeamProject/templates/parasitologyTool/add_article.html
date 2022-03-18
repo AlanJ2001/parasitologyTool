@@ -7,13 +7,14 @@
 {% block body_block %}
     <h1>Post Article</h1>
     <div>
-    	<form id="article_form" method="post" enctype="multipart/form-data" action="{% url 'parasitologyTool:add_article' parasite.id %}" autocomplete="off"> 
+        <form id="article_form" method="post" enctype="multipart/form-data"
+              action="{% url 'parasitologyTool:add_article' parasite.id %}" autocomplete="off">
             {% csrf_token %}
             {{ form | crispy }}
             <input type="submit" name="submit" value="Create Article"/>
         </form>
     </div>
-    <a href="{% url 'parasitologyTool:public_content' %}">Public Content</a><br />
-    <a href="{% url 'parasitologyTool:index' %}">Homepage</a><br />
+    <a href="{% url 'parasitologyTool:public_content' %}">Public Content</a><br/>
+    <a href="{% url 'parasitologyTool:index' %}">Homepage</a><br/>
 
 {% endblock %}

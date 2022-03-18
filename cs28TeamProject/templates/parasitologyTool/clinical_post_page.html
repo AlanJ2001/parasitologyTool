@@ -5,109 +5,124 @@
 {% block title_block %}Clinical Post Page{% endblock %}
 
 {% block body_block %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/userpost.css' %}">
-<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-<script src="{% static 'js/post.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/reply.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/reply-ajax.js' %}"></script>
-<script src="{% static 'js/like_dislike_ajax.js' %}"></script>
-<script src="{% static 'js/expand_replies.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/userpost.css' %}">
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="{% static 'js/post.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/reply.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/reply-ajax.js' %}"></script>
+    <script src="{% static 'js/like_dislike_ajax.js' %}"></script>
+    <script src="{% static 'js/expand_replies.js' %}"></script>
 
 
-<div class="box">
-    <div class="a-box">
-        <div>
-            <a href="{% url 'parasitologyTool:clinical_parasite_page' post.parasite.id %}"><span data-feather="arrow-left"></span> Back</a>
-        </div>
-        <br>
-        <div class="a-s-box-author">
-                <img src="{{ MEDIA_URL }}{{ post.user.profile_picture }}"
-                                alt="picture of article" /> 
-                <a class="a-s-box-author-name" href="{% url 'parasitologyTool:profile' post.user.username %}">{{post.user.username}}</a>
-                <div class="a-s-box-author-time">{{post.date_posted}}</div>
-        </div>
-        
-        <div class="a-s-box-context">
-            <div class="item">
-                <div class="context">
-                    {{ post.content|linebreaks|urlize }}
-                </div>
-                <span class="see" style="color: #409EFF;"></span>
+    <div class="box">
+        <div class="a-box">
+            <div>
+                <a href="{% url 'parasitologyTool:clinical_parasite_page' post.parasite.id %}"><span
+                        data-feather="arrow-left"></span> Back</a>
             </div>
-            
-        {% if post.images %}
-            {% for image in post.images %}
-                <a href="{{ MEDIA_URL }}{{ image.image }}"><img src="{{ MEDIA_URL }}{{ image.image }}"></a>
-            {% endfor %}
-        {% endif %}
-        <br>
-        {% if post.files %}
-            {% for file in post.files %}
-                <a href="{{ MEDIA_URL }}{{ file.file }}">{{ file.file.name }}</a>
-            {% endfor %}
-        {% endif %}
-        </div>
+            <br>
+            <div class="a-s-box-author">
+                <img src="{{ MEDIA_URL }}{{ post.user.profile_picture }}"
+                     alt="picture of article"/>
+                <a class="a-s-box-author-name"
+                   href="{% url 'parasitologyTool:profile' post.user.username %}">{{ post.user.username }}</a>
+                <div class="a-s-box-author-time">{{ post.date_posted }}</div>
+            </div>
+
+            <div class="a-s-box-context">
+                <div class="item">
+                    <div class="context">
+                        {{ post.content|linebreaks|urlize }}
+                    </div>
+                    <span class="see" style="color: #409EFF;"></span>
+                </div>
+
+                {% if post.images %}
+                    {% for image in post.images %}
+                        <a href="{{ MEDIA_URL }}{{ image.image }}"><img src="{{ MEDIA_URL }}{{ image.image }}"></a>
+                    {% endfor %}
+                {% endif %}
+                <br>
+                {% if post.files %}
+                    {% for file in post.files %}
+                        <a href="{{ MEDIA_URL }}{{ file.file }}">{{ file.file.name }}</a>
+                    {% endfor %}
+                {% endif %}
+            </div>
 
             <div class="a-s-box-bottom">
                 <a href="#"><span data-feather="message-square"></span></a>
             </div>
             <div class="a-s-box-bottom" style="width: 170px;">
-                    {% if user.is_authenticated %}
-                        <div style="float:right;">
-                        <form class="ajax-form-dislike" id='dislike' method="POST" data-url="{% url 'parasitologyTool:dislike' post.model post.id %}">
-                        {% csrf_token %}
-                        <a href="#" style="text-decoration: none;"><span data-feather="thumbs-down"></span><span class="dislike-count"> {{post.dislikes.all.count}} </span></a>
+                {% if user.is_authenticated %}
+                    <div style="float:right;">
+                        <form class="ajax-form-dislike" id='dislike' method="POST"
+                              data-url="{% url 'parasitologyTool:dislike' post.model post.id %}">
+                            {% csrf_token %}
+                            <a href="#" style="text-decoration: none;"><span data-feather="thumbs-down"></span><span
+                                    class="dislike-count"> {{ post.dislikes.all.count }} </span></a>
                         </form>
-                        </div>
-                        <div style="float: right;">
-                        <form class="ajax-form-like" id="like" method="POST" data-url="{% url 'parasitologyTool:like' post.model post.id %}">
-                        {% csrf_token %}
-                        <a href="#" style="text-decoration: none; margin-right: 10px;"><span data-feather="thumbs-up"></span><span class="like-count">{{post.likes.all.count}}</span></a>
+                    </div>
+                    <div style="float: right;">
+                        <form class="ajax-form-like" id="like" method="POST"
+                              data-url="{% url 'parasitologyTool:like' post.model post.id %}">
+                            {% csrf_token %}
+                            <a href="#" style="text-decoration: none; margin-right: 10px;"><span
+                                    data-feather="thumbs-up"></span><span
+                                    class="like-count">{{ post.likes.all.count }}</span></a>
                         </form>
-                        </div>
-                    {% endif %}  
+                    </div>
+                {% endif %}
             </div>
             <br>
-        
-        <div class="com">
-        &nbsp;
-        <form id="comment_form" method="post" autocomplete="off" enctype="multipart/form-data">
-            {% csrf_token %}
-            <input type="text" name="comment_text" value="" size="50" placeholder="Add comment here">
-            <button type="submit">Comment</button>
-        </form>
-        &nbsp;
-        {% for comment in post.comments %}
-            <div class="com-s">
-                <img src="{{ MEDIA_URL }}{{ comment.user.profile_picture }}"
-                                alt="picture of article" />  
 
-                <div class="com-s-name"><a href="{% url 'parasitologyTool:profile' comment.user.username %}"><span style="font-weight: bold; color: darkorange"> {{comment.user.username}}</span></a>:{{comment}}</div>
-                <div class="com-s-time">{{comment.date_posted}}<i data-feather="corner-up-left" onclick="expandToggle('{{ comment.id }}')">expand</i></div>
-                <div class="com-s-reply">
-                    <span data-feather="message-square" onclick="commentReplyToggle('{{ comment.id }}')">reply</span>
-                </div>
+            <div class="com">
+                &nbsp;
+                <form id="comment_form" method="post" autocomplete="off" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="text" name="comment_text" value="" size="50" placeholder="Add comment here">
+                    <button type="submit">Comment</button>
+                </form>
+                &nbsp;
+                {% for comment in post.comments %}
+                    <div class="com-s">
+                        <img src="{{ MEDIA_URL }}{{ comment.user.profile_picture }}"
+                             alt="picture of article"/>
 
-                <div class="mt-3 d-none" id="{{ comment.id }}">
-                    <form method="POST" id="replyForm" class="ajax-form-reply" data-url="{% url 'parasitologyTool:comment-reply' post.id comment.id %}" autocomplete="off" class="input-group">
-                        {% csrf_token %}
-                        {{ reply_form | crispy }}
-                        <button type="submit" class="btn btn-success mb-3">go!</button>
-                        
-                    </form>
-                </div>
-                <div id="reply-{{comment.id}}"> 
-                    <ul class="replies" style="margin-top: 7px;">
-                        {% for reply in comment.replies %}
-                        <li><b>{{reply.user.username}}</b>: {{reply}}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
+                        <div class="com-s-name"><a
+                                href="{% url 'parasitologyTool:profile' comment.user.username %}"><span
+                                style="font-weight: bold; color: darkorange"> {{ comment.user.username }}</span></a>:{{ comment }}
+                        </div>
+                        <div class="com-s-time">{{ comment.date_posted }}<i data-feather="corner-up-left"
+                                                                            onclick="expandToggle('{{ comment.id }}')">expand</i>
+                        </div>
+                        <div class="com-s-reply">
+                            <span data-feather="message-square"
+                                  onclick="commentReplyToggle('{{ comment.id }}')">reply</span>
+                        </div>
+
+                        <div class="mt-3 d-none" id="{{ comment.id }}">
+                            <form method="POST" id="replyForm" class="ajax-form-reply"
+                                  data-url="{% url 'parasitologyTool:comment-reply' post.id comment.id %}"
+                                  autocomplete="off" class="input-group">
+                                {% csrf_token %}
+                                {{ reply_form | crispy }}
+                                <button type="submit" class="btn btn-success mb-3">go!</button>
+
+                            </form>
+                        </div>
+                        <div id="reply-{{ comment.id }}">
+                            <ul class="replies" style="margin-top: 7px;">
+                                {% for reply in comment.replies %}
+                                    <li><b>{{ reply.user.username }}</b>: {{ reply }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
-        {% endfor %}
         </div>
     </div>
-</div>
 
 
     <div class="rside">
@@ -115,10 +130,10 @@
 
         <div class="rside-box">
             {% for post in pop_posts %}
-            <a href="{% url 'parasitologyTool:clinical_post_page' post.parasite.id post.id %}">{{ post.title }}</a>
+                <a href="{% url 'parasitologyTool:clinical_post_page' post.parasite.id post.id %}">{{ post.title }}</a>
             {% endfor %}
         </div>
-     
+
     </div>
 
 {% endblock %}

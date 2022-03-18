@@ -5,15 +5,15 @@
 {% endblock %}
 
 {% block body_block %}
-<link rel="stylesheet" href="{% static 'css/drop_down.css' %}">
-	<h1>Research Portal</h1>
-	<div class="dropdown">
-		<button class="dropbtn">Select Parasite</button>
-		<div class="dropdown-content">
-			{% for parasite in parasite_list %}
-			<a href="{% url 'parasitologyTool:research_parasite_page' parasite.id %}">{{ parasite.name }}</a>
-			{% endfor %}
-		</div>
-	</div>
-	<script type="text/javascript" src="{% static 'js/drop_down.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/drop_down.css' %}">
+    <h1>Research Portal</h1>
+    <div class="dropdown">
+        <button class="dropbtn">Select Parasite</button>
+        <div class="dropdown-content">
+            {% for parasite in parasite_list %}
+                <a href="{% url 'parasitologyTool:research_parasite_page' parasite.id %}">{{ parasite.name }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    <script type="text/javascript" src="{% static 'js/drop_down.js' %}"></script>
 {% endblock %}

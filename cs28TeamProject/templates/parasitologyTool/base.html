@@ -2,7 +2,7 @@
 {% load static %}
 {% load parasitologyTool_template_tags %}
 <html lang="en">
-    <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -12,85 +12,99 @@
     <title>
         ParasitologyTool - {% block title_block %}ParasitologyTool{% endblock %}
     </title>
-    
+
     <!-- Bootstrap core CSS -->
-    <link href="https://getbootstrap.com/docs/4.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    
+    <link href="https://getbootstrap.com/docs/4.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
     <!-- Custom styles for this template -->
     <link href="https://getbootstrap.com/docs/4.2/examples/dashboard/dashboard.css" rel="stylesheet">
 
     <!-- jquery -->
     <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-    </head>
-    
-    <body>
-        <header>
-            <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark p-0">
-                <a class="navbar-brand p-2" href="{% url 'parasitologyTool:index' %}">ParasitologyTool</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                
-                <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item"><a class="nav-link" href="{% url 'parasitologyTool:index' %}">Home</a></li>
-                        <li class="nav-item "><a class="nav-link" href="{% url 'parasitologyTool:about' %}">About</a></li>
-                        <li class="nav-item "><a class="nav-link" href="{% url 'parasitologyTool:public_content' %}">Public Content</a></li>
-                        {% if user.is_authenticated %}
-                        <li class="nav-item"><a class="nav-link clinical_portal_link" href="{% url 'parasitologyTool:clinical_portal' %}">Clinical</a></li>
-                        <li class="nav-item"><a class="nav-link research_portal_link" href="{% url 'parasitologyTool:research_portal' %}">Research</a></li>
-                        <li class="nav-item">
-                            <div class="dropdown">
-                              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+</head>
+
+<body>
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark p-0">
+        <a class="navbar-brand p-2" href="{% url 'parasitologyTool:index' %}">ParasitologyTool</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item"><a class="nav-link" href="{% url 'parasitologyTool:index' %}">Home</a></li>
+                <li class="nav-item "><a class="nav-link" href="{% url 'parasitologyTool:about' %}">About</a></li>
+                <li class="nav-item "><a class="nav-link" href="{% url 'parasitologyTool:public_content' %}">Public
+                    Content</a></li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link clinical_portal_link"
+                                            href="{% url 'parasitologyTool:clinical_portal' %}">Clinical</a></li>
+                    <li class="nav-item"><a class="nav-link research_portal_link"
+                                            href="{% url 'parasitologyTool:research_portal' %}">Research</a></li>
+                    <li class="nav-item">
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Profile
-                              </button>
-                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="{% url 'parasitologyTool:profile' user.username %}">{{ user.username }}</a>
-                                <a class="dropdown-item" href="{% url 'parasitologyTool:logout' %}?next=/parasitologyTool/">Logout</a>
-                                <a class="dropdown-item" href="{% url 'parasitologyTool:user_posts' user.username %}">Your Post</a>
-                              </div>
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item"
+                                   href="{% url 'parasitologyTool:profile' user.username %}">{{ user.username }}</a>
+                                <a class="dropdown-item"
+                                   href="{% url 'parasitologyTool:logout' %}?next=/parasitologyTool/">Logout</a>
+                                <a class="dropdown-item" href="{% url 'parasitologyTool:user_posts' user.username %}">Your
+                                    Post</a>
                             </div>
-                        </li>
-                        <!--
+                        </div>
+                    </li>
+                    <!--
                         <li class="nav-item"><a class="nav-link" href="{% url 'parasitologyTool:add_parasite' %}">Add Parasite</a></li>
                          -->
-                        {% else %}
-                        <li class="nav-item"><a class="nav-link" href="{% url 'parasitologyTool:register' %}">Register Here</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'parasitologyTool:login' %}">Login</a></li>
-                        {% endif %}
-                        <li class="nav-item"><a class="nav-link" href="{% url 'parasitologyTool:search_page' %}">Search for users</a> </li>
-                    </ul>
+                {% else %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'parasitologyTool:register' %}">Register
+                        Here</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'parasitologyTool:login' %}">Login</a></li>
+                {% endif %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'parasitologyTool:search_page' %}">Search for
+                    users</a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<div class="container-fluid">
+    <div class="row">
+        {% block sidebar_block %}
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                <div class="sidebar-sticky" id="parasite-listing">
+                    {% get_parasite_list parasite %}
                 </div>
             </nav>
-        </header>
-        
-        <div class="container-fluid">
-            <div class="row">
-                {% block sidebar_block %}
-                <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-                    <div class="sidebar-sticky" id="parasite-listing">
-                        {% get_parasite_list parasite %}
-                    </div>
-                </nav>
-                {% endblock %}
-                <main role="main" class="col-md-9  ml-sm-auto col-lg-10 px-4">		
-                    {% block body_block %}{% endblock %}
-                    
-                    <!-- FOOTER -->
-                    <footer>
-                        <p class="float-right"><a href="#">Back to top</a></p>
-                        <p>&copy; 2021 ParasitologyTool &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
-                    </footer>
-                </main>
-            </div>
-        </div>
-        
-        <!-- Bootstrap core JavaScript -->
-        <!-- Placed at the end of the document so the pages load faster -->
-        <script src="{% static 'js/jquery-3.3.1.min.js' %}" crossorigin="anonymous"></script>
+        {% endblock %}
+        <main role="main" class="col-md-9  ml-sm-auto col-lg-10 px-4">
+            {% block body_block %}{% endblock %}
 
-        <script>window.jQuery || document.write('<script src="https://getbootstrap.com/docs/4.2/assets/js/vendor/jquery-slim.min.js"><\/script>')</script><script src="https://getbootstrap.com/docs/4.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-zDnhMsjVZfS3hiP7oCBRmfjkQC4fzxVxFhBx8Hkz2aZX8gEvA/jsP3eXRCvzTofP" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
-        <script src="https://getbootstrap.com/docs/4.2/examples/dashboard/dashboard.js"></script>
-    </body>
+            <!-- FOOTER -->
+            <footer>
+                <p class="float-right"><a href="#">Back to top</a></p>
+                <p>&copy; 2021 ParasitologyTool &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+            </footer>
+        </main>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="{% static 'js/jquery-3.3.1.min.js' %}" crossorigin="anonymous"></script>
+
+<script>window.jQuery || document.write('<script src="https://getbootstrap.com/docs/4.2/assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+<script src="https://getbootstrap.com/docs/4.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-zDnhMsjVZfS3hiP7oCBRmfjkQC4fzxVxFhBx8Hkz2aZX8gEvA/jsP3eXRCvzTofP"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
+<script src="https://getbootstrap.com/docs/4.2/examples/dashboard/dashboard.js"></script>
+</body>
 </html>

@@ -2,26 +2,26 @@
 {% load static %}
 
 {% block title_block %}Clinical Portal
-<style type="text/css">
-	body {
+    <style type="text/css">
+        body {
 
-	}
-</style>
+        }
+    </style>
 {% endblock %}
 
 {% block body_block %}
-	<link rel="stylesheet" href="{% static 'css/drop_down.css' %}">
-	<h1>Clinical Portal</h1>
-	<div class="dropdown">
-		<button class="dropbtn">Select Parasite</button>
-		<div class="dropdown-content">
-			{% for parasite in parasite_list %}
-			<a href="{% url 'parasitologyTool:clinical_parasite_page' parasite.id %}">{{ parasite.name }}</a>
-			{% endfor %}
-		</div>
+    <link rel="stylesheet" href="{% static 'css/drop_down.css' %}">
+    <h1>Clinical Portal</h1>
+    <div class="dropdown">
+        <button class="dropbtn">Select Parasite</button>
+        <div class="dropdown-content">
+            {% for parasite in parasite_list %}
+                <a href="{% url 'parasitologyTool:clinical_parasite_page' parasite.id %}">{{ parasite.name }}</a>
+            {% endfor %}
+        </div>
 
-	</div>
-	<script type="text/javascript" src="{% static 'js/drop_down.js' %}"></script>
+    </div>
+    <script type="text/javascript" src="{% static 'js/drop_down.js' %}"></script>
 
 
 {% endblock %}
