@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.utils import timezone
+from sympy import true
 
 # Create your models here.
 
@@ -155,6 +156,7 @@ class Comment(models.Model):
 class Reply(models.Model):
 	reply_text = models.TextField()
 	parent_comment = models.ForeignKey(Comment, on_delete = models.CASCADE)
+	user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None, null=True, blank=True)
 
 	def __str__(self):
 		return self.reply_text

@@ -16,9 +16,8 @@ $(document).ready(function(){
 })
 
 function handleFormSuccess(data, textStatus, jqXHR){
-console.log(data.comment_id)
-console.log('#reply-'+data.comment_id)
-$('#reply-'+data.comment_id +" .replies").append('<li>'+data.reply_text+'</li>');
+console.log(data.username)
+$('#reply-'+data.comment_id +" .replies").append('<li><b>'+data.username +'</b>: ' +data.reply_text+'</li>');
 }
 
 function handleFormError(jqXHR, textStatus, errorThrown){

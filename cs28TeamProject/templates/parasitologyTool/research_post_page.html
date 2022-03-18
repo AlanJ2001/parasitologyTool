@@ -88,7 +88,7 @@
                 <img src="{{ MEDIA_URL }}{{ comment.user.profile_picture }}"
                                 alt="picture of article" />  
 
-                <div class="com-s-name"><a href="{% url 'parasitologyTool:profile' comment.user.username %}"><span style="font-weight: bold; color: darkorange">{{comment.user.username}}</span></a>:{{comment}}</div>
+                <div class="com-s-name"><a href="{% url 'parasitologyTool:profile' comment.user.username %}"><span style="font-weight: bold; color: darkorange">{{comment.user.username}}</span></a>: {{comment}}</div>
                 <div class="com-s-time">{{comment.date_posted}}</div>
                 <div class="com-s-reply">
             		<span data-feather="message-square" onclick="commentReplyToggle('{{ comment.id }}')">reply</span>
@@ -105,7 +105,7 @@
                 <div id="reply-{{comment.id}}"> 
                     <ul class="replies" style="margin-top: 7px;">
                         {% for reply in comment.replies %}
-                        <li>{{reply}}</li>
+                        <li><b>{{reply.user.username}}</b>: {{reply}}</li>
                         {% endfor %}
                     </ul>
                 </div>
