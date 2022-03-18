@@ -13,7 +13,7 @@
 <script src="{% static 'js/like_dislike_ajax.js' %}"></script>
 <script src="{% static 'js/expand_replies.js' %}"></script>
 
-<body>
+
 <div class="box">
     <div class="a-box">
         <div>
@@ -111,13 +111,15 @@
         </div>
     </div>
 </div>
-</body>
+
 
     <div class="rside">
-        <p><strong>Most Pupular Post</strong></p>
+        <p><strong>Most Popular Post</strong></p>
 
         <div class="rside-box">
-             Example test
+            {% for post in pop_posts %}
+            <a href="{% url 'parasitologyTool:clinical_post_page' post.parasite.id post.id %}">{{ post.title }}</a>
+            {% endfor %}
         </div>
      
     </div>

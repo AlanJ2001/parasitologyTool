@@ -100,6 +100,7 @@ def add_post(request, parasite_id):
             post = form.save(commit=False)
             post.parasite = parasite
             post.user = UserProfile.objects.get(user=request.user)
+            #post.likes = 0
             post.save()
             for image in images:
                 ClinicalImage.objects.create(clinical_post=post, image=image, )
@@ -254,6 +255,7 @@ def clinical_portal(request):
     context_dict = {}
     parasite_list = Parasite.objects.order_by('name')
     context_dict['parasite_list'] = parasite_list
+
     return render(request, 'parasitologyTool/clinical_portal.html', context=context_dict)
 
 
@@ -276,8 +278,11 @@ def clinical_parasite_page(request, parasite_id):
     except Parasite.DoesNotExist:
         return not_found(request)
 
+    pop_posts = Post.objects.order_by('-likes')[:5]
+
     context_dict['parasite'] = parasite
     context_dict['posts'] = posts
+    context_dict['pop_posts'] = pop_posts
     return render(request, 'parasitologyTool/clinical_parasite_page.html', context=context_dict)
 
 
@@ -291,8 +296,11 @@ def research_parasite_page(request, parasite_id):
     except Parasite.DoesNotExist:
         return not_found(request)
 
+    pop_posts = ResearchPost.objects.order_by('-likes')[:5]
+
     context_dict['parasite'] = parasite
     context_dict['research_posts'] = research_posts
+    context_dict['pop_posts'] = pop_posts
     return render(request, 'parasitologyTool/research_parasite_page.html', context=context_dict)
 
 
@@ -381,6 +389,8 @@ def clinical_post_page(request, parasite_id, post_id):
         post = Post.objects.get(id=post_id)
     except ResearchPost.DoesNotExist:
         return not_found(request)
+
+
 
     context_dict = {}
     context_dict['post'] = post
