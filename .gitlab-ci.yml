@@ -9,6 +9,7 @@ migrations-tests:
     image: python:3.8
     before_script:
     - pip3 install -r requirements.txt
+    - cd cs28TeamProject
     when: on_success
     stage: build
 
