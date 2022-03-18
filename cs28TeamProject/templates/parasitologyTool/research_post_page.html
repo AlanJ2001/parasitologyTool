@@ -36,15 +36,16 @@
             
 		{% if post.images %}
 			{% for image in post.images %}
-				<img src="{{ MEDIA_URL }}{{ image.image }}">
+                <a href="{{ MEDIA_URL }}{{ image.image }}"><img src="{{ MEDIA_URL }}{{ image.image }}"></a>
 			{% endfor %}
 		{% endif %}
 		<br>
+        <br>
         Reference Files List:
         <br>
 		{% if post.files %}
 			{% for file in post.files %}
-				<a href="{{ MEDIA_URL }}{{ file.file }}">{{ file.file.name }}</a>
+				<a href="{{ MEDIA_URL }}{{ file.file }}">{{ file.file.name }}</a><br>
 			{% endfor %}
 		{% endif %}
 	    </div>
