@@ -1,6 +1,3 @@
-variables:
-    DJANGO_CONFIG: "test"
-
 stages:
   - build
   - test
