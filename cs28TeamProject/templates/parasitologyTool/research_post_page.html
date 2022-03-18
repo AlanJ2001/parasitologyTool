@@ -11,6 +11,7 @@
 <script type="text/javascript" src="{% static 'js/reply.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/reply-ajax.js' %}"></script>
 <script src="{% static 'js/like_dislike_ajax.js' %}"></script>
+<script src="{% static 'js/expand_replies.js' %}"></script>
 
 <body>
 <div class="box">
@@ -89,10 +90,11 @@
                                 alt="picture of article" />  
 
                 <div class="com-s-name"><a href="{% url 'parasitologyTool:profile' comment.user.username %}"><span style="font-weight: bold; color: darkorange">{{comment.user.username}}</span></a>: {{comment}}</div>
-                <div class="com-s-time">{{comment.date_posted}}</div>
+                <div class="com-s-time">{{comment.date_posted}} <i data-feather="corner-up-left" onclick="expandToggle('{{ comment.id }}')">expand</i></div>
                 <div class="com-s-reply">
             		<span data-feather="message-square" onclick="commentReplyToggle('{{ comment.id }}')">reply</span>
             	</div>
+                <br>
 
             	<div class="mt-3 d-none" id="{{ comment.id }}">
             		<form method="POST" id="replyForm" class="ajax-form-reply" data-url="{% url 'parasitologyTool:comment-reply' post.id comment.id %}" autocomplete="off" class="input-group">
