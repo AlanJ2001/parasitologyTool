@@ -13,6 +13,7 @@
     <div class="box">
         <div class="top-text">
             <Strong>Clinical Content - {{ parasite.name }}</Strong>
+            <a style="float: right;" href="{% url 'parasitologyTool:add_post' parasite.id %}">Add Post</a>
         </div>
         <div>
             {% for post in posts %}
@@ -87,10 +88,6 @@
             {% endfor %}
         </div>
 
-    </div>
-
-    <div>
-        <a href="{% url 'parasitologyTool:add_post' parasite.id %}">add post</a>
     </div>
 
 {% endblock %}
