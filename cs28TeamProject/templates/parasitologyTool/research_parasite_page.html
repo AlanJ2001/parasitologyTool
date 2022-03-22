@@ -13,6 +13,7 @@
     <div class="box">
         <div class="top-text">
             <Strong>Research Content - {{ parasite.name }}</Strong>
+            <a style="float: right;" href="{% url 'parasitologyTool:add_research_post' parasite.id %}">Add Post</a>
         </div>
         <div>
             {% for post in research_posts %}
@@ -91,15 +92,11 @@
 
         <div class="rside-box">
             {% for post in pop_posts %}
-                <a href="{% url 'parasitologyTool:clinical_post_page' post.parasite.id post.id %}">{{ post.title }}</a>
+                <a href="{% url 'parasitologyTool:research_post_page' post.parasite.id post.id %}">{{ post.title }}</a>
                 <br>
             {% endfor %}
         </div>
 
-    </div>
-
-    <div>
-        <a href="{% url 'parasitologyTool:add_research_post' parasite.id %}">add post</a>
     </div>
 
 {% endblock %}
